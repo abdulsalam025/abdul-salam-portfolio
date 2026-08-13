@@ -521,7 +521,7 @@ function App() {
 
           <div className="resume-actions">
             <a
-              href="/Abdul-Salam-Resume.pdf"
+              href="/Abdul_Salam_Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="primary-button"
@@ -531,8 +531,8 @@ function App() {
             </a>
 
             <a
-              href="/Abdul-Salam-Resume.pdf"
-              download="Abdul-Salam-Resume.pdf"
+              href="/Abdul_Salam_Resume.pdf"
+              download="Abdul_Salam_Resume.pdf"
               className="secondary-button"
             >
               Download Resume
