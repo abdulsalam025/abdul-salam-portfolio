@@ -4072,3 +4072,230 @@ footer:hover {
   }
 
 }
+
+/* =========================================================
+   BATCH 2 - PREMIUM VISUAL POLISH
+   Profile + cards + hierarchy
+   ========================================================= */
+
+/* ---------- Profile image ---------- */
+
+.hero img[src*="profile"],
+.profile-image,
+.profile-photo,
+.hero-image img {
+  object-fit: cover;
+  image-rendering: auto;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Subtle premium image treatment */
+
+.hero img[src*="profile"] {
+  transition:
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.5s ease,
+    box-shadow 0.5s ease;
+}
+
+.hero img[src*="profile"]:hover {
+  transform: scale(1.025) translateZ(0);
+  filter: brightness(1.04) contrast(1.02);
+}
+
+/* ---------- Project cards ---------- */
+
+.project-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.project-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(
+      circle at 85% 15%,
+      rgba(139,117,255,0.10),
+      transparent 38%
+    );
+  transition: opacity 0.45s ease;
+  z-index: -1;
+}
+
+.project-card:hover::before {
+  opacity: 1;
+}
+
+.project-card h3 {
+  transition:
+    transform 0.35s ease,
+    color 0.35s ease;
+}
+
+.project-card:hover h3 {
+  transform: translateX(2px);
+}
+
+/* ---------- Education cards ---------- */
+
+.education-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.education-card::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 18px;
+  bottom: 18px;
+  width: 2px;
+  border-radius: 999px;
+  background: rgba(139,117,255,0.45);
+  opacity: 0.7;
+  transition:
+    transform 0.4s ease,
+    opacity 0.4s ease;
+}
+
+.education-card:hover::after {
+  transform: scaleY(1.08);
+  opacity: 1;
+}
+
+/* ---------- Resume cards ---------- */
+
+.resume-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.resume-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(139,117,255,0.5),
+    transparent
+  );
+  opacity: 0.5;
+  transition: opacity 0.35s ease;
+}
+
+.resume-card:hover::before {
+  opacity: 1;
+}
+
+/* ---------- Skill cards ---------- */
+
+.skill-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.skill-card::after {
+  content: "";
+  position: absolute;
+  inset: auto 15% 0 15%;
+  height: 1px;
+  background: rgba(139,117,255,0.35);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.35s ease;
+}
+
+.skill-card:hover::after {
+  transform: scaleX(1);
+}
+
+/* ---------- Buttons ---------- */
+
+.primary-button,
+.secondary-button {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.primary-button:active,
+.secondary-button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* ---------- Mobile profile ---------- */
+
+@media (max-width: 768px) {
+
+  .hero img[src*="profile"] {
+    width: min(72vw, 280px);
+    height: auto;
+    max-width: 280px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-image img {
+    max-width: 280px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .project-card,
+  .education-card,
+  .resume-card {
+    border-radius: 18px;
+  }
+
+  .project-card h3,
+  .education-card h3,
+  .resume-card h3 {
+    line-height: 1.25;
+  }
+
+}
+
+/* ---------- Small phones ---------- */
+
+@media (max-width: 480px) {
+
+  .hero img[src*="profile"] {
+    width: min(68vw, 245px);
+    max-width: 245px;
+  }
+
+  .hero-image img {
+    max-width: 245px;
+  }
+
+  .project-card,
+  .education-card,
+  .resume-card {
+    border-radius: 16px;
+  }
+
+}
+
+/* ---------- Accessibility ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .hero img[src*="profile"],
+  .project-card h3,
+  .education-card::after,
+  .resume-card::before,
+  .skill-card::after {
+    transition: none !important;
+  }
+
+}
+
