@@ -241,7 +241,7 @@ function App() {
         </section>
 
         {/* ABOUT */}
-        <section className="section about-section" id="about">
+        <motion.section className="section about-section scroll-reveal" id="about" variants={scrollReveal} initial="hidden" whileInView="visible" viewport={revealViewport}>
           <div className="section-label">01 â€” ABOUT ME</div>
 
           <div className="section-grid">
@@ -294,7 +294,7 @@ function App() {
           </div>
         </section>
 
-        <section className="section education-section" id="education">
+        <motion.section className="section education-section scroll-reveal" id="education" variants={scrollRevealLeft} initial="hidden" whileInView="visible" viewport={revealViewport}>
           <div className="section-label">02 â€” EDUCATION</div>
 
           <div className="section-heading">
@@ -342,7 +342,7 @@ function App() {
         </section>
 
         {/* SKILLS */}
-        <section className="section" id="skills">
+        <motion.section className="section scroll-reveal" id="skills" variants={scrollReveal} initial="hidden" whileInView="visible" viewport={revealViewport}>
           <div className="section-label">03 â€” SKILLS</div>
 
           <div className="section-heading">
@@ -384,7 +384,7 @@ function App() {
         </section>
 
         {/* PROJECTS */}
-        <section className="section" id="projects">
+        <motion.section className="section scroll-reveal" id="projects" variants={scrollRevealRight} initial="hidden" whileInView="visible" viewport={revealViewport}>
           <div className="section-label">04 â€” PROJECTS</div>
 
           <div className="section-heading">
@@ -511,7 +511,7 @@ function App() {
         </section>
 
         {/* RESUME */}
-        <section className="section resume-section" id="resume">
+        <motion.section className="section resume-section scroll-reveal" id="resume" variants={scrollRevealLeft} initial="hidden" whileInView="visible" viewport={revealViewport}>
           <div className="section-label">05 â€” RESUME</div>
 
           <div className="section-heading">
@@ -590,7 +590,7 @@ function App() {
           </div>
         </section>
         {/* CONTACT */}
-        <section className="section contact-section" id="contact">
+        <motion.section className="section contact-section scroll-reveal" id="contact" variants={scrollReveal} initial="hidden" whileInView="visible" viewport={revealViewport}>
           <div className="section-label">05 — CONTACT</div>
 
           <div className="contact-box contact-form-box">
