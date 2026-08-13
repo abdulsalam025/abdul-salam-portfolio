@@ -24,3 +24,8 @@ dist-ssr
 *.sw?
 
 .env
+
+# Local backup files
+*.backup-*
+*-backup-*.jsx
+*-backup-*.css
