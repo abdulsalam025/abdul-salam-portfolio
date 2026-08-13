@@ -4462,3 +4462,253 @@ footer:hover {
   }
 
 }
+
+/* =========================================================
+   BATCH 4 — MOBILE PREMIUM READABILITY & SPACING
+   ========================================================= */
+
+/* Better text rendering */
+body {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Better focus accessibility */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid rgba(139, 117, 255, 0.8);
+  outline-offset: 3px;
+}
+
+/* Mobile premium polish */
+@media (max-width: 850px) {
+
+  /* Overall section spacing */
+  .section {
+    padding-top: 82px;
+    padding-bottom: 82px;
+  }
+
+  /* Section headings */
+  .section-title {
+    font-size: clamp(1.55rem, 6vw, 2.1rem);
+    line-height: 1.15;
+    margin-bottom: 12px;
+    letter-spacing: -0.025em;
+  }
+
+  .section-subtitle {
+    font-size: 0.88rem;
+    line-height: 1.65;
+    max-width: 92%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Hero */
+  .hero {
+    min-height: auto;
+    padding-top: 110px;
+    padding-bottom: 75px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2rem, 10vw, 3.2rem);
+    line-height: 1.03;
+    letter-spacing: -0.045em;
+  }
+
+  .hero p {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    max-width: 92%;
+  }
+
+  .hero-buttons {
+    gap: 9px;
+  }
+
+  .primary-button,
+  .secondary-button {
+    min-height: 43px;
+    padding: 11px 16px;
+    font-size: 0.78rem;
+  }
+
+  /* About */
+  .about-section p,
+  .about-content p {
+    font-size: 0.86rem;
+    line-height: 1.75;
+  }
+
+  /* Cards */
+  .skill-card,
+  .project-card,
+  .education-card,
+  .resume-card,
+  .contact-box {
+    padding: 18px;
+    border-radius: 14px;
+  }
+
+  /* Card headings */
+  .skill-card h3,
+  .project-card h3,
+  .education-card h3,
+  .resume-card h3 {
+    font-size: 0.94rem;
+    line-height: 1.35;
+  }
+
+  /* Card descriptions */
+  .skill-card p,
+  .project-card p,
+  .education-card p,
+  .resume-card p {
+    font-size: 0.76rem;
+    line-height: 1.65;
+  }
+
+  /* Project cards */
+  .project-card {
+    margin-bottom: 12px;
+  }
+
+  .project-card .project-arrow {
+    font-size: 1rem;
+  }
+
+  /* Skills */
+  .skill-card {
+    min-height: 105px;
+  }
+
+  .skill-card span,
+  .skill-card small {
+    font-size: 0.72rem;
+  }
+
+  /* Education */
+  .education-card {
+    margin-bottom: 14px;
+  }
+
+  /* Professional profile */
+  .resume-card {
+    margin-bottom: 12px;
+  }
+
+  /* Contact */
+  .contact-box {
+    padding: 20px 16px;
+  }
+
+  .contact-box input,
+  .contact-box textarea {
+    font-size: 0.82rem;
+    padding: 12px 13px;
+  }
+
+  .contact-box textarea {
+    min-height: 125px;
+  }
+
+  /* Footer */
+  footer {
+    padding-top: 45px;
+    padding-bottom: 35px;
+  }
+
+  .footer-socials {
+    gap: 18px;
+    margin-top: 18px;
+  }
+
+  .footer-socials a {
+    font-size: 0.9rem;
+  }
+}
+
+/* Extra-small phones */
+@media (max-width: 500px) {
+
+  .section {
+    padding-top: 70px;
+    padding-bottom: 70px;
+  }
+
+  .hero {
+    padding-top: 95px;
+    padding-bottom: 65px;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.85rem, 9.5vw, 2.55rem);
+  }
+
+  .hero p {
+    font-size: 0.82rem;
+    line-height: 1.7;
+  }
+
+  .section-title {
+    font-size: 1.55rem;
+  }
+
+  .section-subtitle {
+    font-size: 0.78rem;
+    line-height: 1.65;
+  }
+
+  .skill-card,
+  .project-card,
+  .education-card,
+  .resume-card {
+    padding: 16px;
+  }
+
+  .project-card p,
+  .education-card p,
+  .resume-card p {
+    font-size: 0.72rem;
+    line-height: 1.7;
+  }
+
+  .primary-button,
+  .secondary-button {
+    width: 100%;
+    min-height: 42px;
+  }
+
+  .hero-buttons {
+    width: 100%;
+    max-width: 280px;
+    margin-left: auto;
+    margin-right: auto;
+    flex-direction: column;
+  }
+
+  .contact-box {
+    padding: 18px 14px;
+  }
+
+  .contact-box input,
+  .contact-box textarea {
+    font-size: 0.78rem;
+  }
+}
+
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
