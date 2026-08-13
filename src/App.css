@@ -4299,3 +4299,166 @@ footer:hover {
 
 }
 
+
+/* =========================================================
+   BATCH 3 - MOBILE NAVIGATION + HERO POLISH
+   ========================================================= */
+
+/* Keep navigation visible on mobile */
+@media (max-width: 850px) {
+
+  .navbar {
+    height: 68px;
+    width: min(100% - 28px, 1180px);
+  }
+
+  nav {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    max-width: calc(100vw - 130px);
+    padding: 5px 2px;
+    scrollbar-width: none;
+  }
+
+  nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  nav a {
+    flex: 0 0 auto;
+    font-size: 12px;
+    padding: 8px 10px;
+    border-radius: 9px;
+    transition:
+      color 0.25s ease,
+      background 0.25s ease,
+      transform 0.25s ease;
+  }
+
+  nav a:hover,
+  nav a:focus-visible {
+    color: #fff;
+    background: rgba(255,255,255,0.06);
+    transform: translateY(-1px);
+  }
+
+  .theme-button {
+    flex: 0 0 auto;
+    width: 38px;
+    height: 38px;
+  }
+
+  /* Hero */
+  .hero {
+    min-height: auto;
+    padding-top: 65px;
+    padding-bottom: 80px;
+  }
+
+  .hero-content {
+    width: 100%;
+  }
+
+  .availability {
+    margin-bottom: 20px;
+  }
+
+  .hero-buttons {
+    gap: 10px;
+  }
+
+  .hero-buttons a {
+    min-width: 130px;
+    justify-content: center;
+  }
+
+  .social-links {
+    margin-top: 22px;
+    gap: 12px;
+  }
+
+  .social-links a {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Hero visual */
+  .hero-visual {
+    height: 330px;
+  }
+
+  .floating-card {
+    transform: scale(0.92);
+  }
+
+}
+
+/* Small phones */
+@media (max-width: 500px) {
+
+  .navbar {
+    width: calc(100% - 20px);
+    height: 62px;
+  }
+
+  .logo {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+  }
+
+  nav {
+    max-width: calc(100vw - 115px);
+    gap: 4px;
+  }
+
+  nav a {
+    font-size: 11px;
+    padding: 7px 8px;
+  }
+
+  .theme-button {
+    width: 36px;
+    height: 36px;
+  }
+
+  .hero {
+    padding-top: 50px;
+    padding-bottom: 65px;
+  }
+
+  .hero-buttons {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-buttons a {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .hero-visual {
+    height: 285px;
+  }
+
+  .floating-card {
+    transform: scale(0.82);
+  }
+
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+
+  nav a,
+  .social-links a {
+    transition: none !important;
+  }
+
+}
