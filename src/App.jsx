@@ -17,7 +17,7 @@ import { useState } from "react";
 import profilePhoto from "./assets/profile.png";
 import "./App.css";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL = import.meta.env.VITE_API_URL || "https://abdul-salam-portfolio.onrender.com";
 
 function App() {
   const [darkMode, setDarkMode] = useState(true);
