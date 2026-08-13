@@ -242,7 +242,7 @@ function App() {
 
         {/* ABOUT */}
         <motion.section className="section about-section" id="about" variants={scrollReveal} initial="hidden" whileInView="visible" viewport={revealViewport}>
-          <div className="section-label">01 â€” ABOUT ME</div>
+          <div className="section-label">01 — ABOUT ME</div>
 
           <div className="section-grid">
             <div>
@@ -286,7 +286,7 @@ function App() {
                 </div>
 
                 <div>
-                  <strong>âˆž</strong>
+                  <strong>∞</strong>
                   <span>Curiosity</span>
                 </div>
               </div>
@@ -295,7 +295,7 @@ function App() {
         </motion.section>
 
         <motion.section className="section education-section" id="education" variants={scrollRevealLeft} initial="hidden" whileInView="visible" viewport={revealViewport}>
-          <div className="section-label">02 â€” EDUCATION</div>
+          <div className="section-label">02 — EDUCATION</div>
 
           <div className="section-heading">
             <h2>
@@ -318,7 +318,7 @@ function App() {
               <p className="project-type">UNDERGRADUATE ENGINEERING</p>
 
               <h3>
-                Bachelor of Engineering â€” Artificial Intelligence & Machine Learning
+                Bachelor of Engineering — Artificial Intelligence & Machine Learning
               </h3>
 
               <p className="education-institution">
@@ -343,7 +343,7 @@ function App() {
 
         {/* SKILLS */}
         <motion.section className="section" id="skills" variants={scrollReveal} initial="hidden" whileInView="visible" viewport={revealViewport}>
-          <div className="section-label">03 â€” SKILLS</div>
+          <div className="section-label">03 — SKILLS</div>
 
           <div className="section-heading">
             <h2>
@@ -386,7 +386,7 @@ function App() {
 
         {/* PROJECTS */}
         <motion.section className="section" id="projects" variants={scrollRevealRight} initial="hidden" whileInView="visible" viewport={revealViewport}>
-          <div className="section-label">04 â€” PROJECTS</div>
+          <div className="section-label">04 — PROJECTS</div>
 
           <div className="section-heading">
             <h2>
@@ -513,7 +513,7 @@ function App() {
 
         {/* RESUME */}
         <motion.section className="section resume-section" id="resume" variants={scrollRevealLeft} initial="hidden" whileInView="visible" viewport={revealViewport}>
-          <div className="section-label">05 â€” RESUME</div>
+          <div className="section-label">05 — RESUME</div>
 
           <div className="section-heading">
             <div>
@@ -697,7 +697,7 @@ function App() {
         onClick={() => setSelectedProject(null)}
         aria-label="Close project"
       >
-        Ã—
+        ×
       </button>
 
       {selectedProject === "sports" && (
@@ -828,17 +828,17 @@ function App() {
             <div className="tech-stack">
 
               <div className="tech-item">
-                <strong>âˆž</strong>
+                <strong>∞</strong>
                 <span>Core Development</span>
               </div>
 
               <div className="tech-item">
-                <strong>âˆž</strong>
+                <strong>∞</strong>
                 <span>Intelligent Systems</span>
               </div>
 
               <div className="tech-item">
-                <strong>âˆž</strong>
+                <strong>∞</strong>
                 <span>Task Handling</span>
               </div>
 
@@ -914,7 +914,7 @@ function App() {
                 PROJECT
               </span>
 
-              <strong>âˆž</strong>
+              <strong>∞</strong>
             </div>
 
             <a
@@ -937,11 +937,11 @@ function App() {
       {/* FOOTER */}
       <footer>
         <div>
-          <strong>âˆž</strong>
+          <strong>∞</strong>
           <span>Abdul Salam</span>
         </div>
 
-        <p>Â© 2026 Abdul Salam. Built with React.</p>
+        <p>© 2026 Abdul Salam. Built with React.</p>
 
         <div className="footer-socials">
           <a
