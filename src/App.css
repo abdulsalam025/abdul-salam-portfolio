@@ -5632,3 +5632,599 @@ textarea:focus-visible {
   outline: 2px solid rgba(99, 91, 255, 0.70);
   outline-offset: 3px;
 }
+
+/* =========================================================
+   JARVIS MODAL — PROFESSIONAL MOBILE FIX
+   Compact layout + readable typography
+   ========================================================= */
+
+.app.light .project-modal {
+  max-height: min(88vh, 820px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.app.light .project-modal::-webkit-scrollbar {
+  width: 5px;
+}
+
+.app.light .project-modal::-webkit-scrollbar-thumb {
+  background: rgba(99, 91, 255, 0.22);
+  border-radius: 10px;
+}
+
+
+/* Jarvis header */
+
+.app.light .project-modal .modal-project-header {
+  margin-bottom: 14px;
+}
+
+.app.light .project-modal .modal-project-header h2 {
+  color: #11131a;
+  font-size: clamp(1.7rem, 6vw, 2.3rem);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+
+.app.light .project-modal .project-type {
+  color: #635bff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+
+/* Description */
+
+.app.light .project-modal .modal-description {
+  color: #596171;
+  font-size: 13px;
+  line-height: 1.65;
+  max-width: 620px;
+  margin-bottom: 18px;
+}
+
+
+/* Divider */
+
+.app.light .project-modal .modal-divider {
+  height: 1px;
+  background: rgba(17, 19, 26, 0.08);
+  margin: 18px 0 22px;
+}
+
+
+/* Project information cards */
+
+.app.light .project-modal .modal-project-grid {
+  gap: 10px;
+}
+
+.app.light .project-modal .modal-info-card {
+  background: #f8f9fc;
+  border: 1px solid rgba(17, 19, 26, 0.08);
+  border-radius: 12px;
+  padding: 15px;
+}
+
+.app.light .project-modal .modal-info-card .info-number {
+  color: #635bff;
+  font-size: 10px;
+  margin-bottom: 7px;
+}
+
+.app.light .project-modal .modal-info-card h4 {
+  color: #11131a;
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+
+.app.light .project-modal .modal-info-card p {
+  color: #687080;
+  font-size: 11px;
+  line-height: 1.55;
+  margin: 0;
+}
+
+
+/* =========================================================
+   TECH STACK
+   ========================================================= */
+
+.app.light .project-modal .modal-section-title {
+  color: #596171;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  margin-bottom: 10px;
+}
+
+.app.light .project-modal .tech-stack {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.app.light .project-modal .tech-item {
+  min-height: 76px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  background: #f8f9fc;
+  border: 1px solid rgba(17, 19, 26, 0.08);
+  border-radius: 11px;
+  padding: 12px 8px;
+}
+
+.app.light .project-modal .tech-item strong {
+  color: #635bff;
+  font-size: 16px;
+  line-height: 1;
+  margin-bottom: 7px;
+}
+
+.app.light .project-modal .tech-item span {
+  color: #596171;
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+
+/* =========================================================
+   KEY FEATURES
+   ========================================================= */
+
+.app.light .project-modal .feature-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  border-top: 1px solid rgba(17, 19, 26, 0.08);
+  border-left: 1px solid rgba(17, 19, 26, 0.08);
+
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.app.light .project-modal .feature-item {
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 11px 12px;
+
+  background: #ffffff;
+  border-right: 1px solid rgba(17, 19, 26, 0.08);
+  border-bottom: 1px solid rgba(17, 19, 26, 0.08);
+}
+
+.app.light .project-modal .feature-item span {
+  flex: 0 0 auto;
+  color: #635bff;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.app.light .project-modal .feature-item p {
+  margin: 0;
+  color: #4f5868;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   PROJECT FOOTER
+   ========================================================= */
+
+.app.light .project-modal .modal-footer {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(17, 19, 26, 0.08);
+}
+
+.app.light .project-modal .modal-footer-label {
+  color: #7b8291;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+}
+
+.app.light .project-modal .modal-footer strong {
+  color: #635bff;
+  font-size: 18px;
+}
+
+.app.light .project-modal .modal-github-button {
+  color: #635bff;
+  background: rgba(99, 91, 255, 0.06);
+  border: 1px solid rgba(99, 91, 255, 0.20);
+  border-radius: 9px;
+  padding: 10px 15px;
+  font-size: 11px;
+}
+
+.app.light .project-modal .modal-github-button:hover {
+  color: #ffffff;
+  background: #635bff;
+  border-color: #635bff;
+}
+
+
+/* =========================================================
+   MOBILE — 380px / iPhone
+   ========================================================= */
+
+@media (max-width: 650px) {
+
+  .app.light .project-modal {
+    width: min(94vw, 560px);
+    max-height: 88vh;
+    padding: 20px 18px;
+    border-radius: 16px;
+  }
+
+  .app.light .project-modal .modal-project-header {
+    margin-bottom: 10px;
+  }
+
+  .app.light .project-modal .modal-project-header h2 {
+    font-size: 27px;
+  }
+
+  .app.light .project-modal .modal-description {
+    font-size: 12px;
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+
+  .app.light .project-modal .modal-divider {
+    margin: 14px 0 17px;
+  }
+
+  .app.light .project-modal .modal-project-grid {
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+
+  .app.light .project-modal .modal-info-card {
+    padding: 12px;
+  }
+
+  .app.light .project-modal .modal-info-card h4 {
+    font-size: 12px;
+  }
+
+  .app.light .project-modal .modal-info-card p {
+    font-size: 10px;
+  }
+
+  .app.light .project-modal .tech-stack {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .app.light .project-modal .tech-item {
+    min-height: 68px;
+    padding: 9px 5px;
+  }
+
+  .app.light .project-modal .tech-item strong {
+    font-size: 15px;
+    margin-bottom: 5px;
+  }
+
+  .app.light .project-modal .tech-item span {
+    font-size: 9px;
+  }
+
+  .app.light .project-modal .feature-list {
+    grid-template-columns: 1fr;
+  }
+
+  .app.light .project-modal .feature-item {
+    min-height: 46px;
+    padding: 9px 10px;
+  }
+
+  .app.light .project-modal .feature-item p {
+    font-size: 10px;
+  }
+
+  .app.light .project-modal .modal-footer {
+    margin-top: 17px;
+    padding-top: 15px;
+    gap: 12px;
+  }
+
+  .app.light .project-modal .modal-github-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 390px) {
+
+  .app.light .project-modal {
+    width: 94vw;
+    padding: 18px 15px;
+  }
+
+  .app.light .project-modal .modal-project-header h2 {
+    font-size: 25px;
+  }
+
+  .app.light .project-modal .tech-item {
+    min-height: 64px;
+  }
+
+  .app.light .project-modal .tech-item span {
+    font-size: 8.5px;
+  }
+
+  .app.light .project-modal .feature-item p {
+    font-size: 9.5px;
+  }
+}
+/* =========================================================
+   JARVIS PROJECT MODAL — PREMIUM LIGHT THEME
+   Clean, readable, responsive
+   ========================================================= */
+
+.app.light .project-modal {
+  max-height: min(88vh, 820px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.app.light .project-modal::-webkit-scrollbar {
+  width: 5px;
+}
+
+.app.light .project-modal::-webkit-scrollbar-thumb {
+  background: rgba(99, 91, 255, 0.22);
+  border-radius: 10px;
+}
+
+.app.light .project-modal .modal-project-header {
+  margin-bottom: 14px;
+}
+
+.app.light .project-modal .modal-project-header h2 {
+  color: #11131a;
+  font-size: clamp(1.7rem, 6vw, 2.3rem);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+
+.app.light .project-modal .project-type {
+  color: #635bff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.app.light .project-modal .modal-description {
+  color: #596171;
+  font-size: 13px;
+  line-height: 1.65;
+  max-width: 620px;
+  margin-bottom: 18px;
+}
+
+.app.light .project-modal .modal-divider {
+  height: 1px;
+  background: rgba(17, 19, 26, 0.08);
+  margin: 18px 0 22px;
+}
+
+.app.light .project-modal .modal-project-grid {
+  gap: 10px;
+}
+
+.app.light .project-modal .modal-info-card {
+  background: #f8f9fc;
+  border: 1px solid rgba(17, 19, 26, 0.08);
+  border-radius: 12px;
+  padding: 15px;
+}
+
+.app.light .project-modal .modal-info-card .info-number {
+  color: #635bff;
+  font-size: 10px;
+  margin-bottom: 7px;
+}
+
+.app.light .project-modal .modal-info-card h4 {
+  color: #11131a;
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+
+.app.light .project-modal .modal-info-card p {
+  color: #687080;
+  font-size: 11px;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* TECH STACK */
+
+.app.light .project-modal .modal-section-title {
+  color: #596171;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  margin-bottom: 10px;
+}
+
+.app.light .project-modal .tech-stack {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.app.light .project-modal .tech-item {
+  min-height: 76px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: #f8f9fc;
+  border: 1px solid rgba(17, 19, 26, 0.08);
+  border-radius: 11px;
+  padding: 12px 8px;
+}
+
+.app.light .project-modal .tech-item strong {
+  color: #635bff;
+  font-size: 16px;
+  line-height: 1;
+  margin-bottom: 7px;
+}
+
+.app.light .project-modal .tech-item span {
+  color: #596171;
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+/* KEY FEATURES */
+
+.app.light .project-modal .feature-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid rgba(17, 19, 26, 0.08);
+  border-left: 1px solid rgba(17, 19, 26, 0.08);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.app.light .project-modal .feature-item {
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 12px;
+  background: #ffffff;
+  border-right: 1px solid rgba(17, 19, 26, 0.08);
+  border-bottom: 1px solid rgba(17, 19, 26, 0.08);
+}
+
+.app.light .project-modal .feature-item span {
+  flex: 0 0 auto;
+  color: #635bff;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.app.light .project-modal .feature-item p {
+  margin: 0;
+  color: #4f5868;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+/* PROJECT FOOTER */
+
+.app.light .project-modal .modal-footer {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(17, 19, 26, 0.08);
+}
+
+.app.light .project-modal .modal-footer-label {
+  color: #7b8291;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+}
+
+.app.light .project-modal .modal-footer strong {
+  color: #635bff;
+  font-size: 18px;
+}
+
+.app.light .project-modal .modal-github-button {
+  color: #635bff;
+  background: rgba(99, 91, 255, 0.06);
+  border: 1px solid rgba(99, 91, 255, 0.20);
+  border-radius: 9px;
+  padding: 10px 15px;
+  font-size: 11px;
+  transition:
+    background 180ms ease,
+    color 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+
+.app.light .project-modal .modal-github-button:hover {
+  color: #ffffff;
+  background: #635bff;
+  border-color: #635bff;
+  transform: translateY(-1px);
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+  .app.light .project-modal {
+    width: min(94vw, 520px);
+    max-height: 88vh;
+    border-radius: 18px;
+  }
+
+  .app.light .project-modal .modal-project-header h2 {
+    font-size: clamp(1.55rem, 7vw, 2rem);
+  }
+
+  .app.light .project-modal .modal-description {
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  .app.light .project-modal .tech-stack {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .app.light .project-modal .tech-item {
+    min-height: 70px;
+    padding: 10px 6px;
+  }
+
+  .app.light .project-modal .tech-item strong {
+    font-size: 14px;
+  }
+
+  .app.light .project-modal .tech-item span {
+    font-size: 9px;
+  }
+
+  .app.light .project-modal .feature-list {
+    grid-template-columns: 1fr;
+  }
+
+  .app.light .project-modal .feature-item {
+    min-height: 52px;
+    padding: 10px;
+  }
+
+  .app.light .project-modal .feature-item p {
+    font-size: 11px;
+  }
+
+  .app.light .project-modal .modal-footer {
+    margin-top: 18px;
+    padding-top: 14px;
+  }
+}
