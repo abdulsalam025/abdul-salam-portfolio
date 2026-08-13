@@ -4891,3 +4891,744 @@ textarea:focus-visible {
     transition: none !important;
   }
 }
+
+/* =========================================================
+   PREMIUM LIGHT THEME
+   Scoped ONLY to .app.light
+   Dark theme remains unchanged.
+   ========================================================= */
+
+.app.light {
+  --light-bg: #f7f8fc;
+  --light-bg-secondary: #eef1f8;
+  --light-surface: rgba(255, 255, 255, 0.88);
+  --light-surface-strong: #ffffff;
+
+  --light-text: #11131a;
+  --light-text-secondary: #555d6d;
+  --light-text-muted: #7b8291;
+
+  --light-border: rgba(17, 19, 26, 0.10);
+  --light-border-strong: rgba(17, 19, 26, 0.16);
+
+  --light-purple: #635bff;
+  --light-blue: #2495ff;
+  --light-gradient: linear-gradient(
+    135deg,
+    #635bff 0%,
+    #2495ff 100%
+  );
+
+  --light-shadow-sm:
+    0 4px 16px rgba(25, 30, 50, 0.06);
+
+  --light-shadow-md:
+    0 12px 35px rgba(25, 30, 50, 0.09);
+
+  --light-shadow-lg:
+    0 24px 70px rgba(25, 30, 50, 0.12);
+
+  color: var(--light-text);
+  background: var(--light-bg);
+}
+
+
+/* =========================================================
+   GLOBAL LIGHT BACKGROUND
+   ========================================================= */
+
+.app.light {
+  background:
+    radial-gradient(
+      900px 500px at 10% 5%,
+      rgba(99, 91, 255, 0.08),
+      transparent 60%
+    ),
+    radial-gradient(
+      800px 500px at 90% 15%,
+      rgba(36, 149, 255, 0.07),
+      transparent 60%
+    ),
+    linear-gradient(
+      180deg,
+      #fafbff 0%,
+      #f6f8fc 48%,
+      #f3f6fa 100%
+    );
+}
+
+
+/* =========================================================
+   GLOBAL TEXT
+   ========================================================= */
+
+.app.light h1,
+.app.light h2,
+.app.light h3,
+.app.light h4,
+.app.light h5,
+.app.light h6 {
+  color: var(--light-text);
+}
+
+.app.light p,
+.app.light span,
+.app.light li,
+.app.light label {
+  color: var(--light-text-secondary);
+}
+
+.app.light strong {
+  color: var(--light-text);
+}
+
+
+/* =========================================================
+   GRADIENT TEXT
+   ========================================================= */
+
+.app.light .hero h1 span,
+.app.light .hero h1 em,
+.app.light .section-heading h2 span,
+.app.light .section-title span {
+  background: var(--light-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+
+.app.light .navbar {
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid var(--light-border);
+  box-shadow: var(--light-shadow-sm);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.app.light .navbar a {
+  color: var(--light-text-secondary);
+}
+
+.app.light .navbar a:hover,
+.app.light .navbar a:focus-visible {
+  color: var(--light-text);
+  background: rgba(99, 91, 255, 0.07);
+}
+
+.app.light .logo {
+  color: #ffffff;
+  background: var(--light-gradient);
+  box-shadow:
+    0 8px 25px rgba(99, 91, 255, 0.20);
+}
+
+.app.light .theme-button,
+.app.light .mobile-menu-button {
+  color: var(--light-text);
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid var(--light-border);
+  box-shadow: var(--light-shadow-sm);
+}
+
+.app.light .theme-button:hover,
+.app.light .mobile-menu-button:hover {
+  background: #ffffff;
+  border-color: rgba(99, 91, 255, 0.22);
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.app.light .hero {
+  color: var(--light-text);
+}
+
+.app.light .hero h1 {
+  color: var(--light-text);
+}
+
+.app.light .hero-description {
+  color: var(--light-text-secondary);
+}
+
+.app.light .eyebrow {
+  color: var(--light-purple);
+}
+
+.app.light .availability {
+  color: #596171;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid var(--light-border);
+  box-shadow: var(--light-shadow-sm);
+}
+
+.app.light .availability span {
+  background: #22c55e;
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.30);
+}
+
+
+/* =========================================================
+   HERO BUTTONS
+   ========================================================= */
+
+.app.light .primary-button {
+  color: #ffffff;
+  background: var(--light-gradient);
+  border: 1px solid transparent;
+  box-shadow:
+    0 10px 25px rgba(99, 91, 255, 0.20);
+}
+
+.app.light .primary-button:hover {
+  color: #ffffff;
+  box-shadow:
+    0 14px 32px rgba(99, 91, 255, 0.28);
+  transform: translateY(-2px);
+}
+
+.app.light .secondary-button {
+  color: var(--light-text);
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid var(--light-border-strong);
+  box-shadow: var(--light-shadow-sm);
+}
+
+.app.light .secondary-button:hover {
+  color: var(--light-purple);
+  background: #ffffff;
+  border-color: rgba(99, 91, 255, 0.25);
+  box-shadow: var(--light-shadow-md);
+  transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   SOCIAL LINKS
+   ========================================================= */
+
+.app.light .social-links a {
+  color: var(--light-text-secondary);
+  background: rgba(255, 255, 255, 0.70);
+  border: 1px solid var(--light-border);
+  box-shadow: var(--light-shadow-sm);
+}
+
+.app.light .social-links a:hover {
+  color: var(--light-purple);
+  background: #ffffff;
+  border-color: rgba(99, 91, 255, 0.24);
+  transform: translateY(-3px);
+}
+
+
+/* =========================================================
+   PROFILE / HERO VISUAL
+   ========================================================= */
+
+.app.light .hero-visual {
+  filter: drop-shadow(
+    0 20px 40px rgba(36, 149, 255, 0.10)
+  );
+}
+
+.app.light .floating-card {
+  color: var(--light-text);
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid var(--light-border);
+  box-shadow: var(--light-shadow-md);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.app.light .floating-card span,
+.app.light .floating-card small {
+  color: var(--light-text-secondary);
+}
+
+
+/* =========================================================
+   SECTION LABELS
+   ========================================================= */
+
+.app.light .section-label {
+  color: var(--light-purple);
+}
+
+.app.light .section-heading h2,
+.app.light .section-title {
+  color: var(--light-text);
+}
+
+.app.light .section-heading p,
+.app.light .section-subtitle {
+  color: var(--light-text-secondary);
+}
+
+
+/* =========================================================
+   ABOUT SECTION
+   ========================================================= */
+
+.app.light .about-section,
+.app.light #about {
+  color: var(--light-text);
+}
+
+.app.light .about-section p,
+.app.light .about-content p {
+  color: var(--light-text-secondary);
+}
+
+.app.light .about-content,
+.app.light #about .section-grid > div:nth-child(2) {
+  color: var(--light-text-secondary);
+}
+
+
+/* =========================================================
+   STATS
+   ========================================================= */
+
+.app.light .stats {
+  border-color: var(--light-border);
+}
+
+.app.light .stats strong {
+  color: var(--light-text);
+}
+
+.app.light .stats span {
+  color: var(--light-text-muted);
+}
+
+
+/* =========================================================
+   EDUCATION
+   ========================================================= */
+
+.app.light .education-card {
+  color: var(--light-text);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.96),
+      rgba(249, 250, 255, 0.90)
+    );
+  border: 1px solid var(--light-border);
+  box-shadow: var(--light-shadow-md);
+}
+
+.app.light .education-card h3,
+.app.light .education-content h3 {
+  color: var(--light-text);
+}
+
+.app.light .education-institution {
+  color: var(--light-purple);
+}
+
+.app.light .education-description {
+  color: var(--light-text-secondary);
+}
+
+.app.light .education-year span {
+  color: var(--light-purple);
+}
+
+
+/* =========================================================
+   SKILLS
+   ========================================================= */
+
+.app.light .skill-card {
+  color: var(--light-text);
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid var(--light-border);
+  box-shadow: var(--light-shadow-sm);
+}
+
+.app.light .skill-card h3 {
+  color: var(--light-text);
+}
+
+.app.light .skill-card p,
+.app.light .skill-card small,
+.app.light .skill-card span {
+  color: var(--light-text-secondary);
+}
+
+.app.light .skill-card:hover {
+  background: #ffffff;
+  border-color: rgba(99, 91, 255, 0.22);
+  box-shadow: var(--light-shadow-md);
+  transform: translateY(-5px);
+}
+
+
+/* =========================================================
+   PROJECTS
+   ========================================================= */
+
+.app.light .project-card {
+  color: var(--light-text);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.94),
+      rgba(248, 250, 255, 0.90)
+    );
+  border: 1px solid var(--light-border);
+  box-shadow: var(--light-shadow-sm);
+}
+
+.app.light .project-card h3 {
+  color: var(--light-text);
+}
+
+.app.light .project-card p {
+  color: var(--light-text-secondary);
+}
+
+.app.light .project-type {
+  color: var(--light-purple);
+}
+
+.app.light .project-number {
+  color: var(--light-text-muted);
+}
+
+.app.light .project-arrow {
+  color: var(--light-text-secondary);
+}
+
+.app.light .project-card:hover {
+  background: #ffffff;
+  border-color: rgba(99, 91, 255, 0.25);
+  box-shadow: var(--light-shadow-lg);
+  transform: translateY(-6px);
+}
+
+.app.light .project-card .tags span,
+.app.light .project-card .tag {
+  color: #555d6d;
+  background: #f1f3f8;
+  border: 1px solid rgba(17, 19, 26, 0.07);
+}
+
+
+/* =========================================================
+   RESUME / PROFESSIONAL PROFILE
+   ========================================================= */
+
+.app.light .resume-card {
+  color: var(--light-text);
+  background: rgba(255, 255, 255, 0.90);
+  border: 1px solid var(--light-border);
+  box-shadow: var(--light-shadow-sm);
+}
+
+.app.light .resume-card h3 {
+  color: var(--light-text);
+}
+
+.app.light .resume-card p {
+  color: var(--light-text-secondary);
+}
+
+.app.light .resume-card:hover {
+  background: #ffffff;
+  border-color: rgba(99, 91, 255, 0.22);
+  box-shadow: var(--light-shadow-md);
+  transform: translateY(-5px);
+}
+
+
+/* =========================================================
+   CONTACT
+   ========================================================= */
+
+.app.light .contact-box {
+  color: var(--light-text);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.96),
+      rgba(248, 250, 255, 0.92)
+    );
+  border: 1px solid var(--light-border);
+  box-shadow: var(--light-shadow-lg);
+}
+
+.app.light .contact-box h2 {
+  color: var(--light-text);
+}
+
+.app.light .contact-box p {
+  color: var(--light-text-secondary);
+}
+
+.app.light .contact-box input,
+.app.light .contact-box textarea {
+  color: var(--light-text);
+  background: #ffffff;
+  border: 1px solid var(--light-border-strong);
+}
+
+.app.light .contact-box input::placeholder,
+.app.light .contact-box textarea::placeholder {
+  color: #9aa1ae;
+}
+
+.app.light .contact-box input:focus,
+.app.light .contact-box textarea:focus {
+  border-color: rgba(99, 91, 255, 0.45);
+  box-shadow:
+    0 0 0 3px rgba(99, 91, 255, 0.08);
+  outline: none;
+}
+
+.app.light .contact-direct a {
+  color: var(--light-purple);
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.app.light footer {
+  color: var(--light-text-secondary);
+  border-top: 1px solid var(--light-border);
+}
+
+.app.light footer strong {
+  color: var(--light-text);
+}
+
+.app.light footer p {
+  color: var(--light-text-muted);
+}
+
+.app.light .footer-socials a {
+  color: var(--light-text-secondary);
+}
+
+.app.light .footer-socials a:hover {
+  color: var(--light-purple);
+}
+
+
+/* =========================================================
+   BACKGROUND GLOWS
+   ========================================================= */
+
+.app.light .background-glow.glow-one {
+  background:
+    radial-gradient(
+      circle,
+      rgba(99, 91, 255, 0.12) 0%,
+      rgba(99, 91, 255, 0) 70%
+    );
+}
+
+.app.light .background-glow.glow-two {
+  background:
+    radial-gradient(
+      circle,
+      rgba(36, 149, 255, 0.10) 0%,
+      rgba(36, 149, 255, 0) 70%
+    );
+}
+
+
+/* =========================================================
+   SECTION SEPARATORS
+   ========================================================= */
+
+.app.light .section + .section::before {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(99, 91, 255, 0.14),
+    transparent
+  );
+}
+
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+.app.light .modal-overlay {
+  background: rgba(15, 18, 28, 0.42);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.app.light .modal,
+.app.light .project-modal {
+  color: var(--light-text);
+  background: #ffffff;
+  border: 1px solid var(--light-border);
+  box-shadow: 0 30px 90px rgba(15, 20, 35, 0.18);
+}
+
+.app.light .modal h2,
+.app.light .modal h3 {
+  color: var(--light-text);
+}
+
+.app.light .modal p {
+  color: var(--light-text-secondary);
+}
+
+
+/* =========================================================
+   MOBILE LIGHT THEME
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+  .app.light .navbar {
+    background: rgba(255, 255, 255, 0.90);
+  }
+
+  .app.light .mobile-nav {
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid var(--light-border);
+    box-shadow: var(--light-shadow-lg);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
+  .app.light .mobile-nav a {
+    color: var(--light-text-secondary);
+  }
+
+  .app.light .mobile-nav a:hover,
+  .app.light .mobile-nav a:focus-visible {
+    color: var(--light-purple);
+    background: rgba(99, 91, 255, 0.07);
+  }
+
+  .app.light .hero h1 {
+    color: var(--light-text);
+  }
+
+  .app.light .hero-description {
+    color: var(--light-text-secondary);
+  }
+
+  .app.light .section-heading h2,
+  .app.light .section-title {
+    color: var(--light-text);
+  }
+
+  .app.light .section-heading p,
+  .app.light .section-subtitle {
+    color: var(--light-text-secondary);
+  }
+
+  .app.light .skill-card,
+  .app.light .project-card,
+  .app.light .education-card,
+  .app.light .resume-card,
+  .app.light .contact-box {
+    background: rgba(255, 255, 255, 0.92);
+  }
+
+}
+
+
+/* =========================================================
+   EXTRA SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 500px) {
+
+  .app.light {
+    background:
+      radial-gradient(
+        500px 300px at 50% 0%,
+        rgba(99, 91, 255, 0.08),
+        transparent 65%
+      ),
+      #f7f8fc;
+  }
+
+  .app.light .hero h1 {
+    color: var(--light-text);
+  }
+
+  .app.light .hero-description {
+    color: var(--light-text-secondary);
+  }
+
+  .app.light .section-label {
+    color: var(--light-purple);
+  }
+
+  .app.light .section-heading h2,
+  .app.light .section-title {
+    color: var(--light-text);
+  }
+
+  .app.light .section-heading p,
+  .app.light .section-subtitle {
+    color: var(--light-text-secondary);
+  }
+
+  .app.light .project-card,
+  .app.light .skill-card,
+  .app.light .education-card,
+  .app.light .resume-card,
+  .app.light .contact-box {
+    border-color: rgba(17, 19, 26, 0.09);
+    box-shadow: 0 8px 28px rgba(25, 30, 50, 0.07);
+  }
+
+}
+
+
+/* =========================================================
+   LIGHT THEME SCROLLBAR
+   ========================================================= */
+
+.app.light::-webkit-scrollbar {
+  width: 10px;
+}
+
+.app.light::-webkit-scrollbar-track {
+  background: #eef0f5;
+}
+
+.app.light::-webkit-scrollbar-thumb {
+  background: #c7cbd6;
+  border-radius: 10px;
+}
+
+.app.light::-webkit-scrollbar-thumb:hover {
+  background: #aeb4c2;
+}
+
+
+/* =========================================================
+   LIGHT THEME ACCESSIBILITY
+   ========================================================= */
+
+.app.light a:focus-visible,
+.app.light button:focus-visible,
+.app.light input:focus-visible,
+.app.light textarea:focus-visible {
+  outline: 2px solid rgba(99, 91, 255, 0.70);
+  outline-offset: 3px;
+}
