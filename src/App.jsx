@@ -14,7 +14,7 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
-import profilePhoto from "./assets/profile.png";
+import profilePhoto from "./assets/profile-optimized.webp";
 import "./App.css";
 
 const API_URL = import.meta.env.VITE_API_URL || "https://abdul-salam-portfolio.onrender.com";
