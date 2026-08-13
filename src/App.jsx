@@ -592,7 +592,7 @@ function App() {
         </motion.section>
         {/* CONTACT */}
         <motion.section className="section contact-section" id="contact" variants={scrollReveal} initial="hidden" whileInView="visible" viewport={revealViewport}>
-          <div className="section-label">05 — CONTACT</div>
+          <div className="section-label">06 — CONTACT</div>
 
           <div className="contact-box contact-form-box">
             <div className="contact-intro">
