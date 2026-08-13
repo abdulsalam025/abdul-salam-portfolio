@@ -3847,3 +3847,228 @@ footer:hover {
     top: -160px;
   }
 }
+
+/* =========================================================
+   MOBILE POLISH - BATCH 1
+   Typography + spacing + touch targets
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+  /* ---------- Global mobile spacing ---------- */
+
+  .section {
+    padding-top: 72px;
+    padding-bottom: 72px;
+  }
+
+  /* ---------- Hero ---------- */
+
+  .hero {
+    min-height: auto;
+    padding-top: 70px;
+    padding-bottom: 55px;
+  }
+
+  .hero h1 {
+    line-height: 1.08;
+  }
+
+  .hero p {
+    font-size: 14px;
+    line-height: 1.65;
+    max-width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ---------- Section headings ---------- */
+
+  .section-title,
+  .section-heading,
+  .section h2 {
+    line-height: 1.15;
+  }
+
+  .section-subtitle,
+  .section-description,
+  .section > p {
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  /* ---------- About ---------- */
+
+  .about-section p {
+    font-size: 13px;
+    line-height: 1.75;
+  }
+
+  /* ---------- Education ---------- */
+
+  .education-card {
+    padding: 20px;
+  }
+
+  .education-card p {
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  /* ---------- Skills ---------- */
+
+  .skill-card {
+    min-height: 90px;
+    padding: 15px;
+  }
+
+  .skill-card p,
+  .skill-card span {
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  /* ---------- Projects ---------- */
+
+  .project-card {
+    padding: 20px;
+  }
+
+  .project-card p {
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  .project-arrow {
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ---------- Resume / professional profile ---------- */
+
+  .resume-card {
+    padding: 20px;
+  }
+
+  .resume-card p {
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  /* ---------- Contact ---------- */
+
+  .contact-box {
+    padding: 20px;
+  }
+
+  .contact-box label {
+    font-size: 13px;
+  }
+
+  .contact-box input,
+  .contact-box textarea {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* ---------- Buttons ---------- */
+
+  .primary-button,
+  .secondary-button {
+    min-height: 44px;
+    padding: 11px 17px;
+  }
+
+  /* ---------- Social icons ---------- */
+
+  .social-links a,
+  .footer-socials a {
+    min-width: 40px;
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ---------- Footer ---------- */
+
+  footer {
+    padding-top: 45px;
+    padding-bottom: 35px;
+  }
+
+  footer p {
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  /* ---------- Reduce excessive gaps ---------- */
+
+  .about-section,
+  .education-section,
+  #skills,
+  #projects,
+  #resume {
+    scroll-margin-top: 70px;
+  }
+
+}
+
+/* Smaller phones */
+
+@media (max-width: 480px) {
+
+  .section {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+
+  .hero {
+    padding-top: 55px;
+    padding-bottom: 45px;
+  }
+
+  .hero p {
+    font-size: 13px;
+  }
+
+  .section-subtitle,
+  .section-description,
+  .section > p {
+    font-size: 12.5px;
+  }
+
+  .about-section p,
+  .education-card p,
+  .project-card p,
+  .resume-card p {
+    font-size: 12.5px;
+  }
+
+  .skill-card {
+    min-height: 82px;
+    padding: 12px;
+  }
+
+  .skill-card p,
+  .skill-card span {
+    font-size: 11.5px;
+  }
+
+  .education-card,
+  .project-card,
+  .resume-card,
+  .contact-box {
+    padding: 17px;
+  }
+
+  .primary-button,
+  .secondary-button {
+    min-height: 44px;
+    font-size: 13px;
+  }
+
+}
