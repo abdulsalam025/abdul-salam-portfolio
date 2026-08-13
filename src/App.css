@@ -2820,3 +2820,282 @@ footer strong {
   }
 }
 
+
+/* =========================================
+   PREMIUM PORTFOLIO ANIMATIONS
+   ========================================= */
+
+@keyframes portfolioFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes orbitRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbitRotateReverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes glowDriftOne {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-25px, 20px, 0) scale(1.08);
+  }
+}
+
+@keyframes glowDriftTwo {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(25px, -20px, 0) scale(1.06);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.10;
+  }
+  50% {
+    opacity: 0.22;
+  }
+}
+
+@keyframes availabilityPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(98, 230, 167, 0);
+  }
+  50% {
+    box-shadow: 0 0 0 7px rgba(98, 230, 167, 0.04);
+  }
+}
+
+@keyframes scrollBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+/* Background atmosphere */
+.glow-one {
+  animation: glowDriftOne 9s ease-in-out infinite;
+}
+
+.glow-two {
+  animation: glowDriftTwo 11s ease-in-out infinite;
+}
+
+/* Hero profile */
+.profile-core {
+  animation: portfolioFloat 5s ease-in-out infinite;
+}
+
+.profile-glow {
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+/* Orbit animation */
+.orbit-one {
+  animation: orbitRotate 18s linear infinite;
+}
+
+.orbit-two {
+  animation: orbitRotateReverse 28s linear infinite;
+}
+
+/* Floating technology cards */
+.card-one {
+  animation: portfolioFloat 4s ease-in-out infinite;
+}
+
+.card-two {
+  animation: portfolioFloat 4.8s ease-in-out infinite reverse;
+}
+
+/* Availability indicator */
+.availability {
+  animation: availabilityPulse 3s ease-in-out infinite;
+}
+
+/* Scroll indicator */
+.scroll-indicator {
+  animation: scrollBounce 2s ease-in-out infinite;
+}
+
+/* Skill cards */
+.skill-card {
+  opacity: 0;
+  animation: skillReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.skill-card:nth-child(1) { animation-delay: 0.05s; }
+.skill-card:nth-child(2) { animation-delay: 0.10s; }
+.skill-card:nth-child(3) { animation-delay: 0.15s; }
+.skill-card:nth-child(4) { animation-delay: 0.20s; }
+.skill-card:nth-child(5) { animation-delay: 0.25s; }
+.skill-card:nth-child(6) { animation-delay: 0.30s; }
+.skill-card:nth-child(7) { animation-delay: 0.35s; }
+.skill-card:nth-child(8) { animation-delay: 0.40s; }
+
+@keyframes skillReveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Skill hover */
+.skill-card:hover {
+  transform: translateY(-7px);
+  border-color: rgba(139,117,255,0.28);
+  box-shadow: 0 18px 45px rgba(0,0,0,0.16);
+}
+
+/* Project cards */
+.project-card {
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.3s ease,
+    box-shadow 0.4s ease,
+    background 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-9px);
+  border-color: rgba(139,117,255,0.42);
+  box-shadow: 0 25px 70px rgba(0,0,0,0.22);
+  background: rgba(255,255,255,0.035);
+}
+
+.project-card:hover .project-arrow {
+  transform: translateX(6px);
+  color: #a99cff;
+}
+
+.project-arrow {
+  transition:
+    transform 0.35s ease,
+    color 0.35s ease;
+}
+
+/* Buttons */
+.primary-button,
+.secondary-button {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.3s ease,
+    background 0.3s ease;
+}
+
+.primary-button:hover {
+  transform: translateY(-3px) scale(1.015);
+}
+
+.secondary-button:hover {
+  transform: translateY(-3px);
+}
+
+/* Social icons */
+.social-links a,
+.footer-socials a {
+  transition:
+    transform 0.25s ease,
+    color 0.25s ease;
+}
+
+.social-links a:hover,
+.footer-socials a:hover {
+  transform: translateY(-4px);
+}
+
+/* Education card */
+.education-card {
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.3s ease,
+    box-shadow 0.4s ease;
+}
+
+.education-card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 25px 60px rgba(0,0,0,0.18);
+}
+
+/* Resume cards */
+.resume-card {
+  transition:
+    transform 0.35s ease,
+    border-color 0.3s ease,
+    box-shadow 0.35s ease;
+}
+
+.resume-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.18);
+}
+
+/* Contact box */
+.contact-box {
+  transition:
+    transform 0.4s ease,
+    border-color 0.3s ease,
+    box-shadow 0.4s ease;
+}
+
+.contact-box:hover {
+  border-color: rgba(139,117,255,0.25);
+  box-shadow: 0 25px 70px rgba(0,0,0,0.18);
+}
+
+/* Modal */
+.project-modal {
+  animation: modalGlow 4s ease-in-out infinite;
+}
+
+@keyframes modalGlow {
+  0%, 100% {
+    box-shadow: 0 30px 100px rgba(0,0,0,0.65);
+  }
+  50% {
+    box-shadow: 0 30px 110px rgba(109,74,255,0.16);
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
