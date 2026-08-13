@@ -3248,3 +3248,140 @@ footer strong {
     transform: none !important;
   }
 }
+
+/* =========================================
+   PREMIUM SKILLS INTERACTIONS
+   ========================================= */
+
+.skills-grid {
+  perspective: 1000px;
+}
+
+.skill-card {
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.3s ease,
+    box-shadow 0.4s ease,
+    background 0.3s ease;
+}
+
+.skill-card::before {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  top: -100px;
+  right: -100px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(139, 117, 255, 0.16),
+    transparent 70%
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.4s ease,
+    transform 0.6s ease;
+}
+
+.skill-card:hover {
+  transform: translateY(-8px) rotateX(2deg);
+  border-color: rgba(139, 117, 255, 0.35);
+  box-shadow:
+    0 20px 55px rgba(0, 0, 0, 0.20),
+    0 0 30px rgba(109, 74, 255, 0.08);
+}
+
+.skill-card:hover::before {
+  opacity: 1;
+  transform: scale(1.35);
+}
+
+.skill-card h3 {
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease;
+}
+
+.skill-card:hover h3 {
+  transform: translateX(3px);
+}
+
+.skill-card svg {
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.3s ease;
+}
+
+.skill-card:hover svg {
+  transform: translateY(-3px) scale(1.08);
+  filter: drop-shadow(0 5px 12px rgba(139, 117, 255, 0.22));
+}
+
+/* Skill reveal stagger */
+.skills-grid .skill-card:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.skills-grid .skill-card:nth-child(2) {
+  animation-delay: 0.10s;
+}
+
+.skills-grid .skill-card:nth-child(3) {
+  animation-delay: 0.15s;
+}
+
+.skills-grid .skill-card:nth-child(4) {
+  animation-delay: 0.20s;
+}
+
+.skills-grid .skill-card:nth-child(5) {
+  animation-delay: 0.25s;
+}
+
+.skills-grid .skill-card:nth-child(6) {
+  animation-delay: 0.30s;
+}
+
+.skills-grid .skill-card:nth-child(7) {
+  animation-delay: 0.35s;
+}
+
+.skills-grid .skill-card:nth-child(8) {
+  animation-delay: 0.40s;
+}
+
+/* Skill labels */
+.skill-card .skill-label,
+.skill-card .skill-name {
+  transition:
+    color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.skill-card:hover .skill-label,
+.skill-card:hover .skill-name {
+  transform: translateX(2px);
+}
+
+/* Keyboard accessibility */
+.skill-card:focus-within {
+  border-color: rgba(139, 117, 255, 0.45);
+  box-shadow: 0 0 0 3px rgba(139, 117, 255, 0.10);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .skill-card,
+  .skill-card::before,
+  .skill-card svg,
+  .skill-card h3 {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
