@@ -241,7 +241,7 @@ function App() {
         </section>
 
         {/* ABOUT */}
-        <motion.section className="section about-section scroll-reveal" id="about" variants={scrollReveal} initial="hidden" whileInView="visible" viewport={revealViewport}>
+        <motion.section className="section about-section" id="about" variants={scrollReveal} initial="hidden" whileInView="visible" viewport={revealViewport}>
           <div className="section-label">01 â€” ABOUT ME</div>
 
           <div className="section-grid">
@@ -292,9 +292,9 @@ function App() {
               </div>
             </div>
           </div>
-        </section>
+        </motion.section>
 
-        <motion.section className="section education-section scroll-reveal" id="education" variants={scrollRevealLeft} initial="hidden" whileInView="visible" viewport={revealViewport}>
+        <motion.section className="section education-section" id="education" variants={scrollRevealLeft} initial="hidden" whileInView="visible" viewport={revealViewport}>
           <div className="section-label">02 â€” EDUCATION</div>
 
           <div className="section-heading">
@@ -339,10 +339,10 @@ function App() {
               </div>
             </div>
           </div>
-        </section>
+        </motion.section>
 
         {/* SKILLS */}
-        <motion.section className="section scroll-reveal" id="skills" variants={scrollReveal} initial="hidden" whileInView="visible" viewport={revealViewport}>
+        <motion.section className="section" id="skills" variants={scrollReveal} initial="hidden" whileInView="visible" viewport={revealViewport}>
           <div className="section-label">03 â€” SKILLS</div>
 
           <div className="section-heading">
@@ -369,8 +369,9 @@ function App() {
               <motion.div
                 className="skill-card"
                 key={name}
-                initial={{ opacity: 1, y: 0 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.5, delay: index * 0.05 }}
               >
                 <span>{String(index + 1).padStart(2, "0")}</span>
@@ -381,10 +382,10 @@ function App() {
               </motion.div>
             ))}
           </div>
-        </section>
+        </motion.section>
 
         {/* PROJECTS */}
-        <motion.section className="section scroll-reveal" id="projects" variants={scrollRevealRight} initial="hidden" whileInView="visible" viewport={revealViewport}>
+        <motion.section className="section" id="projects" variants={scrollRevealRight} initial="hidden" whileInView="visible" viewport={revealViewport}>
           <div className="section-label">04 â€” PROJECTS</div>
 
           <div className="section-heading">
@@ -508,10 +509,10 @@ function App() {
             </article>
 
           </div>
-        </section>
+        </motion.section>
 
         {/* RESUME */}
-        <motion.section className="section resume-section scroll-reveal" id="resume" variants={scrollRevealLeft} initial="hidden" whileInView="visible" viewport={revealViewport}>
+        <motion.section className="section resume-section" id="resume" variants={scrollRevealLeft} initial="hidden" whileInView="visible" viewport={revealViewport}>
           <div className="section-label">05 â€” RESUME</div>
 
           <div className="section-heading">
@@ -588,9 +589,9 @@ function App() {
               <ArrowDown size={18} />
             </a>
           </div>
-        </section>
+        </motion.section>
         {/* CONTACT */}
-        <motion.section className="section contact-section scroll-reveal" id="contact" variants={scrollReveal} initial="hidden" whileInView="visible" viewport={revealViewport}>
+        <motion.section className="section contact-section" id="contact" variants={scrollReveal} initial="hidden" whileInView="visible" viewport={revealViewport}>
           <div className="section-label">05 — CONTACT</div>
 
           <div className="contact-box contact-form-box">
@@ -677,7 +678,7 @@ function App() {
               )}
             </form>
           </div>
-        </section>
+        </motion.section>
 
         {selectedProject && (
   <div
