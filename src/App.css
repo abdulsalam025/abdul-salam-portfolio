@@ -6228,3 +6228,26 @@ textarea:focus-visible {
     padding-top: 14px;
   }
 }
+/* =========================================================
+   JARVIS MODAL — FINAL MOBILE TOP SPACING FIX
+   ========================================================= */
+
+.app.light .project-modal {
+  padding-top: 28px;
+}
+
+.app.light .project-modal .modal-section:first-of-type {
+  margin-top: 4px;
+}
+
+@media (max-width: 600px) {
+  .app.light .project-modal {
+    padding-top: 32px;
+    padding-bottom: 24px;
+  }
+
+  .app.light .project-modal .modal-section-title {
+    margin-top: 0;
+    margin-bottom: 14px;
+  }
+}

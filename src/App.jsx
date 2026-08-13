@@ -828,18 +828,18 @@ function App() {
             <div className="tech-stack">
 
               <div className="tech-item">
-                <strong>∞</strong>
-                <span>Core Development</span>
+                <strong>PY</strong>
+                <span>Python</span>
               </div>
 
               <div className="tech-item">
-                <strong>∞</strong>
+                <strong>AI</strong>
                 <span>Intelligent Systems</span>
               </div>
 
               <div className="tech-item">
-                <strong>∞</strong>
-                <span>Task Handling</span>
+                <strong>AUTO</strong>
+                <span>Automation</span>
               </div>
 
             </div>
@@ -914,7 +914,7 @@ function App() {
                 PROJECT
               </span>
 
-              <strong>∞</strong>
+              <strong>AI</strong>
             </div>
 
             <a
@@ -937,7 +937,7 @@ function App() {
       {/* FOOTER */}
       <footer>
         <div>
-          <strong>∞</strong>
+          <strong>AS</strong>
           <span>Abdul Salam</span>
         </div>
 
