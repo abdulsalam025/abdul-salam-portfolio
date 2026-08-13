@@ -3099,3 +3099,14 @@ footer strong {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Scroll reveal support */
+.scroll-reveal {
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal {
+    will-change: auto;
+  }
+}

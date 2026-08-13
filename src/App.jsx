@@ -18,6 +18,55 @@ import profilePhoto from "./assets/profile.png";
 import "./App.css";
 
 const API_URL = import.meta.env.VITE_API_URL || "https://abdul-salam-portfolio.onrender.com";
+const scrollReveal = {
+  hidden: {
+    opacity: 0,
+    y: 35,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.7,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+const scrollRevealLeft = {
+  hidden: {
+    opacity: 0,
+    x: -35,
+  },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.7,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+const scrollRevealRight = {
+  hidden: {
+    opacity: 0,
+    x: 35,
+  },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.7,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+const revealViewport = {
+  once: true,
+  amount: 0.18,
+};
 
 function App() {
   const [darkMode, setDarkMode] = useState(true);
