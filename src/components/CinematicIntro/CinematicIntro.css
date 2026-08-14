@@ -1,303 +1,80 @@
-﻿@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@800&family=Inter:wght@400;500;700;800&display=swap");
-
-/* ============================================================
-   ABDUL SALAM — COLOR-POPPING LIQUID GLASS WITH LUXURY FONT
-   ============================================================ */
-
-.vision-intro-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 999999;
-  background-color: #050810; /* Slightly darker to let neon colors pop more */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  font-family: "Inter", system-ui, sans-serif;
-  perspective: 1000px;
-  animation: visionExit 1.5s cubic-bezier(0.8, 0, 0.2, 1) forwards;
-  animation-delay: 7s;
-  pointer-events: all;
+﻿.luxury-intro-overlay {
+  position: fixed; inset: 0; z-index: 99999;
+  background: #030712; display: flex;
+  justify-content: center; align-items: center;
+  padding: 20px;
 }
 
-/* ============================================================
-   1. THE INITIAL SPARK & RIPPLE
-   ============================================================ */
-.liquid-spark {
-  position: absolute;
-  top: -100px;
-  width: 4px;
-  height: 50px;
-  background: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 0 20px 5px #ffffff, 0 0 40px 10px #8fd3f4;
-  opacity: 0;
-  z-index: 20;
-  animation: 
-    sparkDrop 0.8s cubic-bezier(0.5, 0, 1, 1) forwards,
-    sparkCompress 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.8s;
-}
-
-.liquid-ripple {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 2px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
-  z-index: 19;
-  opacity: 0;
-  animation: rippleExpand 1.5s cubic-bezier(0.1, 0.8, 0.2, 1) forwards 1s;
-}
-
-/* ============================================================
-   2. THE HIGH-SATURATION NEON FLUIDS
-   ============================================================ */
-.vision-fluid-container {
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
-  z-index: 2;
-  filter: blur(50px); /* Reduced blur slightly so colors stay intense */
-  opacity: 0;
-  mix-blend-mode: screen; /* Forces colors to glow brightly over the dark background */
-  animation: igniteFluids 2s forwards 1.2s;
-}
-
-.v-blob {
-  position: absolute;
-  border-radius: 50%;
-  will-change: transform;
-  animation: floatBlob 12s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Upgraded to extreme neon colors */
-.v-blob-peach { 
-  width: 60vw; height: 60vw; 
-  background: radial-gradient(circle, #ff2a5f 0%, transparent 65%); 
-  top: -10%; left: -10%; 
-}
-.v-blob-purple { 
-  width: 55vw; height: 55vw; 
-  background: radial-gradient(circle, #9d00ff 0%, transparent 65%); 
-  bottom: -10%; left: 15%; 
-  animation-delay: -4s; 
-}
-.v-blob-cyan { 
-  width: 65vw; height: 65vw; 
-  background: radial-gradient(circle, #00e5ff 0%, transparent 65%); 
-  top: 5%; right: -15%; 
-  animation-delay: -8s; 
-}
-
-/* ============================================================
-   3. SPARKING FLOATING GLASS BUBBLES
-   ============================================================ */
-.glass-bubble {
-  position: absolute;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border-top: 2px solid rgba(255, 255, 255, 0.6);
-  border-left: 2px solid rgba(255, 255, 255, 0.4);
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), inset 0 4px 10px rgba(255, 255, 255, 0.2);
-  z-index: 9;
-  opacity: 0;
-  transform: translateY(50px) scale(0.5);
-  animation: bubbleEmerge 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards 2s, orbitBubble 8s ease-in-out infinite alternate 3.5s;
-  will-change: transform;
-}
-
-.bubble-1 { width: 140px; height: 140px; left: calc(50% - 450px); top: 20%; animation-delay: 2.1s, 0s; }
-.bubble-2 { width: 100px; height: 100px; right: calc(50% - 420px); bottom: 20%; animation-delay: 2.3s, -3s; }
-.bubble-3 { width: 50px; height: 50px; left: calc(50% - 250px); bottom: 10%; animation-delay: 2.5s, -5s; }
-.bubble-4 { width: 80px; height: 80px; right: calc(50% - 350px); top: 15%; animation-delay: 2.2s, -2s; }
-.bubble-5 { width: 40px; height: 40px; left: calc(50% - 400px); top: 55%; animation-delay: 2.6s, -6s; }
-
-.b-sparkle {
-  position: absolute;
-  width: 5px;
-  height: 5px;
-  background: #ffffff;
-  border-radius: 50%;
-  box-shadow: 0 0 15px 5px #ffffff, 0 0 30px 10px #8fd3f4;
-  animation: flashSpark 1.5s infinite alternate ease-in-out;
-}
-
-.s-1 { top: -5px; right: 20px; }
-.s-2 { bottom: 10px; left: -5px; animation-delay: 0.5s; }
-.s-3 { top: 50%; right: -8px; animation-delay: 1.2s; }
-.s-4 { top: 15px; left: 0px; animation-delay: 0.8s; }
-
-/* ============================================================
-   4. THE MASSIVE LIQUID GLASS CARD
-   ============================================================ */
-.vision-glass-container {
-  position: relative;
-  z-index: 10;
-  transform-style: preserve-3d;
-  opacity: 0;
-  transform: translateY(50px) scale(0.95);
-  animation: glassEmerge 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards 1.8s, glassBreathe 6s ease-in-out infinite 3.3s;
-}
-
-.vision-glass-card {
-  position: relative;
-  width: clamp(320px, 70vw, 600px);
-  padding: 60px 40px;
-  border-radius: 30px; 
-  background: rgba(255, 255, 255, 0.05); 
-  backdrop-filter: blur(24px); 
-  -webkit-backdrop-filter: blur(24px);
-  border-top: 1px solid rgba(255, 255, 255, 0.7);
-  border-left: 1px solid rgba(255, 255, 255, 0.5);
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 4px 18px rgba(255, 255, 255, 0.3), inset 0 -4px 18px rgba(255, 255, 255, 0.05);
-  overflow: hidden;
-}
-
-.v-highlight {
-  position: absolute;
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,255,255,0.7) 0%, transparent 60%);
-  filter: blur(20px);
-  z-index: 0;
-  pointer-events: none;
-}
-.top-left { top: -50px; left: -50px; opacity: 0.7; }
-
-/* ============================================================
-   5. PERFECTED TYPOGRAPHY (LUXURY FONT FOR "AS")
-   ============================================================ */
-.vision-card-inner {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.glass-loader-box {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(40px);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  padding: 5rem 7rem;
+  border-radius: 40px;
   text-align: center;
-}
-
-.vision-massive-logo {
-  font-family: "Cinzel", serif; /* Luxury Cinematic Font */
-  font-size: clamp(6rem, 15vw, 10rem);
-  font-weight: 800;
-  line-height: 1;
-  margin: 0;
-  color: #ffffff; 
-  text-shadow: 0 4px 30px rgba(255, 255, 255, 0.6); 
-  opacity: 0;
-  transform: scale(0.9);
-  animation: crispReveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards 2.4s;
-}
-
-.vision-identity-box {
-  margin-top: 1.5rem;
-  display: flex;
-  flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+  display: flex; flex-direction: column; gap: 25px;
   align-items: center;
+  width: fit-content;
+  overflow: visible;
 }
 
-.vision-greeting {
-  font-size: clamp(0.7rem, 1.5vw, 0.9rem);
-  font-weight: 700;
-  letter-spacing: 0.3em;
-  color: #8fd3f4; 
-  text-transform: uppercase;
-  margin: 0 0 5px 0;
-  text-shadow: 0 0 10px rgba(143, 211, 244, 0.6);
-  opacity: 0;
-  transform: translateY(10px);
-  animation: crispReveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards 2.6s;
-}
-
-.vision-full-name {
-  font-size: clamp(1.5rem, 3.5vw, 2.2rem);
-  font-weight: 700;
-  letter-spacing: 0.05em;
+.liquid-text {
+  font-family: 'Cinzel', serif; 
+  font-size: clamp(2.5rem, 8vw, 5rem); 
+  font-weight: 900;
+  background: linear-gradient(90deg, #ffffff, #00f0ff);
+  -webkit-background-clip: text; 
+  color: transparent;
   margin: 0;
-  color: #ffffff; 
-  text-shadow: 0 2px 15px rgba(255, 255, 255, 0.4);
-  opacity: 0;
-  transform: translateY(15px);
-  animation: crispReveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards 2.8s;
+  display: inline-block;
+  line-height: 1.4;
+  padding-top: 20px; /* Safe zone for Cinzel's top serifs */
+  padding-bottom: 5px;
+  white-space: nowrap;
 }
 
-.vision-title {
-  margin-top: 0.5rem;
-  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  color: rgba(255, 255, 255, 0.8);
-  opacity: 0;
-  transform: translateY(15px);
-  animation: crispReveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards 3.1s;
+.progress-counter {
+  font-family: 'Fira Code', monospace; 
+  color: #fff; font-size: 1.6rem;
 }
 
-.vision-badges {
-  margin-top: 1.5rem;
-  display: flex;
-  gap: 15px;
-  opacity: 0;
-  transform: translateY(15px);
-  animation: crispReveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards 3.4s;
+.progress-bar-track {
+  width: 100%; min-width: 280px; height: 8px; 
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px; overflow: hidden;
 }
 
-.v-badge {
-  padding: 8px 18px;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #ffffff;
-  box-shadow: inset 0 2px 4px rgba(255,255,255,0.2);
+.progress-bar-fill {
+  height: 100%; 
+  background: linear-gradient(90deg, #00f0ff, #7000ff);
+  box-shadow: 0 0 15px #00f0ff;
+  transition: width 0.1s linear;
 }
 
-/* ============================================================
-   KEYFRAMES
-   ============================================================ */
-
-@keyframes sparkDrop { 0% { top: -100px; opacity: 1; height: 100px; } 100% { top: 50%; transform: translateY(-50%); opacity: 1; height: 10px; } }
-@keyframes sparkCompress { 0% { transform: translateY(-50%) scale(1); background: #ffffff; } 100% { transform: translateY(-50%) scale(0); opacity: 0; } }
-@keyframes rippleExpand { 0% { transform: translate(-50%, -50%) scale(0); opacity: 1; border-width: 10px; } 100% { transform: translate(-50%, -50%) scale(50); opacity: 0; border-width: 1px; } }
-@keyframes igniteFluids { to { opacity: 0.8; } } /* Capped opacity so it glows perfectly */
-@keyframes floatBlob { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(3%, 8%) scale(1.05); } 100% { transform: translate(-3%, -3%) scale(0.95); } }
-
-@keyframes flashSpark {
-  0% { opacity: 0.2; transform: scale(0.5); }
-  100% { opacity: 1; transform: scale(1.5); }
+.shatter-container {
+  position: absolute; inset: 0;
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
 }
 
-@keyframes glassEmerge { 0% { opacity: 0; transform: translateY(50px) scale(0.95); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
-@keyframes bubbleEmerge { 0% { opacity: 0; transform: translateY(50px) scale(0.5); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
-@keyframes glassBreathe { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-@keyframes orbitBubble { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-
-@keyframes crispReveal { to { opacity: 1; transform: translateY(0) scale(1); } }
-
-/* The Elegant Exit */
-@keyframes visionExit {
-  0% { opacity: 1; transform: scale(1); filter: blur(0); }
-  40% { opacity: 1; transform: scale(1.02); filter: blur(0); } 
-  100% { opacity: 0; transform: scale(1.2); filter: blur(20px); pointer-events: none; } 
+.shard {
+  background: rgba(0, 240, 255, 0.2);
+  border: 1px solid rgba(255,255,255,0.3);
+  backdrop-filter: blur(20px);
+  animation: blastOut 0.6s forwards;
 }
 
-/* Accessibility */
-@media (prefers-reduced-motion: reduce) {
-  .vision-intro-overlay { animation: simpleFade 1.5s forwards; animation-delay: 6s; }
-  @keyframes simpleFade { to { opacity: 0; pointer-events: none; } }
-  .vision-glass-container, .glass-bubble { animation: crispReveal 1s forwards; }
-  .v-blob, .liquid-spark, .liquid-ripple, .b-sparkle { animation: none; }
+@keyframes blastOut {
+  to { transform: scale(2.5) rotate(45deg); opacity: 0; }
+}
+
+.blast-flash {
+  position: absolute; inset: 0;
+  background: white; opacity: 0.8;
+  animation: flashOut 0.5s forwards;
+}
+
+@keyframes flashOut {
+  to { opacity: 0; }
 }

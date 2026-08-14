@@ -1,79 +1,49 @@
-﻿import React, { useState, useEffect } from 'react';
-import './CinematicIntro.css';
+﻿import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
+import "./CinematicIntro.css";
 
-const CinematicIntro = () => {
-  const [isMounted, setIsMounted] = useState(true);
+export default function CinematicIntro() {
+  const [progress, setProgress] = useState(0);
+  const [cracked, setCracked] = useState(false);
+  const [blasted, setBlasted] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsMounted(false);
-    }, 9000);
-    return () => clearTimeout(timer);
+    const interval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setCracked(true);
+          setTimeout(() => setBlasted(true), 500);
+          return 100;
+        }
+        return prev + 2; // Speed increased
+      });
+    }, 15); // Faster ticking
+    return () => clearInterval(interval);
   }, []);
 
-  if (!isMounted) return null;
-
   return (
-    <div className="vision-intro-overlay" aria-hidden="true">
-      
-      {/* 1. THE FALLING SPARK & RIPPLE */}
-      <div className="liquid-spark"></div>
-      <div className="liquid-ripple"></div>
-
-      {/* 2. THE VIBRANT NEON FLUIDS */}
-      <div className="vision-fluid-container">
-        <div className="v-blob v-blob-peach"></div>
-        <div className="v-blob v-blob-purple"></div>
-        <div className="v-blob v-blob-cyan"></div>
-      </div>
-
-      {/* 3. MULTIPLE FLOATING BUBBLES WITH SPARKS */}
-      <div className="glass-bubble bubble-1">
-        <div className="v-highlight top-left"></div>
-        <div className="b-sparkle s-1"></div>
-      </div>
-      <div className="glass-bubble bubble-2">
-        <div className="v-highlight top-left"></div>
-        <div className="b-sparkle s-2"></div>
-      </div>
-      <div className="glass-bubble bubble-3">
-        <div className="b-sparkle s-3"></div>
-      </div>
-      <div className="glass-bubble bubble-4">
-        <div className="v-highlight top-left"></div>
-        <div className="b-sparkle s-4"></div>
-      </div>
-      <div className="glass-bubble bubble-5">
-        <div className="b-sparkle s-1"></div>
-      </div>
-
-      {/* 4. THE MASSIVE LIQUID GLASS CARD */}
-      <div className="vision-glass-container">
-        <div className="vision-glass-card">
-          
-          <div className="vision-card-inner">
-            <div className="v-highlight top-left"></div>
-
-            <h1 className="vision-massive-logo">AS</h1>
-            
-            <div className="vision-identity-box">
-              <p className="vision-greeting">WELCOME</p>
-              
-              <h2 className="vision-full-name">Abdul Salam</h2>
-              <p className="vision-title">AI & ML Engineering</p>
-              
-              <div className="vision-badges">
-                <div className="v-badge">System Online</div>
-                <div className="v-badge">Access Granted</div>
+    <AnimatePresence>
+      {!blasted && (
+        <div className="luxury-intro-overlay">
+          {!cracked ? (
+            <motion.div className="glass-loader-box" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}>
+              <div className="liquid-text">WELCOME</div>
+              <div className="progress-counter">{progress}%</div>
+              <div className="progress-bar-track">
+                <div className="progress-bar-fill" style={{ width: `${progress}%` }}></div>
               </div>
-            </div>
-          </div>
-
+            </motion.div>
+          ) : (
+            <motion.div className="shatter-container">
+              {[...Array(9)].map((_, i) => (
+                <div key={i} className="shard" />
+              ))}
+              <div className="blast-flash"></div>
+            </motion.div>
+          )}
         </div>
-      </div>
-
-    </div>
+      )}
+    </AnimatePresence>
   );
-};
-
-export default CinematicIntro;
+}
