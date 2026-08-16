@@ -1,4 +1,4 @@
-﻿import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { ArrowDown, ArrowRight, Mail, Moon, Sun, Code2, Sparkles, GitBranch, BriefcaseBusiness, Menu, X, Terminal, Search, Copy, Download, Home, Briefcase, FileText, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import profilePhoto from "./assets/profile-optimized.webp";
@@ -298,6 +298,8 @@ function App() {
             ))}
           </div>
         </motion.section>
+
+
 
         <motion.section className="section" id="projects" variants={scrollRevealRight} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }}>
           <div className="section-label">04 — PROJECTS</div>
