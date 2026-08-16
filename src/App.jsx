@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import profilePhoto from "./assets/profile-optimized.webp";
 import "./App.css";
 import CinematicIntro from "./components/CinematicIntro/CinematicIntro";
+import EngineeringDashboard from "./components/EngineeringDashboard/EngineeringDashboard";
 
 const API_URL = import.meta.env.VITE_API_URL || "https://abdul-salam-portfolio.onrender.com";
 
@@ -23,6 +24,7 @@ function App() {
   
   const [cmdOpen, setCmdOpen] = useState(false);
   const [ghStats, setGhStats] = useState({ repos: '-', followers: '-' });
+  const [ghStatus, setGhStatus] = useState('loading');
 
   const terminalSequence = [
     "Initializing Neural Core...",
@@ -73,12 +75,12 @@ function App() {
 
   useEffect(() => {
     fetch('https://api.github.com/users/abdulsalam025')
-      .then(res => res.json())
+      .then(res => { if (!res.ok) { throw new Error('GitHub API error'); } return res.json(); })
       .then(data => {
         if(data.public_repos !== undefined) {
-          setGhStats({ repos: data.public_repos, followers: data.followers });
+          setGhStats({ repos: data.public_repos, followers: data.followers }); setGhStatus('success');
         }
-      }).catch(() => {});
+      }).catch(() => setGhStatus('error'));
   }, []);
 
   const handleContactSubmit = async (event) => {
@@ -158,6 +160,9 @@ function App() {
             <a href="#education" onClick={() => setMobileMenuOpen(false)}>Education</a>
             <a href="#skills" onClick={() => setMobileMenuOpen(false)}>Skills</a>
             <a href="#projects" onClick={() => setMobileMenuOpen(false)}>Projects</a>
+            <a href="#resume" onClick={() => setMobileMenuOpen(false)}>Resume</a>
+            <a href="#dashboard" onClick={() => setMobileMenuOpen(false)}>Dashboard</a>
+            <a href="#contact" onClick={() => setMobileMenuOpen(false)}>Contact</a>
           </nav>
           
           <div className="header-actions">
@@ -269,7 +274,7 @@ function App() {
               </div>
 
               <p>My long-term goal is to become a technically strong engineer who can build reliable products and solve meaningful real-world problems with technology.</p>
-              <div className="stats"><div><strong>01+</strong><span>Years Learning</span></div><div><strong>05+</strong><span>Projects</span></div><div><strong>∞</strong><span>Curiosity</span></div></div>
+              <div className="stats"><div><strong>01+</strong><span>Years Learning</span></div><div><strong>04+</strong><span>Projects</span></div><div><strong>∞</strong><span>Curiosity</span></div></div>
             </div>
           </div>
         </motion.section>
@@ -443,6 +448,7 @@ function App() {
             </motion.div>
           )}
         </AnimatePresence>
+      <EngineeringDashboard projectCount={4} repos={ghStats.repos} followers={ghStats.followers} status={ghStatus} />
       </main>
 
       <footer style={{ borderTop: '1px solid var(--glass-border-dark)', padding: '50px 5%', textAlign: 'center', marginTop: '60px' }}>
