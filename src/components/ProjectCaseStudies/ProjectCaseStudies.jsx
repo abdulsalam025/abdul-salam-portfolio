@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, Code2, FileText, X } from "lucide-react";
 import { getProjectById } from "../../data/projects";
 import "./ProjectCaseStudies.css";
+import ArchitectureViewer from "../ArchitectureViewer/ArchitectureViewer";
 
 const TABS = [
   { id: "problem", label: "Problem" },
@@ -15,13 +16,11 @@ const TABS = [
 export default function ProjectCaseStudies({ projectId, onClose }) {
   const project = getProjectById(projectId);
   const [tab, setTab] = useState("problem");
-  const [activeNode, setActiveNode] = useState(null);
   const closeRef = useRef(null);
   const previouslyFocused = useRef(null);
 
   useEffect(() => {
     setTab("problem");
-    setActiveNode(project?.architecture?.[0]?.id || null);
   }, [projectId, project]);
 
   useEffect(() => {
@@ -54,7 +53,6 @@ export default function ProjectCaseStudies({ projectId, onClose }) {
     };
   }, [project, onClose]);
 
-  const node = project?.architecture?.find((item) => item.id === activeNode) || project?.architecture?.[0];
 
   return (
     <AnimatePresence>
@@ -162,38 +160,7 @@ export default function ProjectCaseStudies({ projectId, onClose }) {
               )}
 
               {tab === "architecture" && (
-                <div className="case-arch">
-                  <p className="case-arch-hint">Select a node to inspect its role, data flow and technology.</p>
-                  <div className="case-arch-flow" role="list">
-                    {project.architecture.map((item, index) => (
-                      <div key={item.id} className="case-arch-step" role="listitem">
-                        <button
-                          type="button"
-                          className={`case-arch-node ${node?.id === item.id ? "is-active" : ""}`}
-                          onClick={() => setActiveNode(item.id)}
-                          aria-pressed={node?.id === item.id}
-                        >
-                          <span>{String(index + 1).padStart(2, "0")}</span>
-                          {item.label}
-                        </button>
-                        {index < project.architecture.length - 1 && (
-                          <span className="case-arch-arrow" aria-hidden="true">
-                            -&gt;
-                          </span>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                  {node && (
-                    <div className="case-block case-arch-detail">
-                      <h4>{node.label}</h4>
-                      <p><strong>Role.</strong> {node.role}</p>
-                      <p><strong>Responsibility.</strong> {node.responsibility}</p>
-                      <p><strong>Data flow.</strong> {node.dataFlow}</p>
-                      <p><strong>Technology.</strong> {node.technology}</p>
-                    </div>
-                  )}
-                </div>
+                <ArchitectureViewer nodes={project.architecture} title={project.title + " architecture"} />
               )}
 
               {tab === "engineering" && (
