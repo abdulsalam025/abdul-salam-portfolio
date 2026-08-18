@@ -8,6 +8,7 @@ import EngineeringDashboard from "./components/EngineeringDashboard/EngineeringD
 import ProjectCaseStudies from "./components/ProjectCaseStudies/ProjectCaseStudies";
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
 import { PROJECTS } from "./data/projects";
+import AILab from "./components/AILab/AILab";
 
 const API_URL = import.meta.env.VITE_API_URL || "https://abdul-salam-portfolio.onrender.com";
 
@@ -165,6 +166,7 @@ function App() {
             <a href="#projects" onClick={() => setMobileMenuOpen(false)}>Projects</a>
             <a href="#resume" onClick={() => setMobileMenuOpen(false)}>Resume</a>
             <a href="#dashboard" onClick={() => setMobileMenuOpen(false)}>Dashboard</a>
+            <a href="#ailab" onClick={() => setMobileMenuOpen(false)}>AI Lab</a>
             <a href="#contact" onClick={() => setMobileMenuOpen(false)}>Contact</a>
           </nav>
           
@@ -373,6 +375,9 @@ function App() {
         </ErrorBoundary>
         <ErrorBoundary fallbackTitle="Dashboard failed to render">
           <EngineeringDashboard projectCount={4} repos={ghStats.repos} followers={ghStats.followers} status={ghStatus} />
+        </ErrorBoundary>
+        <ErrorBoundary fallbackTitle="AI Lab failed to render">
+          <AILab />
         </ErrorBoundary>
       </main>
 
