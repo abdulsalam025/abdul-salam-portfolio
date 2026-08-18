@@ -1,0 +1,15 @@
+.journal-toolbar, .journal-item, .journal-empty, .road-card { padding: 18px; }
+.journal-stats, .journal-controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.journal-stats span, .journal-hint { color: var(--text-secondary); font-size: 0.85rem; }
+.journal-controls label { display: inline-flex; align-items: center; gap: 6px; }
+.journal-controls input, .journal-controls select { padding: 8px 10px; border-radius: 10px; border: 1px solid var(--glass-border-dark); background: var(--input-bg); color: inherit; }
+.journal-list { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.journal-head { width: 100%; display: grid; grid-template-columns: 140px 180px 1fr auto; gap: 10px; align-items: center; text-align: left; background: none; border: 0; color: inherit; cursor: pointer; }
+.journal-date { color: var(--accent); font-size: 0.8rem; }
+.journal-project { color: var(--text-secondary); font-size: 0.8rem; }
+.journal-head svg.is-open { transform: rotate(180deg); }
+.journal-body { margin-top: 12px; }
+.road-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 16px; }
+.road-card header { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 8px; }
+.road-card[data-status="completed"] { border-color: var(--accent); }
+@media (max-width: 800px) { .journal-head { grid-template-columns: 1fr auto; } .journal-date, .journal-project { grid-column: 1 / -1; } }

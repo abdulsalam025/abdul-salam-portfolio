@@ -10,6 +10,7 @@ import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
 import { PROJECTS } from "./data/projects";
 import AILab from "./components/AILab/AILab";
 import GitHubActivity from "./components/GitHubActivity/GitHubActivity";
+import EngineeringJournal from "./components/EngineeringJournal/EngineeringJournal";
 import { dashboardStatus, useGitHub } from "./hooks/useGitHub";
 
 const API_URL = import.meta.env.VITE_API_URL || "https://abdul-salam-portfolio.onrender.com";
@@ -160,6 +161,8 @@ function App() {
             <a href="#dashboard" onClick={() => setMobileMenuOpen(false)}>Dashboard</a>
             <a href="#ailab" onClick={() => setMobileMenuOpen(false)}>AI Lab</a>
             <a href="#github" onClick={() => setMobileMenuOpen(false)}>GitHub</a>
+            <a href="#buildlog" onClick={() => setMobileMenuOpen(false)}>Build Log</a>
+            <a href="#roadmap" onClick={() => setMobileMenuOpen(false)}>Roadmap</a>
             <a href="#contact" onClick={() => setMobileMenuOpen(false)}>Contact</a>
           </nav>
           
@@ -374,6 +377,9 @@ function App() {
         </ErrorBoundary>
         <ErrorBoundary fallbackTitle="GitHub section failed to render">
           <GitHubActivity github={github} />
+        </ErrorBoundary>
+        <ErrorBoundary fallbackTitle="Engineering journal failed to render">
+          <EngineeringJournal />
         </ErrorBoundary>
       </main>
 
