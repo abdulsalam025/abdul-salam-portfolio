@@ -5,6 +5,9 @@ import profilePhoto from "./assets/profile-optimized.webp";
 import "./App.css";
 import CinematicIntro from "./components/CinematicIntro/CinematicIntro";
 import EngineeringDashboard from "./components/EngineeringDashboard/EngineeringDashboard";
+import ProjectCaseStudies from "./components/ProjectCaseStudies/ProjectCaseStudies";
+import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
+import { PROJECTS } from "./data/projects";
 
 const API_URL = import.meta.env.VITE_API_URL || "https://abdul-salam-portfolio.onrender.com";
 
@@ -15,7 +18,7 @@ const scrollRevealRight = { hidden: { opacity: 0, x: 50, scale: 0.95 }, visible:
 function App() {
   const [darkMode, setDarkMode] = useState(true);
   const [selectedProject, setSelectedProject] = useState(null);
-  const [activeTab, setActiveTab] = useState("overview"); 
+ 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [contactStatus, setContactStatus] = useState("");
   const [contactSending, setContactSending] = useState(false);
@@ -310,13 +313,8 @@ function App() {
           <div className="section-label">04 — PROJECTS</div>
           <div className="section-heading"><h2>Things I've <span className="gradient-text">Built.</span></h2><p>A selection of projects that demonstrate my development and problem-solving skills.</p></div>
           <div className="projects-grid">
-            {[
-              { id: "sports", type: "DESIGN THINKING / WEB", title: "Community Sports Equipment Library", tags: ["HTML", "CSS", "JavaScript"], desc: "A platform designed to connect students, institutions and organizations with reusable sports equipment." },
-              { id: "flight", type: "PYTHON / SOFTWARE", title: "Flight Reservation System", tags: ["Python", "Logic"], desc: "A reservation system focused on flight search, passenger information and booking workflows." },
-              { id: "jarvis", type: "AI / PERSONAL ASSISTANT", title: "Jarvis", tags: ["Python", "AI"], desc: "An AI-powered personal assistant project designed to interact with the user and perform useful tasks through intelligent automation." },
-              { id: "water", type: "FULL STACK / WEB", title: "Water Delivery System", tags: ["React", "Node.js", "Express"], desc: "A web-based water delivery platform designed to manage customers, water orders and delivery workflows." }
-            ].map((p, i) => (
-              <article className="glass-panel project-card" key={p.id} onClick={() => {setSelectedProject(p.id); setActiveTab("overview");}}>
+            {PROJECTS.map((p, i) => (
+              <article className="glass-panel project-card" key={p.id} onClick={() => setSelectedProject(p.id)} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSelectedProject(p.id); } }} role="button" tabIndex={0} aria-label={"Open case study: " + p.title}>
                 <div className="project-number">0{i+1}</div>
                 <div style={{position: 'relative', zIndex: 2}}><span className="eyebrow">{p.type}</span><h3>{p.title}</h3><p>{p.desc}</p><div className="tags">{p.tags.map(t => <span key={t}>{t}</span>)}</div></div>
                 <ArrowRight className="project-arrow" size={28} />
@@ -370,85 +368,12 @@ function App() {
           </div>
         </motion.section>
 
-        <AnimatePresence>
-          {selectedProject && (
-            <motion.div className="project-modal-overlay" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelectedProject(null)}>
-              <motion.div className="glass-panel project-modal" initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 20 }} onClick={(e) => e.stopPropagation()}>
-                <button className="modal-close" onClick={() => setSelectedProject(null)}>×</button>
-
-                <div className="modal-tabs">
-                  <button className={`modal-tab ${activeTab === 'overview' ? 'active' : ''}`} onClick={() => setActiveTab('overview')}><Sparkles size={16} style={{display:'inline', verticalAlign:'middle', marginRight:'5px'}}/> Overview</button>
-                  <button className={`modal-tab ${activeTab === 'arch' ? 'active' : ''}`} onClick={() => setActiveTab('arch')}><Code2 size={16} style={{display:'inline', verticalAlign:'middle', marginRight:'5px'}}/> Architecture</button>
-                </div>
-
-                {selectedProject === "sports" && activeTab === 'overview' && (
-                  <motion.div initial={{opacity:0}} animate={{opacity:1}}>
-                    <span className="eyebrow">DESIGN THINKING / WEB</span><h2>Community Sports Equipment Library</h2>
-                    <p>A platform designed to connect students, institutions and organizations with reusable sports equipment.</p>
-                    <div className="modal-section"><h4>Key Features</h4><ul><li>Sports equipment discovery</li><li>Student-oriented interface</li><li>Equipment sharing concept</li></ul></div>
-                  </motion.div>
-                )}
-                {selectedProject === "sports" && activeTab === 'arch' && (
-                  <motion.div initial={{opacity:0}} animate={{opacity:1}}>
-                    <div className="modal-section"><h4>Frontend Stack</h4><div className="tags"><span>HTML5</span><span>CSS3</span><span>Vanilla JS</span></div></div>
-                    <div className="modal-section"><h4>System Design</h4><p>DOM manipulation and event-driven architecture focusing on accessible, responsive UI without heavy framework overhead.</p></div>
-                  </motion.div>
-                )}
-
-                {selectedProject === "flight" && activeTab === 'overview' && (
-                  <motion.div initial={{opacity:0}} animate={{opacity:1}}>
-                    <span className="eyebrow">PYTHON / SOFTWARE</span><h2>Flight Reservation System</h2>
-                    <p>A reservation system focused on flight search, passenger information and booking workflows.</p>
-                    <div className="modal-section"><h4>Key Features</h4><ul><li>Flight search</li><li>Passenger information</li><li>Reservation workflow</li></ul></div>
-                  </motion.div>
-                )}
-                {selectedProject === "flight" && activeTab === 'arch' && (
-                  <motion.div initial={{opacity:0}} animate={{opacity:1}}>
-                    <div className="modal-section"><h4>Core Logic</h4><div className="tags"><span>Python 3</span><span>Data Structures</span></div></div>
-                    <div className="modal-section"><h4>System Design</h4><p>Terminal-based software utilizing OOP principles. Implements state management for passenger booking arrays and flight schedules.</p></div>
-                  </motion.div>
-                )}
-
-                {selectedProject === "jarvis" && activeTab === 'overview' && (
-                  <motion.div initial={{opacity:0}} animate={{opacity:1}}>
-                    <div className="modal-project-header">
-                      <div><span className="eyebrow">AI / PERSONAL ASSISTANT</span><h2>Jarvis</h2></div>
-                      <span className="modal-status"><span></span> Personal Project</span>
-                    </div>
-                    <p>Jarvis is a personal assistant project focused on creating an intelligent interface between the user and useful digital tasks.</p>
-                    <div className="modal-section"><h4>Key Features</h4><ul><li>Personal assistant interaction</li><li>Intelligent task handling</li><li>Automation-oriented workflow</li></ul></div>
-                  </motion.div>
-                )}
-                {selectedProject === "jarvis" && activeTab === 'arch' && (
-                  <motion.div initial={{opacity:0}} animate={{opacity:1}}>
-                    <div className="modal-section"><h4>AI Stack</h4><div className="tags"><span>Python</span><span>NLTK</span><span>SpeechRecognition</span></div></div>
-                    <div className="modal-section"><h4>System Design</h4><p>Event-loop driven automation script. Captures audio input, parses intent using natural language logic, and executes OS-level scripts dynamically.</p></div>
-                  </motion.div>
-                )}
-
-                {selectedProject === "water" && activeTab === 'overview' && (
-                  <motion.div initial={{opacity:0}} animate={{opacity:1}}>
-                    <span className="eyebrow">FULL STACK / WEB</span><h2>Water Delivery System</h2>
-                    <p>A web-based water delivery platform designed to simplify customer orders, delivery management and water-service workflows.</p>
-                    <div className="modal-section"><h4>Key Features</h4><ul><li>Customer-oriented ordering interface</li><li>Water delivery workflow management</li><li>Responsive web application</li></ul></div>
-                  </motion.div>
-                )}
-                {selectedProject === "water" && activeTab === 'arch' && (
-                  <motion.div initial={{opacity:0}} animate={{opacity:1}}>
-                    <div className="modal-section"><h4>Tech Stack</h4><div className="tags"><span>React</span><span>Node.js</span><span>Express</span><span>REST API</span></div></div>
-                    <div className="modal-section"><h4>System Design</h4><p>Full MERN-like stack without MongoDB (Stateless or SQL logic). React frontend communicates via REST to an Express backend handling delivery logic.</p></div>
-                  </motion.div>
-                )}
-
-                <div className="modal-footer">
-                  <div><span className="modal-footer-label">PROJECT</span><strong>AI</strong></div>
-                  <a href="#" className="glass-btn secondary-button" onClick={(e) => e.preventDefault()}>View GitHub <ArrowRight size={20} /></a>
-                </div>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      <EngineeringDashboard projectCount={4} repos={ghStats.repos} followers={ghStats.followers} status={ghStatus} />
+        <ErrorBoundary fallbackTitle="Case study failed to render">
+          <ProjectCaseStudies projectId={selectedProject} onClose={() => setSelectedProject(null)} />
+        </ErrorBoundary>
+        <ErrorBoundary fallbackTitle="Dashboard failed to render">
+          <EngineeringDashboard projectCount={4} repos={ghStats.repos} followers={ghStats.followers} status={ghStatus} />
+        </ErrorBoundary>
       </main>
 
       <footer style={{ borderTop: '1px solid var(--glass-border-dark)', padding: '50px 5%', textAlign: 'center', marginTop: '60px' }}>

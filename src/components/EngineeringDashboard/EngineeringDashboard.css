@@ -1,66 +1,80 @@
-.dashboard-section { position: relative; z-index: 2; width: 100%; }
-
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-  margin-top: 30px;
-  width: 100%;
-  box-sizing: border-box;
+.dashboard-section {
+  position: relative;
 }
 
-.dashboard-card {
-  padding: 24px;
+.dash-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.dash-card {
+  padding: 20px 18px;
+}
+
+.dash-card-wide {
+  grid-column: span 3;
+}
+
+.dash-stat-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.dash-stat,
+.dash-stat-solo {
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
   gap: 10px;
-  box-sizing: border-box;
-  color: var(--text-primary) !important;
 }
 
-.dashboard-card-wide { grid-column: span 3; }
-.dashboard-icon { color: var(--accent); }
-
-.dashboard-value {
-  font-family: 'Cinzel', serif;
-  font-size: 2rem;
-  font-weight: 900;
-  color: var(--text-primary) !important;
+.dash-stat strong,
+.dash-stat-solo strong {
+  display: block;
+  font-size: 1.35rem;
+  line-height: 1.2;
 }
 
-.dashboard-value-muted { opacity: 0.5; font-family: 'Fira Code', monospace; font-size: 1.2rem; }
-.dashboard-value-error { color: var(--text-secondary); opacity: 0.6; }
-
-.dashboard-label {
-  font-family: 'Fira Code', monospace;
+.dash-stat span,
+.dash-stat-solo span {
+  display: block;
+  margin-top: 4px;
   font-size: 0.75rem;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--text-secondary) !important;
-  font-weight: 700;
+  color: var(--text-secondary);
 }
 
-.dashboard-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
-.dashboard-tags span {
-  font-size: 0.75rem;
-  padding: 5px 12px;
-  background: var(--tag-bg);
-  border: 1px solid var(--glass-border-dark);
-  border-radius: 20px;
-  color: var(--text-primary) !important;
-  font-weight: 700;
-  font-family: 'Fira Code', monospace;
+.dash-tags {
+  margin-top: 14px;
 }
 
 .dashboard-note {
-  margin-top: 16px;
-  font-size: 0.8rem;
-  color: var(--text-secondary) !important;
-  text-align: center;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 14px 0 0;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+}
+
+.dashboard-note-error {
+  color: var(--text-secondary);
 }
 
 @media (max-width: 900px) {
-  .dashboard-grid { grid-template-columns: 1fr; }
-  .dashboard-card-wide { grid-column: span 1; }
+  .dash-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dash-card-wide {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .dash-stat-row {
+    grid-template-columns: 1fr;
+  }
 }
