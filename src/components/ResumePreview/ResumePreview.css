@@ -1,0 +1,4 @@
+.resume-preview { margin-top: 20px; }
+.resume-preview-note { margin-top: 16px; color: var(--text-secondary); }
+.resume-preview-missing { display: flex; gap: 12px; align-items: flex-start; padding: 18px; margin-top: 16px; }
+.resume-frame { width: 100%; min-height: 70vh; margin-top: 16px; border: 1px solid var(--glass-border-dark); border-radius: 16px; background: var(--input-bg); }

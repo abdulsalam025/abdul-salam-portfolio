@@ -1,0 +1,5 @@
+.field-error { display: block; margin-top: 6px; color: #f0a0a0; font-size: 0.8rem; }
+.contact-result { margin-top: 12px; font-weight: 700; }
+.contact-result.is-ok { color: var(--accent); }
+.contact-result.is-bad { color: #f0a0a0; }
+.contact-fallback { display: inline-block; margin-top: 8px; color: var(--accent); font-weight: 700; text-decoration: none; }

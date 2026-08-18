@@ -11,6 +11,8 @@ import { PROJECTS } from "./data/projects";
 import AILab from "./components/AILab/AILab";
 import GitHubActivity from "./components/GitHubActivity/GitHubActivity";
 import EngineeringJournal from "./components/EngineeringJournal/EngineeringJournal";
+import ResumePreview from "./components/ResumePreview/ResumePreview";
+import ContactCenter from "./components/ContactCenter/ContactCenter";
 import { dashboardStatus, useGitHub } from "./hooks/useGitHub";
 
 const API_URL = import.meta.env.VITE_API_URL || "https://abdul-salam-portfolio.onrender.com";
@@ -344,10 +346,7 @@ function App() {
             </div>
           </div>
           
-          <div className="resume-actions">
-            <a href="/Abdul_Salam_Resume.pdf" target="_blank" rel="noopener noreferrer" className="glass-btn primary-button" onMouseMove={handleMagnetic} onMouseLeave={resetMagnetic}>View Resume <ArrowRight size={20} /></a>
-            <a href="/Abdul_Salam_Resume.pdf" download="Abdul_Salam_Resume.pdf" className="glass-btn secondary-button" onMouseMove={handleMagnetic} onMouseLeave={resetMagnetic}>Download Data <ArrowDown size={20} /></a>
-          </div>
+          <ResumePreview />
         </motion.section>
 
         <motion.section className="section" id="contact" variants={scrollReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }}>
@@ -355,13 +354,7 @@ function App() {
           <div className="glass-panel contact-box">
             <div className="contact-grid">
               <div><span className="eyebrow">LET'S CONNECT</span><h2>Have an idea?<br /><span className="gradient-text">Let's build it.</span></h2><p>I'm interested in projects, collaboration and opportunities related to software, AI and technology.</p><div className="contact-direct" style={{marginTop: '30px'}}><span style={{fontSize: '0.85rem', color: 'var(--text-secondary)'}}>Prefer email?</span><a href="mailto:abdulsalam024.main@gmail.com" style={{color: 'var(--accent)', fontWeight: 'bold', textDecoration: 'none'}}>abdulsalam024.main@gmail.com</a></div></div>
-              <form className="contact-form" onSubmit={handleContactSubmit}>
-                <div className="contact-form-row"><label><span>Name</span><input type="text" name="name" placeholder="Your name" autoComplete="name" required /></label><label><span>Email</span><input type="email" name="email" placeholder="you@example.com" autoComplete="email" required /></label></div>
-                <label><span>Subject</span><input type="text" name="subject" placeholder="What would you like to discuss?" required /></label>
-                <label><span>Message</span><textarea name="message" rows="5" placeholder="Tell me about your idea, project or opportunity..." required></textarea></label>
-                <button type="submit" className="glass-btn primary-button" disabled={contactSending} onMouseMove={handleMagnetic} onMouseLeave={resetMagnetic}>{contactSending ? "Sending..." : "Send Message"} <Mail size={20} /></button>
-                {contactStatus && <p style={{color: 'var(--accent)', fontWeight: 'bold'}}>{contactStatus}</p>}
-              </form>
+              <ContactCenter />
             </div>
           </div>
         </motion.section>
