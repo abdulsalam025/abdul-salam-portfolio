@@ -9,6 +9,8 @@ import ProjectCaseStudies from "./components/ProjectCaseStudies/ProjectCaseStudi
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
 import { PROJECTS } from "./data/projects";
 import AILab from "./components/AILab/AILab";
+import GitHubActivity from "./components/GitHubActivity/GitHubActivity";
+import { dashboardStatus, useGitHub } from "./hooks/useGitHub";
 
 const API_URL = import.meta.env.VITE_API_URL || "https://abdul-salam-portfolio.onrender.com";
 
@@ -27,8 +29,7 @@ function App() {
   const [terminalLine, setTerminalLine] = useState(0);
   
   const [cmdOpen, setCmdOpen] = useState(false);
-  const [ghStats, setGhStats] = useState({ repos: '-', followers: '-' });
-  const [ghStatus, setGhStatus] = useState('loading');
+  const github = useGitHub();
 
   const terminalSequence = [
     "Initializing Neural Core...",
@@ -77,15 +78,6 @@ function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  useEffect(() => {
-    fetch('https://api.github.com/users/abdulsalam025')
-      .then(res => { if (!res.ok) { throw new Error('GitHub API error'); } return res.json(); })
-      .then(data => {
-        if(data.public_repos !== undefined) {
-          setGhStats({ repos: data.public_repos, followers: data.followers }); setGhStatus('success');
-        }
-      }).catch(() => setGhStatus('error'));
-  }, []);
 
   const handleContactSubmit = async (event) => {
     event.preventDefault();
@@ -167,6 +159,7 @@ function App() {
             <a href="#resume" onClick={() => setMobileMenuOpen(false)}>Resume</a>
             <a href="#dashboard" onClick={() => setMobileMenuOpen(false)}>Dashboard</a>
             <a href="#ailab" onClick={() => setMobileMenuOpen(false)}>AI Lab</a>
+            <a href="#github" onClick={() => setMobileMenuOpen(false)}>GitHub</a>
             <a href="#contact" onClick={() => setMobileMenuOpen(false)}>Contact</a>
           </nav>
           
@@ -274,8 +267,8 @@ function App() {
               <p>I'm Abdul Salam, an Artificial Intelligence and Machine Learning engineering student with a strong interest in software development, intelligent systems and practical problem solving.</p>
               
               <div style={{display: 'flex', gap: '20px', marginTop: '20px', marginBottom: '20px', padding: '15px', background: 'var(--input-bg)', borderRadius: '12px', border: '1px solid var(--glass-border-dark)'}}>
-                <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}><GitBranch size={24} color="var(--accent)"/> <div><strong style={{display:'block', fontSize:'1.2rem'}}>{ghStats.repos}</strong><span style={{fontSize:'0.75rem', color: 'var(--text-secondary)', textTransform:'uppercase', fontWeight:'bold'}}>Public Repos</span></div></div>
-                <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}><Code2 size={24} color="var(--accent)"/> <div><strong style={{display:'block', fontSize:'1.2rem'}}>{ghStats.followers}</strong><span style={{fontSize:'0.75rem', color: 'var(--text-secondary)', textTransform:'uppercase', fontWeight:'bold'}}>Followers</span></div></div>
+                <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}><GitBranch size={24} color="var(--accent)"/> <div><strong style={{display:'block', fontSize:'1.2rem'}}>{github.data && github.data.profile ? github.data.profile.publicRepos : '-'}</strong><span style={{fontSize:'0.75rem', color: 'var(--text-secondary)', textTransform:'uppercase', fontWeight:'bold'}}>Public Repos</span></div></div>
+                <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}><Code2 size={24} color="var(--accent)"/> <div><strong style={{display:'block', fontSize:'1.2rem'}}>{github.data && github.data.profile ? github.data.profile.followers : '-'}</strong><span style={{fontSize:'0.75rem', color: 'var(--text-secondary)', textTransform:'uppercase', fontWeight:'bold'}}>Followers</span></div></div>
               </div>
 
               <p>My long-term goal is to become a technically strong engineer who can build reliable products and solve meaningful real-world problems with technology.</p>
@@ -374,10 +367,13 @@ function App() {
           <ProjectCaseStudies projectId={selectedProject} onClose={() => setSelectedProject(null)} />
         </ErrorBoundary>
         <ErrorBoundary fallbackTitle="Dashboard failed to render">
-          <EngineeringDashboard projectCount={4} repos={ghStats.repos} followers={ghStats.followers} status={ghStatus} />
+          <EngineeringDashboard projectCount={4} repos={github.data && github.data.profile ? github.data.profile.publicRepos : '-'} followers={github.data && github.data.profile ? github.data.profile.followers : '-'} status={dashboardStatus(github)} />
         </ErrorBoundary>
         <ErrorBoundary fallbackTitle="AI Lab failed to render">
           <AILab />
+        </ErrorBoundary>
+        <ErrorBoundary fallbackTitle="GitHub section failed to render">
+          <GitHubActivity github={github} />
         </ErrorBoundary>
       </main>
 
