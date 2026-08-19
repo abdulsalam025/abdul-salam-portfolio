@@ -24,13 +24,14 @@ export default function SkillsEvidence() {
           {items.map((item, index) => (
             <button key={item.id} type="button" role="listitem" className={item.id === open.id ? "glass-panel skill-card sk-card is-on" : "glass-panel skill-card sk-card"} onClick={() => setOpenId(item.id)} aria-pressed={item.id === open.id}>
               <span>{String(index + 1).padStart(2, "0")}</span>
-              <div><h3>{item.name}</h3><p>{item.category}</p></div>
+              <div><h3>{item.name}</h3><p>{item.category} - {item.level}</p></div>
             </button>
           ))}
         </div>
         <aside className="glass-panel sk-detail" aria-live="polite">
           <span className="eyebrow">{open.category}</span>
           <h3>{open.name}</h3>
+          <p><strong>Stage.</strong> {open.level}</p>
           <p><strong>Where used.</strong> {open.usedIn.length ? open.usedIn.join(", ") : "No shipped project yet. Still in coursework."}</p>
           <p><strong>What I know.</strong> {open.know}</p>
           <p><strong>What I am learning.</strong> {open.learning}</p>

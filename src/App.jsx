@@ -3,6 +3,8 @@ import { ArrowDown, ArrowRight, Mail, Moon, Sun, Code2, Sparkles, GitBranch, Bri
 import {useEffect, useState, Suspense } from "react";
 import profilePhoto from "./assets/profile-optimized.webp";
 import "./App.css";
+import AboutPanel from "./components/AboutPanel/AboutPanel";
+import "./components/AboutPanel/AboutPanel.css";
 import EngineeringHub from "./components/EngineeringHub/EngineeringHub";
 import "./components/EngineeringHub/EngineeringHub.css";
 import CinematicIntro from "./components/CinematicIntro/CinematicIntro";
@@ -187,6 +189,8 @@ function App() {
 
             <p className="eyebrow">AI & ML ENGINEERING STUDENT</p>
             <h1>Hi, I'm <span className="cinematic-text">Abdul Salam.</span><br />I build things with <em className="gradient-text">intelligence.</em></h1>
+            <p className="hero-lead">I build practical software, AI experiments, and full-stack applications while developing strong foundations in software engineering and machine learning.</p>
+            <div className="hero-tech" aria-label="Current technologies"><span>AI / ML</span><span>Python</span><span>React</span><span>Node.js</span><span>Software Engineering</span></div>
             
             <div className="ai-terminal-widget">
               <div className="terminal-header">
@@ -201,7 +205,7 @@ function App() {
 
             <div className="hero-buttons">
               <a href="#projects" className="glass-btn primary-button" onMouseMove={handleMagnetic} onMouseLeave={resetMagnetic}>
-                Explore My Work <ArrowRight size={20} />
+                Explore Projects <ArrowRight size={20} />
               </a>
               <a href="/Abdul_Salam_Resume.pdf" target="_blank" rel="noopener noreferrer" className="glass-btn secondary-button" onMouseMove={handleMagnetic} onMouseLeave={resetMagnetic}>
                 View Resume
@@ -252,24 +256,14 @@ function App() {
         <motion.section className="section" id="about" variants={scrollReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }}>
           <div className="section-label">01 — ABOUT ME</div>
           <div className="section-grid">
-            <div><span className="eyebrow">WHO I AM</span><h2>Building my path in <span className="gradient-text">AI & Technology.</span></h2></div>
-            <div className="glass-panel about-text">
-              <p>I'm Abdul Salam, an Artificial Intelligence and Machine Learning engineering student with a strong interest in software development, intelligent systems and practical problem solving.</p>
-              
-              <div style={{display: 'flex', gap: '20px', marginTop: '20px', marginBottom: '20px', padding: '15px', background: 'var(--input-bg)', borderRadius: '12px', border: '1px solid var(--glass-border-dark)'}}>
-                <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}><GitBranch size={24} color="var(--accent)"/> <div><strong style={{display:'block', fontSize:'1.2rem'}}>{github.data && github.data.profile ? github.data.profile.publicRepos : '-'}</strong><span style={{fontSize:'0.75rem', color: 'var(--text-secondary)', textTransform:'uppercase', fontWeight:'bold'}}>Public Repos</span></div></div>
-                <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}><Code2 size={24} color="var(--accent)"/> <div><strong style={{display:'block', fontSize:'1.2rem'}}>{github.data && github.data.profile ? github.data.profile.followers : '-'}</strong><span style={{fontSize:'0.75rem', color: 'var(--text-secondary)', textTransform:'uppercase', fontWeight:'bold'}}>Followers</span></div></div>
-              </div>
-
-              <p>My long-term goal is to become a technically strong engineer who can build reliable products and solve meaningful real-world problems with technology.</p>
-              <div className="stats"><div><strong>01+</strong><span>Years Learning</span></div><div><strong>04+</strong><span>Projects</span></div><div><strong>∞</strong><span>Curiosity</span></div></div>
-            </div>
+            <div><span className="eyebrow">WHO I AM</span><h2>AI and technology at <span className="gradient-text">AI & Technology.</span></h2></div>
+            <AboutPanel repos={github.data && github.data.profile ? github.data.profile.publicRepos : "-"} followers={github.data && github.data.profile ? github.data.profile.followers : "-"} />
           </div>
         </motion.section>
 
         <motion.section className="section" id="education" variants={scrollRevealLeft} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }}>
           <div className="section-label">02 — EDUCATION</div>
-          <div className="section-heading"><h2>My academic <span className="gradient-text">Journey.</span></h2><p>Building a strong engineering foundation through academics, programming and hands-on projects.</p></div>
+          <div className="section-heading"><h2>Education, kept <span className="gradient-text">factual.</span></h2><p>Building a strong engineering foundation through academics, programming and hands-on projects.</p></div>
           <div className="glass-panel education-card">
             <div className="education-year"><span>2025</span><div className="timeline-dot"></div></div>
             <div className="education-content">
