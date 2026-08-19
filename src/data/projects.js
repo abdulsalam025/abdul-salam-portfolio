@@ -17,7 +17,7 @@ export const TECH_STACK = [
 
 export const PROJECTS = [
   {
-    id: "sports",
+    id: "sports", featured: true, status: "Prototype",
     number: "01",
     type: "DESIGN THINKING / WEB",
     title: "Community Sports Equipment Library",
@@ -94,7 +94,7 @@ export const PROJECTS = [
     ],
   },
   {
-    id: "flight",
+    id: "flight", featured: false, status: "Academic Project",
     number: "02",
     type: "PYTHON / SOFTWARE",
     title: "Flight Reservation System",
@@ -178,7 +178,7 @@ export const PROJECTS = [
     ],
   },
   {
-    id: "jarvis",
+    id: "jarvis", featured: false, status: "Experimental",
     number: "03",
     type: "AI / PERSONAL ASSISTANT",
     title: "Jarvis",
@@ -261,7 +261,7 @@ export const PROJECTS = [
     ],
   },
   {
-    id: "water",
+    id: "water", featured: false, status: "Prototype",
     number: "04",
     type: "FULL STACK / WEB",
     title: "Water Delivery System",

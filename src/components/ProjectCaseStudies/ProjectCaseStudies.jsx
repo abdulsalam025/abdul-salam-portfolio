@@ -85,7 +85,7 @@ export default function ProjectCaseStudies({ projectId, onClose }) {
             </button>
 
             <div className="case-study-header">
-              <span className="eyebrow">{project.type}</span>
+              <span className="eyebrow">{project.type}</span>{project.status ? <span className="pg-status"> {project.status}</span> : null}
               <h2 id="case-study-title">{project.title}</h2>
               <p>{project.desc}</p>
               <div className="tags">

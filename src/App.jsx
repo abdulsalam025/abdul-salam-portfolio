@@ -3,6 +3,7 @@ import { ArrowDown, ArrowRight, Mail, Moon, Sun, Code2, Sparkles, GitBranch, Bri
 import {useEffect, useState, Suspense } from "react";
 import profilePhoto from "./assets/profile-optimized.webp";
 import "./App.css";
+import ProjectGrid from "./components/ProjectGrid/ProjectGrid";
 import AboutPanel from "./components/AboutPanel/AboutPanel";
 import "./components/AboutPanel/AboutPanel.css";
 import EngineeringHub from "./components/EngineeringHub/EngineeringHub";
@@ -191,6 +192,8 @@ function App() {
             <h1>Hi, I'm <span className="cinematic-text">Abdul Salam.</span><br />I build things with <em className="gradient-text">intelligence.</em></h1>
             <p className="hero-lead">I build practical software, AI experiments, and full-stack applications while developing strong foundations in software engineering and machine learning.</p>
             <div className="hero-tech" aria-label="Current technologies"><span>AI / ML</span><span>Python</span><span>React</span><span>Node.js</span><span>Software Engineering</span></div>
+            <p className="hero-lead">I build practical software, AI experiments, and full-stack applications while developing strong foundations in software engineering and machine learning.</p>
+            <div className="hero-tech" aria-label="Current technologies"><span>AI / ML</span><span>Python</span><span>React</span><span>Node.js</span><span>Software Engineering</span></div>
             
             <div className="ai-terminal-widget">
               <div className="terminal-header">
@@ -285,15 +288,7 @@ function App() {
         <motion.section className="section" id="projects" variants={scrollRevealRight} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }}>
           <div className="section-label">04 — PROJECTS</div>
           <div className="section-heading"><h2>Things I've <span className="gradient-text">Built.</span></h2><p>A selection of projects that demonstrate my development and problem-solving skills.</p></div>
-          <div className="projects-grid">
-            {PROJECTS.map((p, i) => (
-              <article className="glass-panel project-card" key={p.id} onClick={() => setSelectedProject(p.id)} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSelectedProject(p.id); } }} role="button" tabIndex={0} aria-label={"Open case study: " + p.title}>
-                <div className="project-number">0{i+1}</div>
-                <div style={{position: 'relative', zIndex: 2}}><span className="eyebrow">{p.type}</span><h3>{p.title}</h3><p>{p.desc}</p><div className="tags">{p.tags.map(t => <span key={t}>{t}</span>)}</div></div>
-                <ArrowRight className="project-arrow" size={28} />
-              </article>
-            ))}
-          </div>
+          <ProjectGrid onOpen={setSelectedProject} />
         </motion.section>
 
         <motion.section className="section" id="resume" variants={scrollRevealLeft} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }}>

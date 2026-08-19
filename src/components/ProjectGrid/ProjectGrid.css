@@ -1,0 +1,9 @@
+.pg-wrap { display: flex; flex-direction: column; gap: 16px; }
+.pg-card { position: relative; text-align: left; cursor: pointer; }
+.pg-card.is-featured { min-height: 220px; border-color: rgba(46, 230, 255, 0.35); }
+.pg-body { position: relative; z-index: 2; }
+.pg-status { display: inline-block; margin: 8px 0 10px; padding: 4px 10px; border-radius: 999px; font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 800; background: #1b2430; color: #9db0c4; }
+.pg-status.is-prototype { background: #3a2a08; color: #ffc857; }
+.pg-status.is-experimental { background: #2a1838; color: #d2b4ff; }
+.pg-status.is-academic-project { background: #11362f; color: #4dffc2; }
+@media (max-width: 640px) { .pg-card.is-featured { min-height: 0; } }
