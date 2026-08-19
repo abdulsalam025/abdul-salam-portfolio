@@ -1,0 +1,4 @@
+.engineering-hub { padding-bottom: 0; }
+.eng-subnav { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 28px; }
+.eng-subnav a { padding: 8px 12px; border-radius: 999px; border: 1px solid var(--glass-border-dark); color: var(--text-secondary); text-decoration: none; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.eng-subnav a:hover, .eng-subnav a:focus-visible { color: #7af3ff; border-color: #2ee6ff; }

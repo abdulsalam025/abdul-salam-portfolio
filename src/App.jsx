@@ -3,6 +3,8 @@ import { ArrowDown, ArrowRight, Mail, Moon, Sun, Code2, Sparkles, GitBranch, Bri
 import {useEffect, useState, Suspense } from "react";
 import profilePhoto from "./assets/profile-optimized.webp";
 import "./App.css";
+import EngineeringHub from "./components/EngineeringHub/EngineeringHub";
+import "./components/EngineeringHub/EngineeringHub.css";
 import CinematicIntro from "./components/CinematicIntro/CinematicIntro";
 import EngineeringDashboard from "./components/EngineeringDashboard/EngineeringDashboard";
 import ProjectCaseStudies from "./components/ProjectCaseStudies/ProjectCaseStudies";
@@ -145,16 +147,9 @@ function App() {
           <nav className={mobileMenuOpen ? "mobile-nav mobile-open" : "mobile-nav"}>
             <a href="#home" onClick={() => setMobileMenuOpen(false)}>Home</a>
             <a href="#about" onClick={() => setMobileMenuOpen(false)}>About</a>
-            <a href="#education" onClick={() => setMobileMenuOpen(false)}>Education</a>
             <a href="#skills" onClick={() => setMobileMenuOpen(false)}>Skills</a>
             <a href="#projects" onClick={() => setMobileMenuOpen(false)}>Projects</a>
-            <a href="#resume" onClick={() => setMobileMenuOpen(false)}>Resume</a>
-            <a href="#dashboard" onClick={() => setMobileMenuOpen(false)}>Dashboard</a>
-            <a href="#ailab" onClick={() => setMobileMenuOpen(false)}>AI Lab</a>
-            <a href="#github" onClick={() => setMobileMenuOpen(false)}>GitHub</a>
-            <a href="#buildlog" onClick={() => setMobileMenuOpen(false)}>Build Log</a>
-            <a href="#roadmap" onClick={() => setMobileMenuOpen(false)}>Roadmap</a>
-            <a href="#timeline" onClick={() => setMobileMenuOpen(false)}>Timeline</a>
+            <a href="#engineering" onClick={() => setMobileMenuOpen(false)}>Engineering</a>
             <a href="#contact" onClick={() => setMobileMenuOpen(false)}>Contact</a>
           </nav>
           
@@ -174,7 +169,7 @@ function App() {
       <nav className="mobile-bottom-dock">
         <a href="#home" className="dock-item"><Home size={20} /><span>Home</span></a>
         <a href="#projects" className="dock-item"><Briefcase size={20} /><span>Projects</span></a>
-        <a href="#resume" className="dock-item"><FileText size={20} /><span>Resume</span></a>
+        <a href="#engineering" className="dock-item"><FileText size={20} /><span>Work</span></a>
         <a href="#contact" className="dock-item"><User size={20} /><span>Contact</span></a>
       </nav>
 
@@ -346,6 +341,7 @@ function App() {
         <ErrorBoundary fallbackTitle="Case study failed to render">
           <ProjectCaseStudies projectId={selectedProject} onClose={() => setSelectedProject(null)} />
         </ErrorBoundary>
+        <EngineeringHub>
         <ErrorBoundary fallbackTitle="Timeline failed to render">
           <Suspense fallback={<SectionFallback label="Loading timeline" />}><EngineeringTimeline onOpenProject={setSelectedProject} /></Suspense>
         </ErrorBoundary>
@@ -361,6 +357,7 @@ function App() {
         <ErrorBoundary fallbackTitle="Engineering journal failed to render">
           <Suspense fallback={<SectionFallback label="Loading journal" />}><EngineeringJournal /></Suspense>
         </ErrorBoundary>
+        </EngineeringHub>
       </main>
 
       <footer style={{ borderTop: '1px solid var(--glass-border-dark)', padding: '50px 5%', textAlign: 'center', marginTop: '60px' }}>
