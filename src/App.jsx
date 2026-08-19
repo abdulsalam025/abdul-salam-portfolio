@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowDown, ArrowRight, Mail, Moon, Sun, Code2, Sparkles, GitBranch, BriefcaseBusiness, Menu, X, Terminal, Search, Copy, Download, Home, Briefcase, FileText, User } from "lucide-react";
-import { useEffect, useState } from "react";
+import {useEffect, useState, Suspense } from "react";
 import profilePhoto from "./assets/profile-optimized.webp";
 import "./App.css";
 import CinematicIntro from "./components/CinematicIntro/CinematicIntro";
@@ -8,14 +8,15 @@ import EngineeringDashboard from "./components/EngineeringDashboard/EngineeringD
 import ProjectCaseStudies from "./components/ProjectCaseStudies/ProjectCaseStudies";
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
 import { PROJECTS } from "./data/projects";
-import AILab from "./components/AILab/AILab";
-import GitHubActivity from "./components/GitHubActivity/GitHubActivity";
-import EngineeringJournal from "./components/EngineeringJournal/EngineeringJournal";
+import SectionFallback from "./components/SectionFallback/SectionFallback";
+import { AILab } from "./lazySections";
+import { GitHubActivity } from "./lazySections";
+import { EngineeringJournal } from "./lazySections";
 import ResumePreview from "./components/ResumePreview/ResumePreview";
 import ContactCenter from "./components/ContactCenter/ContactCenter";
 import CommandCenter from "./components/CommandCenter/CommandCenter";
 import EngineeringScrollNav from "./components/EngineeringScrollNav/EngineeringScrollNav";
-import EngineeringTimeline from "./components/EngineeringTimeline/EngineeringTimeline";
+import { EngineeringTimeline } from "./lazySections";
 import { dashboardStatus, useGitHub } from "./hooks/useGitHub";
 
 const API_URL = import.meta.env.VITE_API_URL || "https://abdul-salam-portfolio.onrender.com";
@@ -351,19 +352,19 @@ function App() {
           <ProjectCaseStudies projectId={selectedProject} onClose={() => setSelectedProject(null)} />
         </ErrorBoundary>
         <ErrorBoundary fallbackTitle="Timeline failed to render">
-          <EngineeringTimeline onOpenProject={setSelectedProject} />
+          <Suspense fallback={<SectionFallback label="Loading timeline" />}><EngineeringTimeline onOpenProject={setSelectedProject} /></Suspense>
         </ErrorBoundary>
         <ErrorBoundary fallbackTitle="Dashboard failed to render">
           <EngineeringDashboard projectCount={4} repos={github.data && github.data.profile ? github.data.profile.publicRepos : '-'} followers={github.data && github.data.profile ? github.data.profile.followers : '-'} status={dashboardStatus(github)} />
         </ErrorBoundary>
         <ErrorBoundary fallbackTitle="AI Lab failed to render">
-          <AILab />
+          <Suspense fallback={<SectionFallback label="Loading AI Lab" />}><AILab /></Suspense>
         </ErrorBoundary>
         <ErrorBoundary fallbackTitle="GitHub section failed to render">
-          <GitHubActivity github={github} />
+          <Suspense fallback={<SectionFallback label="Loading GitHub" />}><GitHubActivity github={github} /></Suspense>
         </ErrorBoundary>
         <ErrorBoundary fallbackTitle="Engineering journal failed to render">
-          <EngineeringJournal />
+          <Suspense fallback={<SectionFallback label="Loading journal" />}><EngineeringJournal /></Suspense>
         </ErrorBoundary>
       </main>
 

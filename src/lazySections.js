@@ -1,0 +1,5 @@
+import { lazy } from "react";
+export const AILab = lazy(() => import("./components/AILab/AILab"));
+export const GitHubActivity = lazy(() => import("./components/GitHubActivity/GitHubActivity"));
+export const EngineeringJournal = lazy(() => import("./components/EngineeringJournal/EngineeringJournal"));
+export const EngineeringTimeline = lazy(() => import("./components/EngineeringTimeline/EngineeringTimeline"));
