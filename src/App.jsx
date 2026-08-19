@@ -13,6 +13,7 @@ import GitHubActivity from "./components/GitHubActivity/GitHubActivity";
 import EngineeringJournal from "./components/EngineeringJournal/EngineeringJournal";
 import ResumePreview from "./components/ResumePreview/ResumePreview";
 import ContactCenter from "./components/ContactCenter/ContactCenter";
+import EngineeringTimeline from "./components/EngineeringTimeline/EngineeringTimeline";
 import { dashboardStatus, useGitHub } from "./hooks/useGitHub";
 
 const API_URL = import.meta.env.VITE_API_URL || "https://abdul-salam-portfolio.onrender.com";
@@ -165,6 +166,7 @@ function App() {
             <a href="#github" onClick={() => setMobileMenuOpen(false)}>GitHub</a>
             <a href="#buildlog" onClick={() => setMobileMenuOpen(false)}>Build Log</a>
             <a href="#roadmap" onClick={() => setMobileMenuOpen(false)}>Roadmap</a>
+            <a href="#timeline" onClick={() => setMobileMenuOpen(false)}>Timeline</a>
             <a href="#contact" onClick={() => setMobileMenuOpen(false)}>Contact</a>
           </nav>
           
@@ -361,6 +363,9 @@ function App() {
 
         <ErrorBoundary fallbackTitle="Case study failed to render">
           <ProjectCaseStudies projectId={selectedProject} onClose={() => setSelectedProject(null)} />
+        </ErrorBoundary>
+        <ErrorBoundary fallbackTitle="Timeline failed to render">
+          <EngineeringTimeline onOpenProject={setSelectedProject} />
         </ErrorBoundary>
         <ErrorBoundary fallbackTitle="Dashboard failed to render">
           <EngineeringDashboard projectCount={4} repos={github.data && github.data.profile ? github.data.profile.publicRepos : '-'} followers={github.data && github.data.profile ? github.data.profile.followers : '-'} status={dashboardStatus(github)} />
