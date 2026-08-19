@@ -13,6 +13,8 @@ import GitHubActivity from "./components/GitHubActivity/GitHubActivity";
 import EngineeringJournal from "./components/EngineeringJournal/EngineeringJournal";
 import ResumePreview from "./components/ResumePreview/ResumePreview";
 import ContactCenter from "./components/ContactCenter/ContactCenter";
+import CommandCenter from "./components/CommandCenter/CommandCenter";
+import EngineeringScrollNav from "./components/EngineeringScrollNav/EngineeringScrollNav";
 import EngineeringTimeline from "./components/EngineeringTimeline/EngineeringTimeline";
 import { dashboardStatus, useGitHub } from "./hooks/useGitHub";
 
@@ -122,6 +124,7 @@ function App() {
   return (
     <div className="app">
       <CinematicIntro />
+      <EngineeringScrollNav />
 
       <div className="liquid-aura-cursor"></div>
 
@@ -131,25 +134,7 @@ function App() {
         <div className="g-blob g-cyan"></div>
       </div>
 
-      <AnimatePresence>
-        {cmdOpen && (
-          <motion.div className="cmd-overlay" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setCmdOpen(false)}>
-            <motion.div className="cmd-modal" initial={{ scale: 0.95, y: -20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: -20 }} onClick={(e) => e.stopPropagation()}>
-              <div className="cmd-header">
-                <Search size={24} />
-                <input type="text" className="cmd-input" placeholder="Search commands..." autoFocus />
-              </div>
-              <div className="cmd-list">
-                <button className="cmd-item" onClick={() => executeCommand('theme')}><Sun size={20}/> Toggle Light/Dark Theme</button>
-                <button className="cmd-item" onClick={() => executeCommand('projects')}><Code2 size={20}/> Jump to Projects</button>
-                <button className="cmd-item" onClick={() => executeCommand('email')}><Copy size={20}/> Copy Email Address</button>
-                <button className="cmd-item" onClick={() => executeCommand('resume')}><Download size={20}/> Download Resume PDF</button>
-                <button className="cmd-item" onClick={() => executeCommand('contact')}><Mail size={20}/> Open Contact Form</button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <CommandCenter open={cmdOpen} onClose={() => setCmdOpen(false)} />
 
       <header className="navbar">
         <div className="nav-container">

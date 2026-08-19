@@ -1,0 +1,11 @@
+.cmd-overlay { position: fixed; inset: 0; z-index: 90; background: rgba(4, 8, 12, 0.72); display: flex; align-items: flex-start; justify-content: center; padding: 12vh 16px 16px; }
+.cmd-modal { width: min(640px, 100%); padding: 14px; }
+.cmd-header { display: flex; align-items: center; gap: 10px; padding: 8px 10px 12px; border-bottom: 1px solid var(--glass-border-dark); }
+.cmd-input { flex: 1; border: 0; background: transparent; color: inherit; font-size: 1.05rem; outline: none; }
+.cmd-list { display: flex; flex-direction: column; max-height: 48vh; overflow: auto; margin-top: 8px; }
+.cmd-item { display: grid; grid-template-columns: 42px 1fr auto; gap: 10px; align-items: center; text-align: left; border: 0; background: transparent; color: inherit; padding: 10px 12px; border-radius: 10px; cursor: pointer; }
+.cmd-item.is-active { background: rgba(46, 230, 255, 0.1); }
+.cmd-num { color: #2ee6ff; font-size: 0.78rem; letter-spacing: 0.08em; }
+.cmd-group { color: var(--text-secondary); font-size: 0.75rem; }
+.cmd-empty, .cmd-hint { color: var(--text-secondary); padding: 10px 12px; margin: 0; }
+.cmd-hint { font-size: 0.78rem; }
