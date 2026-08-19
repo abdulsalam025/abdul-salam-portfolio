@@ -14,6 +14,7 @@ import { GitHubActivity } from "./lazySections";
 import { EngineeringJournal } from "./lazySections";
 import ResumePreview from "./components/ResumePreview/ResumePreview";
 import ContactCenter from "./components/ContactCenter/ContactCenter";
+import SkillsEvidence from "./components/SkillsEvidence/SkillsEvidence";
 import CommandCenter from "./components/CommandCenter/CommandCenter";
 import EngineeringScrollNav from "./components/EngineeringScrollNav/EngineeringScrollNav";
 import { EngineeringTimeline } from "./lazySections";
@@ -287,13 +288,7 @@ function App() {
         <motion.section className="section" id="skills" variants={scrollReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }}>
           <div className="section-label">03 — SKILLS</div>
           <div className="section-heading"><h2>My technical <span className="gradient-text">Toolbox.</span></h2><p>Technologies and concepts I use while building projects and improving my engineering skills.</p></div>
-          <div className="skills-grid">
-            {[["Python", "Programming"], ["C", "Programming"], ["JavaScript", "Web"], ["React", "Frontend"], ["HTML & CSS", "Web"], ["Git & GitHub", "Development"], ["AI / ML", "Artificial Intelligence"], ["Node.js", "Backend"]].map(([name, category], index) => (
-              <motion.div className="glass-panel skill-card" key={name} initial={{ opacity: 0, y: 25, scale: 0.95 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.6, delay: index * 0.05 }}>
-                <span>{String(index + 1).padStart(2, "0")}</span><div><h3>{name}</h3><p>{category}</p></div>
-              </motion.div>
-            ))}
-          </div>
+          <SkillsEvidence />
         </motion.section>
 
 

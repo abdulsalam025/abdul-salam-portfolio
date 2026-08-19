@@ -1,0 +1,11 @@
+.sk-wrap { margin-top: 8px; }
+.sk-search { display: block; max-width: 360px; margin-bottom: 18px; }
+.sk-search input { width: 100%; margin-top: 6px; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--glass-border-dark); background: var(--input-bg); color: inherit; }
+.sk-layout { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(240px, 0.8fr); gap: 16px; align-items: start; }
+.sk-card { text-align: left; cursor: pointer; color: inherit; }
+.sk-card.is-on { border-color: rgba(46, 230, 255, 0.45); box-shadow: 0 0 22px rgba(46, 230, 255, 0.12); }
+.sk-detail { padding: 22px 20px; }
+.sk-detail h3 { margin: 6px 0 12px; }
+.sk-detail p { color: var(--text-secondary); line-height: 1.6; }
+.sk-empty { color: var(--text-secondary); }
+@media (max-width: 860px) { .sk-layout { grid-template-columns: 1fr; } }
