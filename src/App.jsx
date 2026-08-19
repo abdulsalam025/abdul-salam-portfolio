@@ -123,6 +123,7 @@ function App() {
 
   return (
     <div className="app">
+      <a className="skip-link" href="#home">Skip to content</a>
       <CinematicIntro />
       <EngineeringScrollNav />
 
