@@ -1,253 +1,213 @@
-import { useMemo, useState } from "react";
-import { Activity, AlertCircle, Cpu, FileText } from "lucide-react";
-import {
-  ACTIVATIONS,
-  RECOMMENDER_ITEMS,
-  RECOMMENDER_TAGS,
-  classifyText,
-  recommend,
-  runNeuron,
-} from "./experiments";
+import { useState } from "react";
+import { Activity, Boxes, Code2, Cpu, FileText, Sparkles, Terminal } from "lucide-react";
+import { ExperimentVisual, LabControls, PipelineStrip, XRayTable } from "./LabVisuals";
+import { downsampleImageElement } from "./experiments";
+import { useLabEngine } from "./useLabEngine";
 import "./AILab.css";
 
-const EXPERIMENTS = [
-  { id: "neuron", label: "Neural playground" },
-  { id: "text", label: "Text classifier" },
-  { id: "image", label: "Image classifier" },
-  { id: "recs", label: "Recommender" },
-];
+const ICONS = {
+  nn: Cpu,
+  text: FileText,
+  image: Sparkles,
+  recs: Activity,
+  transformer: Terminal,
+  cnn: Boxes,
+  tree: Code2,
+  cluster: Activity,
+};
 
-function Analysis({ result }) {
-  if (!result) {
-    return (
-      <aside className="glass-panel lab-analysis">
-        <span className="eyebrow">ANALYSIS</span>
-        <p>Run the experiment. Every number here will come from that computation.</p>
-      </aside>
-    );
-  }
-
+function Metric({ label, value, hint }) {
   return (
-    <aside className="glass-panel lab-analysis" aria-live="polite">
-      <span className="eyebrow">ANALYSIS</span>
-      <p><strong>Model.</strong> {result.model}</p>
-      <p><strong>Input.</strong> {Array.isArray(result.input) ? result.input.join(", ") : String(result.input)}</p>
-      <p><strong>Process.</strong> {result.method || result.process}</p>
-      <p><strong>Output.</strong> {typeof result.output === "number" ? result.output.toFixed(6) : formatOutput(result.output)}</p>
-      <p><strong>Interpretation.</strong> {result.interpretation}</p>
-    </aside>
-  );
-}
-
-function formatOutput(output) {
-  if (Array.isArray(output)) {
-    if (output.length === 0) return "none";
-    return output.map((item) => item.title || item).join("; ");
-  }
-  return String(output);
-}
-
-function NeuronLab() {
-  const [x1, setX1] = useState(0.7);
-  const [x2, setX2] = useState(0.2);
-  const [w1, setW1] = useState(0.8);
-  const [w2, setW2] = useState(-0.4);
-  const [bias, setBias] = useState(0.1);
-  const [activationId, setActivationId] = useState("sigmoid");
-  const [result, setResult] = useState(null);
-
-  const run = (event) => {
-    event.preventDefault();
-    setResult(runNeuron({
-      x1: Number(x1),
-      x2: Number(x2),
-      w1: Number(w1),
-      w2: Number(w2),
-      bias: Number(bias),
-      activationId,
-    }));
-  };
-
-  return (
-    <div className="lab-split">
-      <form className="glass-panel lab-panel" onSubmit={run}>
-        <span className="eyebrow">SINGLE NEURON</span>
-        <h3>Forward pass</h3>
-        <p>z = w1*x1 + w2*x2 + b, then an activation. Weights are yours, not a trained checkpoint.</p>
-        <div className="lab-grid">
-          <label>x1<input type="number" step="0.1" value={x1} onChange={(e) => setX1(e.target.value)} /></label>
-          <label>x2<input type="number" step="0.1" value={x2} onChange={(e) => setX2(e.target.value)} /></label>
-          <label>w1<input type="number" step="0.1" value={w1} onChange={(e) => setW1(e.target.value)} /></label>
-          <label>w2<input type="number" step="0.1" value={w2} onChange={(e) => setW2(e.target.value)} /></label>
-          <label>bias<input type="number" step="0.1" value={bias} onChange={(e) => setBias(e.target.value)} /></label>
-          <label>activation
-            <select value={activationId} onChange={(e) => setActivationId(e.target.value)}>
-              {Object.values(ACTIVATIONS).map((act) => (
-                <option key={act.id} value={act.id}>{act.label}</option>
-              ))}
-            </select>
-          </label>
-        </div>
-        <button type="submit" className="glass-btn primary-button">Run inference</button>
-        {result && (
-          <dl className="lab-math">
-            <div><dt>INPUT</dt><dd>[{result.input.join(", ")}]</dd></div>
-            <div><dt>WEIGHTS</dt><dd>[{result.weights.join(", ")}]</dd></div>
-            <div><dt>BIAS</dt><dd>{result.bias}</dd></div>
-            <div><dt>Z</dt><dd>{result.z.toFixed(6)}</dd></div>
-            <div><dt>ACTIVATION</dt><dd>{result.activationFormula}</dd></div>
-            <div><dt>OUTPUT</dt><dd>{result.output.toFixed(6)}</dd></div>
-          </dl>
-        )}
-      </form>
-      <Analysis result={result} />
-    </div>
-  );
-}
-
-function TextLab() {
-  const [text, setText] = useState("I am debugging a React component and a REST API.");
-  const [result, setResult] = useState(null);
-
-  const run = (event) => {
-    event.preventDefault();
-    setResult(classifyText(text));
-  };
-
-  return (
-    <div className="lab-split">
-      <form className="glass-panel lab-panel" onSubmit={run}>
-        <span className="eyebrow">LEXICON CLASSIFIER</span>
-        <h3>Educational text classification</h3>
-        <p>Not an LLM. Tokens are scored with a small hand-written lexicon.</p>
-        <label>Input text
-          <textarea rows="4" value={text} onChange={(e) => setText(e.target.value)} />
-        </label>
-        <button type="submit" className="glass-btn primary-button">Classify</button>
-        {result && (
-          <div className="lab-math">
-            <p><strong>Tokens.</strong> {result.tokens.join(" ") || "(none)"}</p>
-            <p><strong>Hits.</strong> {result.hits.length === 0 ? "none" : result.hits.map((hit) => hit.token + "->" + hit.category + "(" + hit.weight + ")").join(", ")}</p>
-            <p><strong>Scores.</strong> ml {result.scores.ml}, software {result.scores.software}, web {result.scores.web}</p>
-            <p><strong>Result.</strong> {result.output}</p>
-          </div>
-        )}
-      </form>
-      <Analysis result={result} />
-    </div>
-  );
-}
-
-function ImageLab() {
-  return (
-    <div className="lab-split">
-      <div className="glass-panel lab-panel">
-        <span className="eyebrow">IMAGE CLASSIFICATION</span>
-        <h3>Model is not connected</h3>
-        <p>
-          <AlertCircle size={16} aria-hidden="true" /> No on-device image model is installed in this portfolio
-          (no TensorFlow.js / ONNX runtime). Predictions are not faked.
-        </p>
-      </div>
-      <aside className="glass-panel lab-analysis">
-        <span className="eyebrow">ANALYSIS</span>
-        <p><strong>Model.</strong> Not connected</p>
-        <p><strong>Input.</strong> None accepted</p>
-        <p><strong>Process.</strong> Unavailable</p>
-        <p><strong>Output.</strong> Unavailable</p>
-        <p><strong>Interpretation.</strong> Image classification will stay disabled until a real browser model is wired.</p>
-      </aside>
-    </div>
-  );
-}
-
-function RecsLab() {
-  const [selected, setSelected] = useState(["python", "ml"]);
-  const [result, setResult] = useState(null);
-
-  const toggle = (tag) => {
-    setSelected((prev) => (prev.includes(tag) ? prev.filter((item) => item !== tag) : [...prev, tag]));
-  };
-
-  const run = (event) => {
-    event.preventDefault();
-    setResult(recommend(selected));
-  };
-
-  const datasetPreview = useMemo(
-    () => RECOMMENDER_ITEMS.map((item) => item.title + " [" + item.tags.join(", ") + "]").join(" | "),
-    []
-  );
-
-  return (
-    <div className="lab-split">
-      <form className="glass-panel lab-panel" onSubmit={run}>
-        <span className="eyebrow">COSINE RECOMMENDER</span>
-        <h3>Tag overlap recommendations</h3>
-        <p>A fixed dataset of 8 items. Scores are cosine similarity on 0/1 tag vectors.</p>
-        <div className="lab-tags">
-          {RECOMMENDER_TAGS.map((tag) => (
-            <label key={tag} className={selected.includes(tag) ? "is-on" : ""}>
-              <input type="checkbox" checked={selected.includes(tag)} onChange={() => toggle(tag)} />
-              {tag}
-            </label>
-          ))}
-        </div>
-        <button type="submit" className="glass-btn primary-button">Recommend</button>
-        {result && (
-          <ol className="lab-recs">
-            {result.output.length === 0 && <li>No item shares a selected tag.</li>}
-            {result.output.map((item) => (
-              <li key={item.id}>
-                <strong>{item.title}</strong>
-                <span> score {item.score.toFixed(4)} - {item.tags.join(", ")}</span>
-              </li>
-            ))}
-          </ol>
-        )}
-        <p className="lab-dataset"><strong>Dataset.</strong> {datasetPreview}</p>
-      </form>
-      <Analysis result={result} />
+    <div className="lab-metric">
+      <span>{label}</span>
+      <strong>{value}</strong>
+      {hint ? <em>{hint}</em> : null}
     </div>
   );
 }
 
 export default function AILab() {
-  const [experiment, setExperiment] = useState("neuron");
+  const [selected, setSelected] = useState("nn");
+  const lab = useLabEngine(selected);
+  const {
+    experiment,
+    experiments,
+    bundle,
+    status,
+    paused,
+    xray,
+    setXray,
+    viz,
+    log,
+    live,
+    elapsed,
+    params,
+    nodeTotal,
+    activeNodes,
+    confidence,
+    simLatency,
+    run,
+    pause,
+    reset,
+    inputs,
+    setInputs,
+  } = lab;
+
+  const busy = status !== "IDLE" && status !== "COMPLETE";
+  const Icon = ICONS[experiment.id] || Cpu;
+
+  const onUpload = function (event) {
+    const file = event.target.files && event.target.files[0];
+    event.target.value = "";
+    if (!file || !file.type || file.type.indexOf("image/") !== 0) return;
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = function () {
+      const pixels = downsampleImageElement(img, 32);
+      URL.revokeObjectURL(url);
+      setInputs({ imageId: "upload", imagePixels: pixels });
+    };
+    img.onerror = function () { URL.revokeObjectURL(url); };
+    img.src = url;
+  };
 
   return (
     <section className="section lab-section" id="ailab" aria-labelledby="ailab-heading">
-      <div className="section-label">08 - AI / ML LAB</div>
+      <div className="section-label">EXPERIMENTS</div>
       <div className="section-heading">
         <h2 id="ailab-heading">
-          Experiments you can <span className="gradient-text">run.</span>
+          Experiment <span className="gradient-text">Lab</span>
         </h2>
-        <p>Browser-side only. No invented accuracy, confidence, or inference time.</p>
+        <p>Interactive visualization of machine-learning systems and inference pipelines.</p>
       </div>
 
-      <div className="lab-tabs" role="tablist" aria-label="Lab experiments">
-        {EXPERIMENTS.map((item) => (
+      <p className="lab-honesty">
+        Interactive visualization. Toy math runs in the browser. No production model is loaded.
+        Image and CNN use your pixels (sample or upload). Metrics marked SIMULATED are educational readouts, not benchmark results.
+      </p>
+
+      <div className="lab-shell">
+        <aside className="lab-pane lab-control" aria-label="Experiment control">
+          <span className="eyebrow">EXPERIMENT CONTROL</span>
+          <ul className="lab-exp-list" role="tablist" aria-label="Experiments">
+            {experiments.map(function (item) {
+              const ItemIcon = ICONS[item.id] || Cpu;
+              return (
+                <li key={item.id}>
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={selected === item.id}
+                    className={selected === item.id ? "is-on" : ""}
+                    onClick={function () { setSelected(item.id); }}
+                  >
+                    <ItemIcon size={14} aria-hidden="true" />
+                    <span className="lab-code">{item.code}</span>
+                    {item.name}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+
+          <LabControls experiment={experiment} inputs={inputs} setInputs={setInputs} onUpload={onUpload} />
+
+          <div className="lab-livebox" aria-live="polite">
+            <span className="eyebrow">PROCESSING</span>
+            <div className="lab-live-head">
+              <strong>{busy || status === "COMPLETE" ? status : "IDLE"}</strong>
+              <span>{live.layer}</span>
+            </div>
+            <div className="lab-bar" role="progressbar" aria-valuenow={live.progress} aria-valuemin={0} aria-valuemax={100}>
+              <i style={{ width: live.progress + "%" }} />
+            </div>
+            <div className="lab-pct">{live.progress}%</div>
+            <dl className="lab-kv">
+              <div><dt>CURRENT OPERATION</dt><dd>{live.operation}</dd></div>
+              <div><dt>CURRENT NODE</dt><dd>{live.node}</dd></div>
+              <div><dt>ACTIVATION</dt><dd>{live.activation ? live.activation.toFixed(3) : "0.000"}</dd></div>
+              <div><dt>WEIGHT</dt><dd>{live.weight ? live.weight.toFixed(3) : "0.000"}</dd></div>
+            </dl>
+          </div>
+
+          <div className="lab-actions">
+            <button type="button" className="glass-btn primary-button" onClick={run}>
+              {paused ? "RESUME" : "RUN INFERENCE"}
+            </button>
+            <button type="button" className="glass-btn secondary-button" onClick={pause} disabled={!busy || paused}>
+              PAUSE
+            </button>
+            <button type="button" className="glass-btn secondary-button" onClick={reset}>
+              RESET
+            </button>
+          </div>
+
           <button
-            key={item.id}
             type="button"
-            role="tab"
-            aria-selected={experiment === item.id}
-            className={experiment === item.id ? "modal-tab active" : "modal-tab"}
-            onClick={() => setExperiment(item.id)}
+            className={"lab-xray-btn" + (xray ? " is-on" : "")}
+            aria-pressed={xray}
+            onClick={function () { setXray(function (value) { return !value; }); }}
           >
-            {item.id === "neuron" && <Cpu size={14} aria-hidden="true" />}
-            {item.id === "text" && <FileText size={14} aria-hidden="true" />}
-            {item.id === "image" && <AlertCircle size={14} aria-hidden="true" />}
-            {item.id === "recs" && <Activity size={14} aria-hidden="true" />}
-            {item.label}
+            NEURAL X-RAY
           </button>
-        ))}
-      </div>
+        </aside>
 
-      {experiment === "neuron" && <NeuronLab />}
-      {experiment === "text" && <TextLab />}
-      {experiment === "image" && <ImageLab />}
-      {experiment === "recs" && <RecsLab />}
+        <div className="lab-pane lab-center">
+          <header className="lab-center-head">
+            <span className="eyebrow">LIVE MODEL VISUALIZATION</span>
+            <h3>
+              <Icon size={16} aria-hidden="true" /> {experiment.name}
+            </h3>
+            <p>{experiment.honest}</p>
+          </header>
+          <PipelineStrip stages={experiment.pipeline} active={viz.stage} />
+          <div className="lab-stage">
+            <ExperimentVisual experiment={experiment} bundle={bundle} viz={viz} status={status} />
+          </div>
+          {xray && <XRayTable experiment={experiment} bundle={bundle} viz={viz} />}
+        </div>
+
+        <aside className="lab-pane lab-telemetry" aria-label="System telemetry">
+          <span className="eyebrow">SYSTEM TELEMETRY</span>
+          <Metric label="MODEL" value={experiment.name} />
+          <Metric label="TYPE" value={experiment.type} />
+          <Metric label="STATUS" value={paused ? "PAUSED" : status} />
+          <Metric label="LAYERS" value={String(experiment.pipeline.length)} />
+          <Metric label="ACTIVE NODES" value={activeNodes + " / " + nodeTotal} />
+          <Metric
+            label="PARAMETERS"
+            value={params ? params.toLocaleString() : "n/a"}
+            hint={experiment.id === "nn" ? "real toy count" : "structure size"}
+          />
+          <Metric label="ACTIVATION" value={experiment.activation} />
+          <Metric
+            label="INFERENCE"
+            value={simLatency.toFixed(2) + " ms"}
+            hint="SIMULATED"
+          />
+          <Metric
+            label="CONFIDENCE"
+            value={confidence ? (confidence * 100).toFixed(1) + "%" : "-"}
+            hint={experiment.id === "image" || experiment.id === "cnn" ? "educational head" : "toy score"}
+          />
+          <Metric label="SIMULATION" value="YES" />
+          <Metric label="WALL TIME" value={(elapsed / 1000).toFixed(2) + " s"} hint="real animation clock" />
+
+          <div className="lab-log">
+            <span className="eyebrow">SYSTEM LOG</span>
+            <ol>
+              {log.length === 0 && <li className="is-empty">Idle. Set inputs, then press RUN INFERENCE.</li>}
+              {log.map(function (entry, index) {
+                return (
+                  <li key={entry.t + "-" + index}>
+                    <time>[{entry.t}]</time> {entry.text}
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
+        </aside>
+      </div>
     </section>
   );
 }

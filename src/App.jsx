@@ -257,7 +257,7 @@ function App() {
         </div>
 
         <motion.section className="section" id="about" variants={scrollReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }}>
-          <div className="section-label">01 — ABOUT ME</div>
+          <div className="section-label">01 — ABOUT</div>
           <div className="section-grid">
             <div><span className="eyebrow">WHO I AM</span><h2>AI and technology at <span className="gradient-text">AI & Technology.</span></h2></div>
             <AboutPanel repos={github.data && github.data.profile ? github.data.profile.publicRepos : "-"} followers={github.data && github.data.profile ? github.data.profile.followers : "-"} />
@@ -317,8 +317,21 @@ function App() {
           <ResumePreview />
         </motion.section>
 
-        <motion.section className="section" id="contact" variants={scrollReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }}>
-          <div className="section-label">06 — CONTACT</div>
+        
+
+        <ErrorBoundary fallbackTitle="Case study failed to render">
+          <ProjectCaseStudies projectId={selectedProject} onClose={() => setSelectedProject(null)} />
+        </ErrorBoundary>
+        <EngineeringHub>
+          <EngineeringDashboard projectCount={4} repos={github.data && github.data.profile ? github.data.profile.publicRepos : '-'} followers={github.data && github.data.profile ? github.data.profile.followers : '-'} status={dashboardStatus(github)} />
+          <Suspense fallback={<SectionFallback label="Loading AI Lab" />}><AILab /></Suspense>
+          <Suspense fallback={<SectionFallback label="Loading timeline" />}><EngineeringTimeline onOpenProject={setSelectedProject} /></Suspense>
+          <Suspense fallback={<SectionFallback label="Loading roadmap" />}><EngineeringJournal /></Suspense>
+        </EngineeringHub>
+        <Suspense fallback={<SectionFallback label="Loading GitHub" />}><GitHubActivity github={github} /></Suspense>
+        <Suspense fallback={<SectionFallback label="Loading journal" />}></Suspense>
+      <motion.section className="section" id="contact" variants={scrollReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }}>
+          <div className="section-label">09 — CONTACT</div>
           <div className="glass-panel contact-box">
             <div className="contact-grid">
               <div><span className="eyebrow">LET'S CONNECT</span><h2>Have an idea?<br /><span className="gradient-text">Let's build it.</span></h2><p>I'm interested in projects, collaboration and opportunities related to software, AI and technology.</p><div className="contact-direct" style={{marginTop: '30px'}}><span style={{fontSize: '0.85rem', color: 'var(--text-secondary)'}}>Prefer email?</span><a href="mailto:abdulsalam024.main@gmail.com" style={{color: 'var(--accent)', fontWeight: 'bold', textDecoration: 'none'}}>abdulsalam024.main@gmail.com</a></div></div>
@@ -326,27 +339,6 @@ function App() {
             </div>
           </div>
         </motion.section>
-
-        <ErrorBoundary fallbackTitle="Case study failed to render">
-          <ProjectCaseStudies projectId={selectedProject} onClose={() => setSelectedProject(null)} />
-        </ErrorBoundary>
-        <EngineeringHub>
-        <ErrorBoundary fallbackTitle="Timeline failed to render">
-          <Suspense fallback={<SectionFallback label="Loading timeline" />}><EngineeringTimeline onOpenProject={setSelectedProject} /></Suspense>
-        </ErrorBoundary>
-        <ErrorBoundary fallbackTitle="Dashboard failed to render">
-          <EngineeringDashboard projectCount={4} repos={github.data && github.data.profile ? github.data.profile.publicRepos : '-'} followers={github.data && github.data.profile ? github.data.profile.followers : '-'} status={dashboardStatus(github)} />
-        </ErrorBoundary>
-        <ErrorBoundary fallbackTitle="AI Lab failed to render">
-          <Suspense fallback={<SectionFallback label="Loading AI Lab" />}><AILab /></Suspense>
-        </ErrorBoundary>
-        <ErrorBoundary fallbackTitle="GitHub section failed to render">
-          <Suspense fallback={<SectionFallback label="Loading GitHub" />}><GitHubActivity github={github} /></Suspense>
-        </ErrorBoundary>
-        <ErrorBoundary fallbackTitle="Engineering journal failed to render">
-          <Suspense fallback={<SectionFallback label="Loading journal" />}><EngineeringJournal /></Suspense>
-        </ErrorBoundary>
-        </EngineeringHub>
       </main>
 
       <footer style={{ borderTop: '1px solid var(--glass-border-dark)', padding: '50px 5%', textAlign: 'center', marginTop: '60px' }}>
