@@ -1,4 +1,6 @@
 import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
 import cors from "cors";
 import dotenv from "dotenv";
 import { MongoClient } from "mongodb";
@@ -7,6 +9,8 @@ import rateLimit from "express-rate-limit";
 
 dotenv.config();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 5000;
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL || "abdulsalam024.main@gmail.com";
@@ -80,6 +84,14 @@ app.post("/api/contact", contactLimiter, async (req, res) => {
       res.status(500).json({ success: false, message: "Unable to send the message right now." });
     }
   }
+});
+
+const distPath = path.join(__dirname, "../dist");
+
+app.use(express.static(distPath));
+
+app.get(/^(?!\/api).*/, (req, res) => {
+  res.sendFile(path.join(distPath, "index.html"));
 });
 
 connectDatabase().catch((error) => {

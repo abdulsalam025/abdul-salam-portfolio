@@ -26,7 +26,7 @@ import EngineeringScrollNav from "./components/EngineeringScrollNav/EngineeringS
 import { EngineeringTimeline } from "./lazySections";
 import { dashboardStatus, useGitHub } from "./hooks/useGitHub";
 
-const API_URL = import.meta.env.VITE_API_URL || "https://abdul-salam-portfolio.onrender.com";
+const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:5000" : "");
 
 const scrollReveal = { hidden: { opacity: 0, y: 50, scale: 0.95 }, visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } } };
 const scrollRevealLeft = { hidden: { opacity: 0, x: -50, scale: 0.95 }, visible: { opacity: 1, x: 0, scale: 1, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } } };
@@ -115,7 +115,7 @@ function App() {
     const timer = setTimeout(function () { controller.abort(); }, 2000);
 
     try {
-      const response = await fetch("https://formsubmit.co/ajax/" + CONTACT_MAIL, {
+      const response = await fetch(`${API_URL}/api/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "Accept": "application/json" },
         body: JSON.stringify({
