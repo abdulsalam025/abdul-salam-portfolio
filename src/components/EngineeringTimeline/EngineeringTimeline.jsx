@@ -60,7 +60,7 @@ export default function EngineeringTimeline({ onOpenProject }) {
 
   return (
     <section className="section tl-section" id="timeline" aria-labelledby="timeline-heading">
-      <div className="section-label">13 - TIMELINE</div>
+      <div className="section-label">JOURNEY</div>
       <div className="section-heading">
         <h2 id="timeline-heading">Work on a <span className="gradient-text">line.</span></h2>
         <p>Scroll the record. The beam follows you without re-rendering the cards.</p>

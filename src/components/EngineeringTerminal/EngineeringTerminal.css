@@ -1,0 +1,302 @@
+﻿/* ==========================================================================
+   ENGINEERING TERMINAL - LIQUID GLASS UI
+   ========================================================================== */
+.et-section {
+  position: relative;
+  padding: 80px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.et-container {
+  max-width: 900px;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  animation: et-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Typography & Headers */
+.et-section-header {
+  margin-bottom: 40px;
+}
+.et-eyebrow {
+  display: block;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.85rem;
+  color: var(--accent-cyan, #00f0ff);
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+}
+.et-heading {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 10px 0;
+}
+.et-subtext {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+}
+
+/* Liquid Glass Terminal */
+.et-terminal-glass {
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  box-shadow: 0 20px 70px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  cursor: text;
+  transition: transform 0.4s ease;
+}
+
+.et-terminal-glass:hover {
+  transform: translateY(-2px);
+}
+
+/* Glass Reflection Sweep */
+.et-terminal-glass::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 50%; height: 100%;
+  background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.03) 50%, rgba(255,255,255,0) 100%);
+  transform: skewX(-25deg);
+  transition: none;
+  pointer-events: none;
+  z-index: 10;
+}
+.et-terminal-glass:hover::after {
+  animation: et-glass-sweep 1.5s ease-in-out forwards;
+}
+
+/* Terminal Chrome */
+.et-chrome {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: rgba(0, 0, 0, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  user-select: none;
+}
+.et-chrome-dots {
+  display: flex;
+  gap: 8px;
+}
+.et-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.5);
+}
+.et-dot.red { background: #ff5f56; }
+.et-dot.yellow { background: #ffbd2e; }
+.et-dot.green { background: #27c93f; }
+
+.et-chrome-title {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.05em;
+}
+.et-chrome-status {
+  display: flex;
+  align-items: center;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+.et-pulse {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #27c93f; margin-right: 6px;
+  box-shadow: 0 0 8px #27c93f;
+}
+
+/* Terminal Body */
+.et-body {
+  padding: 24px;
+  height: 380px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #e2e8f0;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+.et-body::-webkit-scrollbar { width: 6px; }
+.et-body::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 6px; }
+
+/* Interactive Elements */
+.et-active-line, .et-input-line {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+.et-prompt {
+  color: var(--accent-cyan, #00f0ff);
+  margin-right: 12px;
+  font-weight: 600;
+}
+.et-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.95rem;
+  flex: 1;
+  min-width: 200px;
+  min-height: 44px; /* Touch target size */
+  padding: 0;
+  caret-color: transparent; /* Hiding native caret to use custom block */
+}
+
+/* Custom Cursor */
+.et-active-line { position: relative; }
+.et-cursor {
+  display: inline-block;
+  width: 8px; height: 1.1em;
+  background: var(--accent-cyan, #00f0ff);
+  animation: et-blink 1s step-end infinite;
+  position: absolute;
+  left: calc(ch * var(--chars, 0)); /* Approximation, relies on native caret in reality */
+}
+/* Fallback: Make input caret cyan, hide block cursor */
+.et-input { caret-color: var(--accent-cyan, #00f0ff); }
+.et-cursor { display: none; }
+
+.et-output-block {
+  margin: 10px 0 20px 0;
+}
+
+/* Outputs & Formatting */
+.et-dim { color: rgba(255, 255, 255, 0.4); }
+.et-cyan { color: var(--accent-cyan, #00f0ff); }
+.et-error { color: #ff5f56; }
+.et-bold { font-weight: 700; letter-spacing: 0.05em; }
+
+.et-grid {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 6px;
+  margin-top: 10px;
+}
+.et-grid-status {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 6px;
+  margin-top: 10px;
+}
+.et-card {
+  background: rgba(255, 255, 255, 0.02);
+  padding: 12px 16px;
+  border-left: 2px solid var(--accent-cyan, #00f0ff);
+  margin-top: 10px;
+}
+.et-card p { margin: 0 0 6px 0; }
+.et-card p:last-child { margin: 0; }
+
+/* Command Hints */
+.et-hints-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.8rem;
+}
+.et-hint-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--accent-cyan, #00f0ff);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.et-hint-btn:hover {
+  background: rgba(0, 240, 255, 0.1);
+  border-color: rgba(0, 240, 255, 0.3);
+}
+
+/* Status Strip */
+.et-status-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 12px 20px;
+  margin-top: 20px;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.75rem;
+}
+.et-strip-item {
+  display: flex; gap: 8px;
+}
+
+/* Ambient Effects */
+.et-ambient-cyan {
+  position: absolute; top: 10%; right: 10%;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(0, 240, 255, 0.05) 0%, transparent 70%);
+  pointer-events: none; z-index: 1;
+}
+.et-ambient-violet {
+  position: absolute; bottom: 10%; left: 10%;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(112, 0, 255, 0.05) 0%, transparent 70%);
+  pointer-events: none; z-index: 1;
+}
+
+/* Animations */
+@keyframes et-fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes et-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+@keyframes et-glass-sweep {
+  0% { left: -100%; }
+  100% { left: 200%; }
+}
+.et-anim-reveal {
+  animation: et-reveal 0.3s ease-out forwards;
+}
+@keyframes et-reveal {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .et-section { padding: 60px 15px; }
+  .et-heading { font-size: 2rem; }
+  .et-body { height: 320px; font-size: 0.85rem; padding: 15px; }
+  .et-input { font-size: 16px; /* Prevents iOS auto-zoom */ }
+  .et-grid { grid-template-columns: 80px 1fr; }
+  .et-grid-status { grid-template-columns: 120px 1fr; }
+  .et-status-strip { gap: 12px; padding: 10px 15px; }
+  .et-chrome-title { display: none; } /* Save space on mobile */
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .et-container, .et-anim-reveal, .et-terminal-glass::after, .et-cursor {
+    animation: none !important;
+    transform: none !important;
+  }
+  .et-terminal-glass:hover { transform: none; }
+}

@@ -1,0 +1,79 @@
+import { useEffect, useState } from "react";
+import { SECTIONS, activeSectionId, scrollToSection, sectionExists } from "../../data/sections";
+import "./EngineeringScrollNav.css";
+
+export default function EngineeringScrollNav() {
+  const [active, setActive] = useState("home");
+  const [present, setPresent] = useState([]);
+
+  useEffect(() => {
+    let raf = 0;
+
+    const scan = () => {
+      const found = SECTIONS.filter((item) => sectionExists(item.id));
+      setPresent((prev) => {
+        if (prev.length === found.length && prev.every((item, i) => item.id === found[i].id)) {
+          return prev;
+        }
+        return found;
+      });
+      return found;
+    };
+
+    const tick = () => {
+      const found = scan();
+      if (!found.length) return;
+      const next = activeSectionId(found);
+      if (next) setActive(next);
+    };
+
+    const onScroll = () => {
+      if (raf) return;
+      raf = window.requestAnimationFrame(() => {
+        raf = 0;
+        tick();
+      });
+    };
+
+    tick();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    const poll = window.setInterval(tick, 700);
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      window.clearInterval(poll);
+      if (raf) window.cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  if (present.length < 3) return null;
+
+  const activeIndex = Math.max(0, present.findIndex((item) => item.id === active));
+  const progress = present.length > 1 ? (activeIndex / (present.length - 1)) * 100 : 0;
+
+  return (
+    <nav className="esn" aria-label="Section progress">
+      <span className="esn-track" aria-hidden="true">
+        <i style={{ height: progress + "%" }} />
+      </span>
+      {present.map((item) => (
+        <button
+          key={item.id}
+          type="button"
+          className={active === item.id ? "esn-item is-on" : "esn-item"}
+          aria-current={active === item.id ? "true" : undefined}
+          onClick={() => {
+            setActive(item.id);
+            scrollToSection(item.id);
+          }}
+        >
+          <span className="esn-dot" aria-hidden="true" />
+          <span className="esn-num">{item.number}</span>
+          <span className="esn-label">{item.label}</span>
+        </button>
+      ))}
+    </nav>
+  );
+}

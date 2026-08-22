@@ -1,0 +1,23 @@
+.gh-section { position: relative; }
+.gh-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; margin-bottom: 16px; }
+.gh-profile, .gh-metrics, .gh-langs, .gh-repos, .gh-events, .gh-state { padding: 20px 18px; }
+.gh-profile { display: flex; gap: 16px; align-items: flex-start; }
+.gh-avatar { border-radius: 16px; object-fit: cover; }
+.gh-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.gh-metric strong { display: block; font-size: 1.3rem; }
+.gh-metric span, .gh-note { display: block; color: var(--text-secondary); font-size: 0.8rem; }
+.gh-note { margin: 8px 0 0; }
+.gh-state { display: flex; gap: 12px; align-items: flex-start; }
+.gh-langbar { display: flex; height: 12px; overflow: hidden; border-radius: 999px; margin: 12px 0; background: var(--input-bg); }
+.gh-langbar span { display: block; height: 100%; background: var(--accent); opacity: 0.95; min-width: 2px; }
+.gh-langbar span:nth-child(2) { opacity: 0.75; }
+.gh-langbar span:nth-child(3) { opacity: 0.55; }
+.gh-langbar span:nth-child(4) { opacity: 0.4; }
+.gh-langlist, .gh-repolist, .gh-events ol { list-style: none; margin: 0; padding: 0; }
+.gh-langlist li, .gh-repolist li, .gh-events li { display: flex; justify-content: space-between; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--glass-border-dark); }
+.gh-repolist li, .gh-events li { flex-direction: column; align-items: flex-start; }
+.gh-toolbar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
+.gh-toolbar label { display: inline-flex; align-items: center; gap: 6px; }
+.gh-toolbar input, .gh-toolbar select { padding: 8px 10px; border-radius: 10px; border: 1px solid var(--glass-border-dark); background: var(--input-bg); color: inherit; }
+.gh-repo-meta { display: flex; flex-wrap: wrap; gap: 10px; color: var(--text-secondary); font-size: 0.8rem; }
+@media (max-width: 800px) { .gh-grid, .gh-metrics { grid-template-columns: 1fr; } }

@@ -15,7 +15,7 @@ export default function GitHubActivity({ github }) {
 
   return (
     <section className="section gh-section" id="github" aria-labelledby="github-heading">
-      <div className="section-label">GITHUB</div>
+      <div className="section-label">07 — GITHUB</div>
       <div className="section-heading">
         <h2 id="github-heading">Public <span className="gradient-text">GitHub.</span></h2>
         <p>Live numbers from the public API for abdulsalam025. Nothing here is estimated.</p>

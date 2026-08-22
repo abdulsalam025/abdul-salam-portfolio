@@ -1,0 +1,292 @@
+﻿.engineering-roadmap-section {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 3rem;
+}
+
+/* FILTER BAR */
+.er-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 auto 40px auto;
+  background: var(--glass-bg-standard);
+  border: 1px solid var(--glass-border-standard);
+  padding: 8px;
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  width: fit-content;
+  justify-content: center;
+}
+
+.er-filter-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: 'Fira Code', monospace;
+  font-size: 0.65rem;
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.er-filter-btn:hover { color: var(--text-primary); background: rgba(255,255,255,0.05); }
+.er-filter-btn.active {
+  background: rgba(0, 240, 255, 0.1);
+  color: var(--accent);
+  box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.1);
+}
+
+/* ROADMAP CONTAINER & GRID */
+.er-container {
+  position: relative;
+  width: 100%;
+}
+
+.er-connection-line {
+  position: absolute;
+  top: 30px;
+  left: 50px;
+  right: 50px;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(0, 240, 255, 0.4) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 100%);
+  z-index: 1;
+}
+
+.er-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  position: relative;
+  z-index: 2;
+  align-items: flex-start;
+}
+
+/* NODES */
+.er-node {
+  width: 20px;
+  height: 20px;
+  background: var(--bg-color);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  margin: 0 auto 20px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.4s ease;
+}
+
+.er-node-inner {
+  width: 8px;
+  height: 8px;
+  background: transparent;
+  border-radius: 50%;
+  transition: all 0.4s ease;
+}
+
+.er-node.glow {
+  border-color: var(--accent);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+}
+.er-node.glow .er-node-inner {
+  background: var(--accent);
+}
+
+.er-card-wrapper:hover .er-node {
+  border-color: var(--accent);
+}
+
+/* PREMIUM LIQUID GLASS CARD */
+.er-glass-card {
+  background: var(--glass-bg-standard);
+  border: 1px solid var(--glass-border-standard);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Subtle Glass Reflection */
+.er-glass-card::before {
+  content: ""; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+  background: linear-gradient(120deg, transparent 25%, rgba(255,255,255,0.06), transparent 75%);
+  transform: skewX(-20deg); transition: 0.6s ease; pointer-events: none; z-index: 0;
+}
+.er-glass-card:hover::before { left: 200%; }
+
+.er-glass-card:hover {
+  border-color: rgba(0, 240, 255, 0.3);
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4), inset 0 1px 15px rgba(0, 240, 255, 0.05);
+}
+
+/* CARD CONTENT */
+.er-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  position: relative;
+  z-index: 1;
+}
+
+.er-stage-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent);
+}
+
+.er-stage-num {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.er-status-label {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.55rem;
+  font-weight: 800;
+  padding: 4px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.1em;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+}
+.er-status-label.current { color: #00ff88; background: rgba(0, 255, 136, 0.1); border: 1px solid rgba(0, 255, 136, 0.2); }
+.er-status-label.next { color: var(--accent); background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2); }
+
+.er-title {
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  margin: 0 0 10px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.er-short-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0 0 20px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.er-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+.er-tags span {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.6rem;
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border-standard);
+  border-radius: 12px;
+  color: var(--text-primary);
+}
+
+.er-expand-btn {
+  background: transparent; border: none; padding: 0; color: var(--accent);
+  font-family: 'Fira Code', monospace; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+  cursor: pointer; display: flex; align-items: center; gap: 6px; position: relative; z-index: 1; transition: color 0.3s;
+  margin-top: auto;
+}
+.er-expand-btn:hover { color: var(--text-primary); }
+
+/* EXPANDED CONTENT */
+.er-expanded-content {
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.er-divider {
+  width: 100%; height: 1px;
+  background: rgba(255,255,255,0.1);
+  margin: 15px 0;
+}
+
+.er-detail-block { margin-bottom: 15px; }
+.er-detail-label { display: block; font-family: 'Fira Code', monospace; font-size: 0.6rem; color: var(--text-secondary); letter-spacing: 0.1em; margin-bottom: 6px; }
+.er-detail-block p { margin: 0; font-size: 0.85rem; color: var(--text-primary); line-height: 1.5; }
+.er-italic { font-style: italic; opacity: 0.8; }
+
+.er-link-btn {
+  margin-top: 15px; margin-bottom: 15px;
+  background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.3);
+  color: var(--accent); font-family: 'Fira Code', monospace; font-size: 0.7rem; font-weight: 700;
+  padding: 8px 14px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.3s;
+  width: 100%; justify-content: center; letter-spacing: 0.05em;
+}
+.er-link-btn:hover { background: rgba(0, 240, 255, 0.2); color: #fff; }
+
+/* SUMMARY PANEL */
+.er-summary-panel {
+  margin-top: 50px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--glass-border-standard);
+  padding: 25px;
+  border-radius: var(--radius-lg);
+  text-align: center;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: inset 0 0 20px rgba(255,255,255,0.02);
+}
+.er-summary-label { font-family: 'Fira Code', monospace; font-size: 0.65rem; color: var(--text-secondary); letter-spacing: 0.15em; display: block; margin-bottom: 12px;}
+.er-summary-panel p { font-family: 'Cinzel', serif; font-size: 1.3rem; color: var(--text-primary); margin: 0; font-weight: 800; letter-spacing: 0.05em;}
+.er-plus { color: var(--accent); margin: 0 10px; font-family: 'Inter', sans-serif;}
+
+/* RESPONSIVE */
+@media (max-width: 1200px) {
+  .er-grid { grid-template-columns: repeat(2, 1fr); gap: 40px 24px; }
+  .er-connection-line { display: none; } /* Hide horizontal line on wrapped grids */
+  .er-node { margin: 0 0 15px 0; }
+}
+
+@media (max-width: 768px) {
+  .er-grid { grid-template-columns: 1fr; gap: 30px; }
+  .er-node { display: none; } /* Remove nodes entirely on mobile for cleaner vertical stack */
+  .er-filter-bar { width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .er-summary-panel p { font-size: 1rem; }
+  .er-plus { display: block; margin: 5px 0; }
+}
+
+/* REDUCED MOTION */
+@media (prefers-reduced-motion: reduce) {
+  .er-glass-card::before, .er-node, .er-node-inner { transition: none !important; animation: none !important; }
+  .er-glass-card:hover { transform: none !important; }
+}
+
+
+
+/* MASTER MOBILE OVERRIDES */
+@media (max-width: 1024px) {
+  .er-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 20px !important; }
+  .er-connection-line { display: none !important; }
+}
+@media (max-width: 768px) {
+  .er-grid { grid-template-columns: 1fr !important; }
+  .er-node { display: none !important; }
+}
+

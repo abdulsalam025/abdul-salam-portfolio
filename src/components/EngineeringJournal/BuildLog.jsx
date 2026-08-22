@@ -28,7 +28,7 @@ export default function BuildLog({ journal }) {
 
   return (
     <section className="section journal-section" id="buildlog" aria-labelledby="buildlog-heading">
-      <div className="section-label">10 - BUILD LOG</div>
+      <div className="section-label">08 — WHAT CHANGED AND WHY</div>
       <div className="section-heading">
         <h2 id="buildlog-heading">What changed, and <span className="gradient-text">why.</span></h2>
         <p>Every row is a real change. Undated rows are undated. Counts are computed from this file, not invented KPIs.</p>

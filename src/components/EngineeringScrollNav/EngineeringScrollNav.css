@@ -1,7 +1,143 @@
-.esn { position: fixed; right: 18px; top: 50%; transform: translateY(-50%); z-index: 40; display: flex; flex-direction: column; gap: 6px; max-height: 72vh; overflow: auto; padding: 8px 6px; }
-.esn-item { display: flex; align-items: center; gap: 8px; border: 0; background: transparent; color: #7f8f9a; cursor: pointer; padding: 3px 6px; border-radius: 999px; max-width: 42px; overflow: hidden; transition: max-width 0.25s ease, color 0.2s ease, background 0.2s ease; }
-.esn-item:hover, .esn-item:focus-visible { max-width: 180px; color: #e8eef7; }
-.esn-item.is-on { max-width: 180px; color: #7af3ff; background: rgba(46, 230, 255, 0.08); }
-.esn-num { flex: 0 0 auto; width: 28px; font-size: 0.68rem; letter-spacing: 0.08em; }
-.esn-label { white-space: nowrap; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; }
-@media (max-width: 1024px) { .esn { display: none; } }
+.esn {
+  position: fixed;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 10px 8px 10px 14px;
+  max-height: 78vh;
+  overflow: auto;
+  background: rgba(4, 12, 24, 0.45);
+  border: 1px solid rgba(127, 220, 255, 0.12);
+  border-radius: 18px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
+}
+
+.esn-track {
+  position: absolute;
+  left: 22px;
+  top: 18px;
+  bottom: 18px;
+  width: 1px;
+  background: rgba(127, 220, 255, 0.14);
+  pointer-events: none;
+}
+
+.esn-track i {
+  display: block;
+  width: 100%;
+  background: linear-gradient(180deg, #2ee6ff, #7a5cff);
+  box-shadow: 0 0 8px rgba(46, 230, 255, 0.55);
+  transition: height 0.25s ease;
+}
+
+.esn-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  background: transparent;
+  color: rgba(200, 214, 224, 0.5);
+  cursor: pointer;
+  padding: 5px 8px;
+  border-radius: 999px;
+  min-height: 26px;
+  width: max-content;
+  max-width: 36px;
+  overflow: hidden;
+  transition: max-width 0.22s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.esn-item.is-child {
+  max-width: 28px;
+  margin-left: 18px;
+  min-height: 22px;
+  padding: 3px 8px;
+}
+
+.esn:hover .esn-item,
+.esn:focus-within .esn-item,
+.esn-item:hover,
+.esn-item:focus-visible,
+.esn-item.is-on,
+.esn-item.is-branch {
+  max-width: 240px;
+}
+
+.esn-item:hover,
+.esn-item:focus-visible {
+  color: #e8eef7;
+  background: rgba(255, 255, 255, 0.04);
+  outline: none;
+}
+
+.esn-item.is-on {
+  color: #7af3ff;
+  background: rgba(46, 230, 255, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(46, 230, 255, 0.28);
+}
+
+.esn-item.is-branch {
+  color: #b7f6ff;
+}
+
+.esn-dot {
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(127, 220, 255, 0.28);
+  box-shadow: 0 0 0 3px rgba(4, 12, 24, 0.9);
+}
+
+.esn-item.is-child .esn-dot {
+  width: 5px;
+  height: 5px;
+}
+
+.esn-item.is-on .esn-dot,
+.esn-item.is-branch .esn-dot {
+  background: #2ee6ff;
+  box-shadow: 0 0 0 3px rgba(4, 12, 24, 0.9), 0 0 10px rgba(46, 230, 255, 0.8);
+}
+
+.esn-num {
+  flex: 0 0 auto;
+  width: 22px;
+  font-family: "Fira Code", ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+}
+
+.esn-label {
+  white-space: nowrap;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.esn-item.is-child .esn-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  font-weight: 650;
+}
+
+@media (max-width: 1100px) {
+  .esn {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .esn-item,
+  .esn-track i {
+    transition: none;
+  }
+}

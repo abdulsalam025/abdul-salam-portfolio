@@ -1,0 +1,124 @@
+import { useEffect, useRef, useState } from "react";
+import "./HeroPortrait.css";
+
+function drawOverlay(ctx, w, h, mx, my, t) {
+  ctx.clearRect(0, 0, w, h);
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(w / 2, h / 2, w / 2 - 2, 0, Math.PI * 2);
+  ctx.clip();
+  ctx.fillStyle = "rgba(4, 18, 28, 0.28)";
+  ctx.fillRect(0, 0, w, h);
+  ctx.strokeStyle = "rgba(46, 230, 255, 0.22)";
+  ctx.lineWidth = 1;
+  const step = Math.max(10, Math.round(w / 18));
+  for (let x = 0; x <= w; x += step) {
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+  }
+  for (let y = 0; y <= h; y += step) {
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+  }
+  ctx.strokeStyle = "rgba(80, 255, 170, 0.35)";
+  for (let i = 0; i < 5; i += 1) {
+    const yy = ((t * 40 + i * (h / 5)) % h);
+    ctx.beginPath(); ctx.moveTo(0, yy); ctx.lineTo(w, yy); ctx.stroke();
+  }
+  ctx.strokeStyle = "rgba(46, 230, 255, 0.55)";
+  ctx.beginPath(); ctx.ellipse(w * 0.5, h * 0.42, w * 0.22, h * 0.26, 0, 0, Math.PI * 2); ctx.stroke();
+  ctx.beginPath(); ctx.ellipse(w * 0.5, h * 0.48, w * 0.16, h * 0.2, 0, 0, Math.PI * 2); ctx.stroke();
+  ctx.fillStyle = "rgba(46, 230, 255, 0.9)";
+  [[w * 0.38, h * 0.38], [w * 0.62, h * 0.38], [w * 0.5, h * 0.28], [w * 0.5, h * 0.58]].forEach((p) => {
+    ctx.beginPath(); ctx.arc(p[0], p[1], 2.2, 0, Math.PI * 2); ctx.fill();
+  });
+  const g = ctx.createRadialGradient(mx, my, 8, mx, my, w * 0.34);
+  g.addColorStop(0, "rgba(0,0,0,0)");
+  g.addColorStop(0.55, "rgba(0,0,0,0.15)");
+  g.addColorStop(1, "rgba(0,0,0,1)");
+  ctx.globalCompositeOperation = "destination-out";
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, w, h);
+  ctx.restore();
+}
+
+export default function HeroPortrait({ src, alt }) {
+  const wrapRef = useRef(null);
+  const canvasRef = useRef(null);
+  const mouse = useRef({ x: 0.62, y: 0.38, on: false });
+  const [reduce, setReduce] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => setReduce(mq.matches);
+    sync();
+    if (mq.addEventListener) mq.addEventListener("change", sync);
+    else mq.addListener(sync);
+    return () => {
+      if (mq.removeEventListener) mq.removeEventListener("change", sync);
+      else mq.removeListener(sync);
+    };
+  }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const wrap = wrapRef.current;
+    if (!canvas || !wrap) return undefined;
+    const ctx = canvas.getContext("2d");
+    let raf = 0;
+    const start = performance.now();
+    const fit = () => {
+      const box = wrap.getBoundingClientRect();
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      canvas.width = Math.round(box.width * dpr);
+      canvas.height = Math.round(box.height * dpr);
+      canvas.style.width = box.width + "px";
+      canvas.style.height = box.height + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    const tick = (now) => {
+      const box = wrap.getBoundingClientRect();
+      const t = (now - start) / 1000;
+      const mx = mouse.current.on ? mouse.current.x : box.width * 0.62;
+      const my = mouse.current.on ? mouse.current.y : box.height * 0.38;
+      if (!reduce && mouse.current.on) {
+        drawOverlay(ctx, box.width, box.height, mx, my, t);
+        canvas.style.opacity = "1";
+      } else {
+        ctx.clearRect(0, 0, box.width, box.height);
+        canvas.style.opacity = "0";
+      }
+      raf = window.requestAnimationFrame(tick);
+    };
+    fit();
+    raf = window.requestAnimationFrame(tick);
+    window.addEventListener("resize", fit);
+    return () => {
+      window.removeEventListener("resize", fit);
+      window.cancelAnimationFrame(raf);
+    };
+  }, [reduce]);
+
+  const onMove = (event) => {
+    const box = wrapRef.current.getBoundingClientRect();
+    mouse.current = { x: event.clientX - box.left, y: event.clientY - box.top, on: true };
+  };
+
+  return (
+    <div className={"hp" + (reduce ? " is-still" : "")}>
+      <div className="hp-stage" ref={wrapRef} onMouseMove={onMove} onMouseLeave={() => { mouse.current.on = false; }}>
+        <div className="hp-halo" aria-hidden="true" />
+        <div className="hp-disc">
+          <img src={src} alt={alt} />
+          <canvas ref={canvasRef} className="hp-scan" aria-hidden="true" />
+        </div>
+        <p className="hp-hud">SCAN · HOVER FACE</p>
+      </div>
+      <div className="hp-meta">
+        <span className="hp-live"><i />Online</span>
+        <span className="hp-sep" aria-hidden="true" />
+        <span>BE AI & ML</span>
+        <span className="hp-sep" aria-hidden="true" />
+        <a href="#ailab">Lab</a>
+      </div>
+    </div>
+  );
+}

@@ -24,7 +24,7 @@ export default function EngineeringDashboard({ projectCount, repos, followers, s
 
   return (
     <section className="section dashboard-section" id="dashboard" aria-labelledby="dashboard-heading">
-      <div className="section-label">07 - DASHBOARD</div>
+      <div className="section-label">ENGINEERING PROFILE</div>
       <div className="section-heading">
         <h2 id="dashboard-heading">
           Engineering <span className="gradient-text">Profile.</span>

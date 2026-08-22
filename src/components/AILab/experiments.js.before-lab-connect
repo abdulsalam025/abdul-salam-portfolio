@@ -1,0 +1,296 @@
+/** Toy, browser-side experiment definitions.
+ *  Nothing here is a trained production model.
+ *  Where math runs, it is a small educational implementation.
+ */
+
+export const PHASES = [
+  "IDLE",
+  "RECEIVING INPUT",
+  "PREPROCESSING",
+  "FEATURE EXTRACTION",
+  "FORWARD PROPAGATION",
+  "ACTIVATION",
+  "GENERATING OUTPUT",
+  "COMPLETE",
+];
+
+export function mulberry32(seed) {
+  let a = seed >>> 0;
+  return function next() {
+    a |= 0;
+    a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+export function relu(z) {
+  return Math.max(0, z);
+}
+
+export function softmax(values) {
+  const max = Math.max(...values);
+  const exps = values.map((v) => Math.exp(v - max));
+  const sum = exps.reduce((acc, v) => acc + v, 0);
+  return exps.map((v) => v / sum);
+}
+
+export function dense(input, weights, bias, activate) {
+  return weights.map((row, i) => {
+    let z = bias[i];
+    for (let j = 0; j < input.length; j += 1) z += row[j] * input[j];
+    return activate ? activate(z) : z;
+  });
+}
+
+function randomMatrix(rows, cols, rng, scale = 0.85) {
+  return Array.from({ length: rows }, () =>
+    Array.from({ length: cols }, () => (rng() * 2 - 1) * scale)
+  );
+}
+
+function randomBias(n, rng, scale = 0.15) {
+  return Array.from({ length: n }, () => (rng() * 2 - 1) * scale);
+}
+
+export const SENTIMENT_LEXICON = {
+  good: 1.2, great: 1.6, excellent: 1.8, love: 1.5, clear: 0.8, fast: 0.7,
+  useful: 1.1, clean: 0.7, works: 0.9, helpful: 1.1, bad: -1.4, slow: -0.9,
+  broken: -1.7, bug: -1.1, crash: -1.6, hate: -1.8, confusing: -1.2,
+  worse: -1.3, fail: -1.4, error: -0.8,
+};
+
+export function tokenize(text) {
+  return String(text).toLowerCase().replace(/[^a-z0-9\s]/g, " ").split(/\s+/).filter(Boolean);
+}
+
+export function classifySentiment(text) {
+  const tokens = tokenize(text);
+  const hits = [];
+  let score = 0;
+  tokens.forEach((token) => {
+    if (SENTIMENT_LEXICON[token] == null) return;
+    hits.push({ token, weight: SENTIMENT_LEXICON[token] });
+    score += SENTIMENT_LEXICON[token];
+  });
+  const magnitude = hits.reduce((acc, hit) => acc + Math.abs(hit.weight), 0);
+  const unknown = tokens.length === 0 || magnitude === 0;
+  const positive = score >= 0;
+  const confidence = unknown ? 0 : Math.min(0.97, 0.55 + magnitude / (magnitude + 3));
+  return {
+    model: "Educational sentiment lexicon",
+    tokens, hits, score, unknown,
+    label: unknown ? "UNKNOWN" : positive ? "POSITIVE" : "NEGATIVE",
+    confidence,
+    note: "Hand-written lexicon. Not a trained classifier.",
+  };
+}
+
+export const RECOMMENDER_TAGS = ["python", "ml", "react", "web", "dsa", "backend"];
+export const RECOMMENDER_ITEMS = [
+  { id: "neuron", title: "Build a neuron", tags: ["python", "ml"] },
+  { id: "linalg", title: "Linear algebra for ML", tags: ["ml", "dsa"] },
+  { id: "react-ui", title: "React interface patterns", tags: ["react", "web"] },
+  { id: "rest", title: "Small REST APIs", tags: ["backend", "web"] },
+  { id: "trees", title: "Decision trees from scratch", tags: ["ml", "dsa"] },
+  { id: "attn", title: "Attention notes", tags: ["ml", "python"] },
+];
+
+function tagVector(tags) {
+  return RECOMMENDER_TAGS.map((tag) => (tags.includes(tag) ? 1 : 0));
+}
+
+export function cosine(a, b) {
+  let dot = 0, na = 0, nb = 0;
+  for (let i = 0; i < a.length; i += 1) {
+    dot += a[i] * b[i]; na += a[i] * a[i]; nb += b[i] * b[i];
+  }
+  if (na === 0 || nb === 0) return 0;
+  return dot / (Math.sqrt(na) * Math.sqrt(nb));
+}
+
+export function recommend(selectedTags) {
+  const user = tagVector(selectedTags);
+  const ranked = RECOMMENDER_ITEMS.map((item) => ({
+    ...item,
+    score: cosine(user, tagVector(item.tags)),
+  })).sort((a, b) => b.score - a.score);
+  return {
+    model: "Content-based cosine recommender",
+    input: selectedTags, ranked,
+    output: ranked.filter((item) => item.score > 0),
+    note: "Cosine on 0/1 tag vectors. Not collaborative filtering.",
+  };
+}
+
+export function runTinyNetwork(seed = 7) {
+  const rng = mulberry32(seed);
+  const input = [0.82, 0.31, 0.64, 0.18];
+  const sizes = [4, 6, 6, 5, 3];
+  const weights = [];
+  const biases = [];
+  for (let i = 0; i < sizes.length - 1; i += 1) {
+    weights.push(randomMatrix(sizes[i + 1], sizes[i], rng));
+    biases.push(randomBias(sizes[i + 1], rng));
+  }
+  const activations = [input.slice()];
+  let current = input;
+  for (let i = 0; i < weights.length; i += 1) {
+    const isLast = i === weights.length - 1;
+    current = dense(current, weights[i], biases[i], isLast ? null : relu);
+    if (isLast) current = softmax(current);
+    activations.push(current.slice());
+  }
+  const labels = ["CLASS A", "CLASS B", "CLASS C"];
+  const top = activations[activations.length - 1]
+    .map((value, index) => ({ label: labels[index], value }))
+    .sort((a, b) => b.value - a.value)[0];
+  const paramCount = weights.reduce((acc, matrix) => acc + matrix.length * matrix[0].length, 0)
+    + biases.reduce((acc, bias) => acc + bias.length, 0);
+  return {
+    sizes, weights, biases, activations, labels, top, paramCount,
+    note: "Untrained toy network. Weights are seeded random. Forward pass only.",
+  };
+}
+
+export function toyAttention(tokens, seed = 11) {
+  const rng = mulberry32(seed);
+  const dim = 4;
+  const embeddings = tokens.map(() => Array.from({ length: dim }, () => rng() * 2 - 1));
+  const scores = tokens.map((_, i) =>
+    tokens.map((_, j) => {
+      let dot = 0;
+      for (let d = 0; d < dim; d += 1) dot += embeddings[i][d] * embeddings[j][d];
+      return dot / Math.sqrt(dim);
+    })
+  );
+  return {
+    tokens, embeddings, weights: scores.map((row) => softmax(row)),
+    note: "Untrained toy attention: softmax(QK^T / sqrt(d)) on random embeddings.",
+  };
+}
+
+const TREE = {
+  id: "root", feature: "study_hours", threshold: 4,
+  left: {
+    id: "n1", feature: "practice_sets", threshold: 2,
+    left: { id: "leaf0", prediction: "REVIEW" },
+    right: { id: "leaf1", prediction: "PRACTICE" },
+  },
+  right: {
+    id: "n2", feature: "sleep_hours", threshold: 6,
+    left: { id: "leaf2", prediction: "REST" },
+    right: { id: "leaf3", prediction: "READY" },
+  },
+};
+
+export const TREE_SAMPLE = { study_hours: 6.5, practice_sets: 3, sleep_hours: 7 };
+
+export function walkTree(node, sample, path = []) {
+  const nextPath = [...path, node.id];
+  if (node.prediction) return { path: nextPath, prediction: node.prediction };
+  const goLeft = sample[node.feature] < node.threshold;
+  return walkTree(goLeft ? node.left : node.right, sample, nextPath);
+}
+
+export function kmeans(points, k = 3, iterations = 4, seed = 21) {
+  const rng = mulberry32(seed);
+  let centroids = Array.from({ length: k }, () => {
+    const pick = points[Math.floor(rng() * points.length)];
+    return { x: pick.x + (rng() - 0.5) * 8, y: pick.y + (rng() - 0.5) * 8 };
+  });
+  const frames = [{ type: "initialize", centroids: cloneCentroids(centroids), assignments: points.map(() => -1) }];
+  let assignments = points.map(() => 0);
+  for (let iter = 0; iter < iterations; iter += 1) {
+    assignments = points.map((point) => nearest(point, centroids));
+    frames.push({ type: "assign", centroids: cloneCentroids(centroids), assignments: assignments.slice() });
+    centroids = centroids.map((_, index) => {
+      const members = points.filter((_, i) => assignments[i] === index);
+      if (members.length === 0) return centroids[index];
+      return {
+        x: members.reduce((acc, p) => acc + p.x, 0) / members.length,
+        y: members.reduce((acc, p) => acc + p.y, 0) / members.length,
+      };
+    });
+    frames.push({ type: "update", centroids: cloneCentroids(centroids), assignments: assignments.slice() });
+  }
+  frames.push({ type: "converged", centroids: cloneCentroids(centroids), assignments: assignments.slice() });
+  return frames;
+}
+
+function nearest(point, centroids) {
+  let best = 0, bestDist = Infinity;
+  centroids.forEach((c, i) => {
+    const d = (point.x - c.x) ** 2 + (point.y - c.y) ** 2;
+    if (d < bestDist) { bestDist = d; best = i; }
+  });
+  return best;
+}
+
+function cloneCentroids(centroids) {
+  return centroids.map((c) => ({ x: c.x, y: c.y }));
+}
+
+export function makeClusterPoints(seed = 19) {
+  const rng = mulberry32(seed);
+  const centers = [{ x: 28, y: 30 }, { x: 72, y: 34 }, { x: 50, y: 72 }];
+  const points = [];
+  centers.forEach((center, cluster) => {
+    for (let i = 0; i < 12; i += 1) {
+      points.push({
+        id: cluster + "-" + i,
+        x: center.x + (rng() - 0.5) * 22,
+        y: center.y + (rng() - 0.5) * 22,
+        home: cluster,
+      });
+    }
+  });
+  return points;
+}
+
+export const EXPERIMENTS = [
+  { id: "nn", code: "01", name: "Neural Network", type: "Classification", activation: "ReLU",
+    honest: "Untrained toy MLP. Forward pass uses seeded random weights.",
+    pipeline: ["INPUT", "PREPROCESS", "INPUT LAYER", "HIDDEN 01", "HIDDEN 02", "HIDDEN 03", "ACTIVATION", "OUTPUT"] },
+  { id: "text", code: "02", name: "Text Classification", type: "Sentiment (lexicon)", activation: "Lexicon sum",
+    honest: "Hand-written polarity lexicon. Not an LLM.",
+    pipeline: ["TEXT INPUT", "TOKENIZATION", "EMBEDDINGS", "FEATURE REPRESENTATION", "CLASSIFIER", "OUTPUT"],
+    sample: "This interface is clean, useful and works great for debugging." },
+  { id: "image", code: "03", name: "Image Classification", type: "Pipeline visualization", activation: "ReLU (sim)",
+    honest: "No on-device image model is installed. Feature maps are simulated.",
+    pipeline: ["IMAGE INPUT", "CONVOLUTION", "FEATURE MAP", "POOLING", "FEATURE EXTRACTION", "CLASSIFIER", "OUTPUT"] },
+  { id: "recs", code: "04", name: "Recommendation System", type: "Content-based", activation: "Cosine",
+    honest: "Cosine similarity on tag vectors. Not collaborative filtering.",
+    pipeline: ["USER PROFILE", "USER FEATURES", "ITEM FEATURES", "EMBEDDINGS", "SIMILARITY", "RANKING", "RECOMMENDATIONS"],
+    selectedTags: ["python", "ml"] },
+  { id: "transformer", code: "05", name: "Transformer", type: "Self-attention (toy)", activation: "Softmax",
+    honest: "Untrained toy attention on random embeddings.",
+    pipeline: ["TOKENS", "EMBEDDINGS", "POSITIONAL ENCODING", "SELF-ATTENTION", "MULTI-HEAD", "FEED FORWARD", "OUTPUT"],
+    tokens: ["ML", "systems", "need", "data", "flow", "care"] },
+  { id: "cnn", code: "06", name: "CNN", type: "Pipeline visualization", activation: "ReLU (sim)",
+    honest: "No trained CNN is loaded. Filters and maps are educational drawings.",
+    pipeline: ["IMAGE", "CONVOLUTION", "FEATURE MAP", "POOLING", "FEATURE EXTRACTION", "CLASSIFIER"] },
+  { id: "tree", code: "07", name: "Decision Tree", type: "Rule path", activation: "Threshold",
+    honest: "Hand-authored 3-feature tree. Path is computed, not learned here.",
+    pipeline: ["ROOT", "FEATURE TEST", "BRANCH", "FEATURE TEST", "BRANCH", "PREDICTION"],
+    tree: TREE, sample: TREE_SAMPLE },
+  { id: "cluster", code: "08", name: "Clustering", type: "k-means", activation: "Nearest centroid",
+    honest: "Real k-means on synthetic 2D points. k=3, 4 iterations.",
+    pipeline: ["INITIALIZE", "ASSIGN", "UPDATE CENTROIDS", "REPEAT", "CONVERGED"] },
+];
+
+export function getExperiment(id) {
+  return EXPERIMENTS.find((item) => item.id === id) || EXPERIMENTS[0];
+}
+
+export function countParams(experiment, extras) {
+  if (experiment.id === "nn") return extras.network.paramCount;
+  if (experiment.id === "recs") return RECOMMENDER_TAGS.length * RECOMMENDER_ITEMS.length;
+  if (experiment.id === "transformer") return extras.attention.tokens.length * 4 * 3;
+  if (experiment.id === "tree") return 3;
+  if (experiment.id === "cluster") return extras.points.length * 2;
+  return 0;
+}
+
+export { TREE };

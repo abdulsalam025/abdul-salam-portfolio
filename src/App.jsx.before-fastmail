@@ -1,0 +1,389 @@
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowDown, ArrowRight, Mail, Moon, Sun, Code2, Sparkles, GitBranch, BriefcaseBusiness, Menu, X, Terminal, Search, Copy, Download, Home, Briefcase, FileText, User } from "lucide-react";
+import {useEffect, useState, Suspense } from "react";
+import profilePhoto from "./assets/profile-optimized.webp";
+import "./App.css";
+import ProjectGrid from "./components/ProjectGrid/ProjectGrid";
+import AboutPanel from "./components/AboutPanel/AboutPanel";
+import "./components/AboutPanel/AboutPanel.css";
+import EngineeringHub from "./components/EngineeringHub/EngineeringHub";
+import "./components/EngineeringHub/EngineeringHub.css";
+import CinematicIntro from "./components/CinematicIntro/CinematicIntro";
+import HeroPortrait from "./components/HeroPortrait/HeroPortrait";
+import EngineeringDashboard from "./components/EngineeringDashboard/EngineeringDashboard";
+import ProjectCaseStudies from "./components/ProjectCaseStudies/ProjectCaseStudies";
+import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
+import { PROJECTS } from "./data/projects";
+import SectionFallback from "./components/SectionFallback/SectionFallback";
+import { AILab } from "./lazySections";
+import { GitHubActivity } from "./lazySections";
+import { EngineeringJournal } from "./lazySections";
+import ResumePreview from "./components/ResumePreview/ResumePreview";
+import ContactCenter from "./components/ContactCenter/ContactCenter";
+import SkillsEvidence from "./components/SkillsEvidence/SkillsEvidence";
+import CommandCenter from "./components/CommandCenter/CommandCenter";
+import EngineeringScrollNav from "./components/EngineeringScrollNav/EngineeringScrollNav";
+import { EngineeringTimeline } from "./lazySections";
+import { dashboardStatus, useGitHub } from "./hooks/useGitHub";
+
+const API_URL = import.meta.env.VITE_API_URL || "https://abdul-salam-portfolio.onrender.com";
+
+const scrollReveal = { hidden: { opacity: 0, y: 50, scale: 0.95 }, visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } } };
+const scrollRevealLeft = { hidden: { opacity: 0, x: -50, scale: 0.95 }, visible: { opacity: 1, x: 0, scale: 1, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } } };
+const scrollRevealRight = { hidden: { opacity: 0, x: 50, scale: 0.95 }, visible: { opacity: 1, x: 0, scale: 1, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } } };
+
+function App() {
+  const [darkMode, setDarkMode] = useState(true);
+  const [selectedProject, setSelectedProject] = useState(null);
+ 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [contactStatus, setContactStatus] = useState("");
+  const [contactSending, setContactSending] = useState(false);
+  const [localTime, setLocalTime] = useState("");
+  const [terminalLine, setTerminalLine] = useState(0);
+  
+  const [cmdOpen, setCmdOpen] = useState(false);
+  const github = useGitHub();
+
+  const terminalSequence = [
+    "Initializing Neural Core...",
+    "Loading weights: model_v4.h5",
+    "Optimizing hyper-parameters...",
+    "Status: 100% ONLINE."
+  ];
+
+  // Sync body class with theme state so background changes correctly
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.remove("light");
+    } else {
+      document.body.classList.add("light");
+    }
+  }, [darkMode]);
+
+  useEffect(() => {
+    const updateTime = () => {
+      const options = { timeZone: 'Asia/Kathmandu', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+      setLocalTime(new Intl.DateTimeFormat('en-US', options).format(new Date()));
+    };
+    updateTime();
+    const clockTimer = setInterval(updateTime, 1000);
+    const terminalTimer = setInterval(() => setTerminalLine((prev) => (prev + 1) % terminalSequence.length), 2500);
+    return () => { clearInterval(clockTimer); clearInterval(terminalTimer); };
+  }, []);
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      document.documentElement.style.setProperty('--cursor-x', `${e.clientX}px`);
+      document.documentElement.style.setProperty('--cursor-y', `${e.clientY}px`);
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        setCmdOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+
+  const CONTACT_MAIL = "abdulsalam024.main@gmail.com";
+
+  const handleContactSubmit = async (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    const name = String(data.name || "").trim();
+    const email = String(data.email || "").trim();
+    const subject = String(data.subject || "").trim();
+    const message = String(data.message || "").trim();
+    setContactSending(true);
+    setContactStatus("");
+
+    const openMailApp = () => {
+      const qs = new URLSearchParams({
+        subject: subject || "Portfolio contact",
+        body: "Name: " + name + "\nEmail: " + email + "\n\n" + message
+      });
+      window.location.href = "mailto:" + CONTACT_MAIL + "?" + qs.toString();
+    };
+
+    try {
+      const controller = new AbortController();
+      const timer = setTimeout(function () { controller.abort(); }, 6000);
+      const response = await fetch("https://formsubmit.co/ajax/" + CONTACT_MAIL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          subject: subject,
+          message: message,
+          _subject: "Portfolio contact: " + subject,
+          _template: "table",
+          _captcha: "false"
+        }),
+        signal: controller.signal
+      });
+      clearTimeout(timer);
+      const payload = await response.json().catch(function () { return {}; });
+      if (!response.ok) throw new Error("formsubmit");
+      if (payload.message && String(payload.message).toLowerCase().indexOf("confirm") >= 0) {
+        setContactStatus("Check abdulsalam024.main@gmail.com and confirm FormSubmit (one-time).");
+      } else {
+        setContactStatus("Message sent to abdulsalam024.main@gmail.com");
+      }
+      form.reset();
+    } catch (error) {
+      openMailApp();
+      setContactStatus("Opened your mail app to abdulsalam024.main@gmail.com");
+    } finally {
+      setContactSending(false);
+    }
+  };
+
+
+  const executeCommand = (action) => {
+    setCmdOpen(false);
+    if (action === 'theme') setDarkMode(!darkMode);
+    if (action === 'projects') document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
+    if (action === 'contact') document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+    if (action === 'email') navigator.clipboard.writeText('abdulsalam024.main@gmail.com');
+    if (action === 'resume') window.open('/Abdul_Salam_Resume.pdf', '_blank');
+  };
+
+  const handleMagnetic = (e) => {
+    const btn = e.currentTarget;
+    const rect = btn.getBoundingClientRect();
+    const x = (e.clientX - rect.left - rect.width / 2) * 0.3;
+    const y = (e.clientY - rect.top - rect.height / 2) * 0.3;
+    btn.style.transform = `translate(${x}px, ${y}px) scale(1.05)`;
+  };
+
+  const resetMagnetic = (e) => {
+    const btn = e.currentTarget;
+    btn.style.transform = `translate(0px, 0px) scale(1)`;
+  };
+
+  return (
+    <div className="app">
+      <a className="skip-link" href="#home">Skip to content</a>
+      {null}
+      <EngineeringScrollNav />
+
+      <div className="liquid-aura-cursor"></div>
+
+      <div className="global-fluids">
+        <div className="g-blob g-peach"></div>
+        <div className="g-blob g-purple"></div>
+        <div className="g-blob g-cyan"></div>
+      </div>
+
+      <CommandCenter open={cmdOpen} onClose={() => setCmdOpen(false)} />
+
+      <header className="navbar">
+        <div className="nav-container">
+          <div className="logo"><span>AS</span></div>
+          <nav className={mobileMenuOpen ? "mobile-nav mobile-open" : "mobile-nav"}>
+            <a href="#home" onClick={() => setMobileMenuOpen(false)}>Home</a>
+            <a href="#about" onClick={() => setMobileMenuOpen(false)}>About</a>
+            <a href="#skills" onClick={() => setMobileMenuOpen(false)}>Skills</a>
+            <a href="#projects" onClick={() => setMobileMenuOpen(false)}>Projects</a>
+            <a href="#engineering" onClick={() => setMobileMenuOpen(false)}>Engineering</a>
+            <a href="#contact" onClick={() => setMobileMenuOpen(false)}>Contact</a>
+          </nav>
+          
+          <div className="header-actions">
+            <button className="cmd-shortcut" onClick={() => setCmdOpen(true)}><Search size={16}/> Ctrl K</button>
+            <button className="theme-toggle-btn" onClick={() => setDarkMode(!darkMode)} aria-label="Toggle theme">
+              {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+            <button className="mobile-menu-button icon-btn" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+              {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* SPECIAL MOBILE BOTTOM DOCK */}
+      <nav className="mobile-bottom-dock">
+        <a href="#home" className="dock-item"><Home size={20} /><span>Home</span></a>
+        <a href="#projects" className="dock-item"><Briefcase size={20} /><span>Projects</span></a>
+        <a href="#engineering" className="dock-item"><FileText size={20} /><span>Work</span></a>
+        <a href="#contact" className="dock-item"><User size={20} /><span>Contact</span></a>
+      </nav>
+
+      <main className={mobileMenuOpen ? "mobile-menu-active" : ""}>
+        <section className="hero" id="home">
+          <motion.div className="hero-content" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+            
+            <div className="fancy-time-hud">
+              <div className="hud-radar"></div>
+              <div className="hud-data">
+                <span className="hud-title">SYSTEM TIME • KTM_NPL</span>
+                <span className="hud-time">{localTime}</span>
+              </div>
+            </div>
+
+            <p className="eyebrow">AI & ML ENGINEERING STUDENT</p>
+            <h1>Hi, I'm <span className="cinematic-text">Abdul Salam.</span><br />I build things with <em className="gradient-text">intelligence.</em></h1>
+            <p className="hero-lead">I build practical software, AI experiments, and full-stack applications while developing strong foundations in software engineering and machine learning.</p>
+            <div className="hero-tech" aria-label="Current technologies"><span>AI / ML</span><span>Python</span><span>React</span><span>Node.js</span><span>Software Engineering</span></div>
+            
+            <div className="ai-terminal-widget">
+              <div className="terminal-header">
+                <div className="dot red"></div><div className="dot yellow"></div><div className="dot green"></div>
+              </div>
+              <div style={{display: 'flex'}}>
+                <span className="terminal-prompt">&gt;</span>
+                <span className="terminal-text">{terminalSequence[terminalLine]}</span>
+                <span className="cursor-blink"></span>
+              </div>
+            </div>
+
+            <div className="hero-buttons">
+              <a href="#projects" className="glass-btn primary-button" onMouseMove={handleMagnetic} onMouseLeave={resetMagnetic}>
+                Explore Projects <ArrowRight size={20} />
+              </a>
+              <a href="/Abdul_Salam_Resume.pdf" target="_blank" rel="noopener noreferrer" className="glass-btn secondary-button" onMouseMove={handleMagnetic} onMouseLeave={resetMagnetic}>
+                View Resume
+              </a>
+            </div>
+
+            <div className="circle-buttons-container">
+              <a href="https://github.com/abdulsalam025" aria-label="GitHub" target="_blank" rel="noopener noreferrer" className="circle-btn cb-github"><GitBranch /></a>
+              <a href="https://www.linkedin.com/in/abdul-salam-ai025/" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer" className="circle-btn cb-linkedin"><BriefcaseBusiness /></a>
+              <a href="mailto:abdulsalam024.main@gmail.com" aria-label="Email" className="circle-btn cb-email"><Mail /></a>
+            </div>
+          </motion.div>
+
+          <motion.div className="hero-visual" initial={{ opacity: 0, scale: 0.85 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }}>
+            <HeroPortrait src={profilePhoto} alt="Abdul Salam" />
+          </motion.div>
+        </section>
+
+        <div className="tech-marquee">
+          <div className="marquee-content">
+            <span className="marquee-item">MACHINE LEARNING</span><span className="marquee-item">•</span>
+            <span className="marquee-item">NEURAL NETWORKS</span><span className="marquee-item">•</span>
+            <span className="marquee-item">PYTHON 3</span><span className="marquee-item">•</span>
+            <span className="marquee-item">DATA STRUCTURES</span><span className="marquee-item">•</span>
+            <span className="marquee-item">REACT.JS</span><span className="marquee-item">•</span>
+            <span className="marquee-item">TENSORFLOW</span><span className="marquee-item">•</span>
+            <span className="marquee-item">SYSTEM DESIGN</span><span className="marquee-item">•</span>
+            <span className="marquee-item">MACHINE LEARNING</span><span className="marquee-item">•</span>
+            <span className="marquee-item">NEURAL NETWORKS</span><span className="marquee-item">•</span>
+            <span className="marquee-item">PYTHON 3</span><span className="marquee-item">•</span>
+            <span className="marquee-item">DATA STRUCTURES</span><span className="marquee-item">•</span>
+            <span className="marquee-item">REACT.JS</span><span className="marquee-item">•</span>
+            <span className="marquee-item">TENSORFLOW</span><span className="marquee-item">•</span>
+            <span className="marquee-item">SYSTEM DESIGN</span>
+          </div>
+        </div>
+
+        <motion.section className="section" id="about" variants={scrollReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }}>
+          <div className="section-label">01 — ABOUT</div>
+          <div className="section-grid">
+            <div><span className="eyebrow">WHO I AM</span><h2>AI and technology at <span className="gradient-text">AI & Technology.</span></h2></div>
+            <AboutPanel repos={github.data && github.data.profile ? github.data.profile.publicRepos : "-"} followers={github.data && github.data.profile ? github.data.profile.followers : "-"} />
+          </div>
+        </motion.section>
+
+        <motion.section className="section" id="education" variants={scrollRevealLeft} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }}>
+          <div className="section-label">02 — EDUCATION</div>
+          <div className="section-heading"><h2>Education, kept <span className="gradient-text">factual.</span></h2><p>Building a strong engineering foundation through academics, programming and hands-on projects.</p></div>
+          <div className="glass-panel education-card">
+            <div className="education-year"><span>2025</span><div className="timeline-dot"></div></div>
+            <div className="education-content">
+              <span className="eyebrow">UNDERGRADUATE ENGINEERING</span><h3>Bachelor of Engineering — AI & Machine Learning</h3><p className="education-institution">BMS College of Engineering</p>
+              <p>Developing foundations in programming, artificial intelligence, machine learning, mathematics, engineering and software development through coursework and practical projects.</p>
+              <div className="tags"><span>AI & ML</span><span>Programming</span><span>Engineering</span><span>Software Development</span></div>
+            </div>
+          </div>
+        </motion.section>
+
+        <motion.section className="section" id="skills" variants={scrollReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }}>
+          <div className="section-label">03 — SKILLS</div>
+          <div className="section-heading"><h2>My technical <span className="gradient-text">Toolbox.</span></h2><p>Technologies and concepts I use while building projects and improving my engineering skills.</p></div>
+          <SkillsEvidence />
+        </motion.section>
+
+
+
+        <motion.section className="section" id="projects" variants={scrollRevealRight} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }}>
+          <div className="section-label">04 — PROJECTS</div>
+          <div className="section-heading"><h2>Things I've <span className="gradient-text">Built.</span></h2><p>A selection of projects that demonstrate my development and problem-solving skills.</p></div>
+          <ProjectGrid onOpen={setSelectedProject} />
+        </motion.section>
+
+        <motion.section className="section" id="resume" variants={scrollRevealLeft} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }}>
+          <div className="section-label">05 — RESUME</div>
+          <div className="section-heading"><h2>My professional <span className="gradient-text">Profile.</span></h2><p>A concise overview of my education, technical skills, projects and engineering goals.</p></div>
+          
+          <div className="resume-grid">
+            <div className="glass-panel resume-card wide">
+              <span className="resume-watermark">01</span>
+              <span className="eyebrow">EDUCATION</span><h3>Bachelor of Engineering</h3><p>Artificial Intelligence & Machine Learning. Developing strong theoretical and practical frameworks for modern software challenges.</p><span className="resume-meta">BMS College of Engineering • 2025</span>
+            </div>
+            <div className="glass-panel resume-card">
+              <span className="resume-watermark">02</span>
+              <span className="eyebrow">TECHNICAL SKILLS</span><h3>Engineering Toolkit</h3><p>Python, C, JavaScript, React, HTML & CSS, Git & GitHub, AI / ML and Node.js.</p>
+            </div>
+            <div className="glass-panel resume-card">
+              <span className="resume-watermark">03</span>
+              <span className="eyebrow">SELECTED PROJECTS</span><h3>Hands-on Development</h3><p>Community Sports Equipment Library, Flight Reservation System and Jarvis.</p>
+            </div>
+            <div className="glass-panel resume-card wide">
+              <span className="resume-watermark">04</span>
+              <span className="eyebrow">CAREER OBJECTIVE</span><h3>Building Intelligent Systems</h3><p>Developing strong foundations in software engineering, artificial intelligence and machine learning while solving meaningful real-world problems.</p>
+            </div>
+          </div>
+          
+          <ResumePreview />
+        </motion.section>
+
+        
+
+        <ErrorBoundary fallbackTitle="Case study failed to render">
+          <ProjectCaseStudies projectId={selectedProject} onClose={() => setSelectedProject(null)} />
+        </ErrorBoundary>
+        <EngineeringHub>
+          <EngineeringDashboard projectCount={4} repos={github.data && github.data.profile ? github.data.profile.publicRepos : '-'} followers={github.data && github.data.profile ? github.data.profile.followers : '-'} status={dashboardStatus(github)} />
+          <Suspense fallback={<SectionFallback label="Loading AI Lab" />}><AILab /></Suspense>
+          <Suspense fallback={<SectionFallback label="Loading timeline" />}><EngineeringTimeline onOpenProject={setSelectedProject} /></Suspense>
+          <Suspense fallback={<SectionFallback label="Loading roadmap" />}><EngineeringJournal /></Suspense>
+        </EngineeringHub>
+        <Suspense fallback={<SectionFallback label="Loading GitHub" />}><GitHubActivity github={github} /></Suspense>
+        <Suspense fallback={<SectionFallback label="Loading journal" />}></Suspense>
+      <motion.section className="section" id="contact" variants={scrollReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }}>
+          <div className="section-label">08 — CONTACT</div>
+          <div className="glass-panel contact-box">
+            <div className="contact-grid">
+              <div><span className="eyebrow">LET'S CONNECT</span><h2>Have an idea?<br /><span className="gradient-text">Let's build it.</span></h2><p>I'm interested in projects, collaboration and opportunities related to software, AI and technology.</p><div className="contact-direct" style={{marginTop: '30px'}}><span style={{fontSize: '0.85rem', color: 'var(--text-secondary)'}}>Prefer email?</span><a href="mailto:abdulsalam024.main@gmail.com" style={{color: 'var(--accent)', fontWeight: 'bold', textDecoration: 'none'}}>abdulsalam024.main@gmail.com</a></div></div>
+              <ContactCenter />
+            </div>
+          </div>
+        </motion.section>
+      </main>
+
+      <footer style={{ borderTop: '1px solid var(--glass-border-dark)', padding: '50px 5%', textAlign: 'center', marginTop: '60px' }}>
+        <div><strong style={{ fontFamily: 'Cinzel', fontSize: '2.5rem', marginRight: '15px' }}>AS</strong><span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>Abdul Salam</span></div>
+        <p style={{ marginTop: '15px' }}>© 2026 Abdul Salam. Engineered with React & Liquid Glass.</p>
+        <div className="circle-buttons-container" style={{ justifyContent: 'center', margin: '30px auto 0 auto', width: 'fit-content' }}>
+          <a href="https://github.com/abdulsalam025" target="_blank" rel="noopener noreferrer" className="circle-btn cb-github"><GitBranch /></a>
+          <a href="https://www.linkedin.com/in/abdul-salam-ai025/" target="_blank" rel="noopener noreferrer" className="circle-btn cb-linkedin"><BriefcaseBusiness /></a>
+          <a href="mailto:abdulsalam024.main@gmail.com" className="circle-btn cb-email"><Mail /></a>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+export default App;

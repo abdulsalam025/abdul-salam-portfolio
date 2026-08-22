@@ -1,0 +1,522 @@
+﻿import React, { useState, useEffect, useMemo } from 'react';
+import './AILab.css';
+
+const STORAGE_KEY = 'abdul-salam-ai-lab-history-v1';
+
+const PORTFOLIO_PROJECTS = [
+  { id: 1, name: "Community Sports Equipment Library", tags: ['Web', 'React', 'JavaScript', 'Frontend', 'Data'] },
+  { id: 2, name: "Flight Reservation System", tags: ['Web', 'Python', 'Systems', 'Backend', 'Data'] },
+  { id: 3, name: "Jarvis AI Assistant", tags: ['AI', 'Python', 'Systems', 'Machine Learning'] },
+  { id: 4, name: "Water Delivery System", tags: ['Web', 'Data', 'Systems', 'Backend'] }
+];
+
+const EXPERIMENTS = {
+  neural: { id: 'neural', label: 'Neural Network', model: 'Neural Network Demo', type: 'Classification', mode: 'Interactive Simulation', actionLabel: 'RUN INFERENCE' },
+  text: { id: 'text', label: 'Text Classification', model: 'Sentiment Classifier', type: 'NLP Classification', mode: 'Local Simulation', actionLabel: 'CLASSIFY TEXT' },
+  image: { id: 'image', label: 'Image Classification', model: 'Vision Classifier', type: 'Computer Vision', mode: 'Local Simulation', actionLabel: 'CLASSIFY IMAGE' },
+  rec: { id: 'rec', label: 'Recommendation System', model: 'Recommendation Engine', type: 'Personalization', mode: 'Local Ranking', actionLabel: 'GENERATE RECOMMENDATIONS' }
+};
+
+export default function AILab() {
+  // Primary State
+  const [activeExp, setActiveExp] = useState('neural');
+  const [status, setStatus] = useState('READY');
+  const [currentRun, setCurrentRun] = useState(null);
+  
+  // Inputs
+  const [textInput, setTextInput] = useState('');
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [selectedInterests, setSelectedInterests] = useState([]);
+
+  // History & Tools State
+  const [history, setHistory] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterExp, setFilterExp] = useState('ALL');
+  const [expandedId, setExpandedId] = useState(null);
+  const [compareIds, setCompareIds] = useState([]);
+  const [showClearConfirm, setShowClearConfirm] = useState(false);
+
+  // Initialize History from LocalStorage (Once)
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) setHistory(JSON.parse(stored));
+    } catch (e) { console.error("Could not load AI Lab history", e); }
+  }, []);
+
+  // Save to LocalStorage when history changes
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+  }, [history]);
+
+  const currentConfig = EXPERIMENTS[activeExp];
+
+  const handleSwitch = (expId) => {
+    if (status === 'RUNNING') return;
+    setActiveExp(expId);
+    handleReset();
+  };
+
+  const handleReset = () => {
+    setStatus('READY');
+    setCurrentRun(null);
+    setTextInput('');
+    setImageFile(null);
+    setImagePreview(null);
+    setSelectedInterests([]);
+  };
+
+  const handleRun = () => {
+    if (status === 'RUNNING') return;
+
+    let inputSum = "";
+    if (activeExp === 'text') {
+      if (!textInput.trim()) { setStatus('ERROR'); return; }
+      inputSum = textInput.substring(0, 30) + (textInput.length > 30 ? '...' : '');
+    } else if (activeExp === 'image') {
+      if (!imagePreview) { setStatus('ERROR'); return; }
+      inputSum = imageFile.name;
+    } else if (activeExp === 'rec') {
+      if (selectedInterests.length === 0) { setStatus('ERROR'); return; }
+      inputSum = selectedInterests.join(', ');
+    } else {
+      inputSum = "Simulated Node Vector";
+    }
+
+    setStatus('RUNNING');
+    setCurrentRun(null);
+
+    setTimeout(() => {
+      const runId = Date.now();
+      const time = new Date().toLocaleTimeString();
+      const date = new Date().toLocaleDateString();
+      
+      let resSummary = "", confNum = 0, latNum = 0, analysisText = "", insightText = "", details = {};
+
+      if (activeExp === 'neural') {
+        confNum = 85 + Math.random() * 14;
+        latNum = Math.floor(15 + Math.random() * 20);
+        resSummary = Math.random() > 0.5 ? 'Positive' : 'Negative';
+        analysisText = "Strong activation propagated through the hidden layers and produced a high-confidence classification.";
+        insightText = "Model accuracy must be evaluated on unseen validation/test data. Confidence alone does not guarantee model correctness in production environments.";
+        details = { inputNodes: "0.72, 0.41, 0.89", layers: "Input → Hidden 1 (ReLU) → Hidden 2 → Output (Softmax)" };
+      } 
+      else if (activeExp === 'text') {
+        const lower = textInput.toLowerCase();
+        const pos = ['good', 'great', 'awesome', 'enjoy', 'like', 'love', 'fast', 'smart', 'intelligent', 'ai', 'best'];
+        const neg = ['bad', 'slow', 'terrible', 'error', 'fail', 'hate', 'stupid', 'bug', 'worst'];
+        let score = 0;
+        pos.forEach(w => { if (lower.includes(w)) score++; });
+        neg.forEach(w => { if (lower.includes(w)) score--; });
+        
+        resSummary = score > 0 ? 'Positive' : (score < 0 ? 'Negative' : 'Neutral');
+        confNum = Math.min(70 + Math.abs(score) * 8 + Math.random() * 10, 99.9);
+        latNum = Math.floor(8 + Math.random() * 15);
+        analysisText = "Keyword heuristics identified distinct sentiment markers, steering the NLP classification matrix toward a definitive alignment.";
+        insightText = "Class imbalance and out-of-vocabulary terms can distort NLP classification performance. Context and irony are frequent edge cases.";
+        details = { tokens: textInput.split(' ').length, chars: textInput.length };
+      }
+      else if (activeExp === 'image') {
+        const objects = ['Data Architecture', 'Code Snippet', 'UI Wireframe', 'System Diagram', 'Server Rack'];
+        resSummary = objects[Math.floor(Math.random() * objects.length)];
+        confNum = 80 + Math.random() * 18;
+        latNum = Math.floor(40 + Math.random() * 30);
+        analysisText = "Local Vision Simulation successfully extracted spatial features and matched pattern gradients to known classification boundaries.";
+        insightText = "Dataset quality, lighting variance, and preprocessing methodologies strongly affect downstream vision model performance.";
+        details = { fileType: imageFile.type, size: (imageFile.size / 1024).toFixed(1) + ' KB' };
+      }
+      else if (activeExp === 'rec') {
+        let scoredProjects = PORTFOLIO_PROJECTS.map(p => {
+          const matchCount = p.tags.filter(t => selectedInterests.includes(t)).length;
+          const score = matchCount > 0 ? (matchCount / p.tags.length) * 100 + (Math.random() * 10) : Math.random() * 30;
+          return { ...p, score: Math.min(score, 99).toFixed(1) };
+        });
+        scoredProjects.sort((a, b) => b.score - a.score);
+        const top = scoredProjects.slice(0, 3);
+        resSummary = `${top.length} Results`;
+        confNum = top[0].score;
+        latNum = Math.floor(5 + Math.random() * 10);
+        analysisText = "Feature matching algorithms aligned selected user interests against project tagging vectors to generate ranked similarity scores.";
+        insightText = "Cold-start problems can severely reduce recommendation quality for new profiles with sparse interaction data.";
+        details = { topMatches: top };
+      }
+
+      const newRun = {
+        id: runId,
+        timestamp: time,
+        date: date,
+        expId: activeExp,
+        experiment: currentConfig.label,
+        model: currentConfig.model,
+        inputSummary: inputSum,
+        result: resSummary,
+        confidence: Number(confNum).toFixed(1),
+        latency: latNum,
+        status: 'COMPLETE',
+        analysis: analysisText,
+        insight: insightText,
+        details: details
+      };
+
+      setCurrentRun(newRun);
+      setStatus('COMPLETE');
+      
+      setHistory(prev => {
+        const updated = [newRun, ...prev];
+        return updated.slice(0, 100); // Enforce 100 max limit
+      });
+
+    }, 1200);
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onload = (ev) => setImagePreview(ev.target.result);
+      reader.readAsDataURL(file);
+      setStatus('READY');
+      setCurrentRun(null);
+    } else {
+      setStatus('ERROR');
+    }
+  };
+
+  const toggleInterest = (interest) => {
+    setSelectedInterests(prev => prev.includes(interest) ? prev.filter(i => i !== interest) : [...prev, interest]);
+    setStatus('READY');
+  };
+
+  const exportHistory = () => {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(history, null, 2));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", "abdul-salam-ai-lab-history.json");
+    document.body.appendChild(downloadAnchorNode);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+  };
+
+  const toggleCompare = (id) => {
+    setCompareIds(prev => {
+      if (prev.includes(id)) return prev.filter(i => i !== id);
+      if (prev.length < 2) return [...prev, id];
+      return [prev[1], id]; // Keep latest 2
+    });
+  };
+
+  // Derived Analytics & Filters
+  const filteredHistory = useMemo(() => {
+    return history.filter(run => {
+      const matchExp = filterExp === 'ALL' || run.expId === filterExp;
+      const matchSearch = run.experiment.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          run.result.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          run.inputSummary.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchExp && matchSearch;
+    });
+  }, [history, filterExp, searchQuery]);
+
+  const analytics = useMemo(() => {
+    const total = history.length;
+    if (total === 0) return { total: 0, avgLat: 0, avgConf: 0, top: 'N/A' };
+    const avgLat = history.reduce((acc, curr) => acc + curr.latency, 0) / total;
+    const avgConf = history.reduce((acc, curr) => acc + Number(curr.confidence), 0) / total;
+    
+    const counts = {};
+    history.forEach(h => counts[h.experiment] = (counts[h.experiment] || 0) + 1);
+    const top = Object.keys(counts).reduce((a, b) => counts[a] > counts[b] ? a : b);
+    
+    return { total, avgLat: avgLat.toFixed(1), avgConf: avgConf.toFixed(1), top };
+  }, [history]);
+
+  const compareRuns = compareIds.map(id => history.find(h => h.id === id)).filter(Boolean);
+
+  return (
+    <section id="ailab" className="ai-lab-section">
+      <div className="section-header">
+        <span className="section-label">08 / LAB</span>
+        <h2 className="section-title">Interactive AI Lab.</h2>
+      </div>
+
+      <div className="ai-lab-grid">
+        
+        {/* ================== LEFT: EXPERIMENT SELECTOR & ANALYTICS ================== */}
+        <div className="glass-panel ai-col experiments-col">
+          <h3 className="ai-col-header">EXPERIMENTS</h3>
+          <ul className="experiment-list">
+            {Object.keys(EXPERIMENTS).map((key, index) => (
+              <li key={key} className={activeExp === key ? 'active' : ''} onClick={() => handleSwitch(key)}>
+                <span className="exp-num">0{index + 1}</span> {EXPERIMENTS[key].label} 
+                {activeExp === key && <span className="active-dot"></span>}
+              </li>
+            ))}
+          </ul>
+
+          <div className="session-analytics">
+            <h3 className="ai-col-header">SESSION ANALYTICS</h3>
+            <div className="stat-grid">
+              <div className="stat-box"><span>RUNS</span><strong>{analytics.total}</strong></div>
+              <div className="stat-box"><span>SUCCESS</span><strong>{analytics.total}</strong></div>
+              <div className="stat-box"><span>AVG LATENCY</span><strong>{analytics.avgLat}ms</strong></div>
+              <div className="stat-box"><span>AVG CONFIDENCE</span><strong>{analytics.avgConf}%</strong></div>
+              <div className="stat-box full-width"><span>MOST USED</span><strong>{analytics.top}</strong></div>
+            </div>
+          </div>
+        </div>
+
+        {/* ================== CENTER: DYNAMIC VISUALIZATION ================== */}
+        <div className="glass-panel ai-col viz-col">
+          <h3 className="ai-col-header">{currentConfig.label.toUpperCase()}</h3>
+          
+          <div className="viz-canvas">
+            
+            {/* 1. NEURAL NETWORK */}
+            {activeExp === 'neural' && (
+              <div className="viz-neural">
+                <svg viewBox="0 0 200 150" className="neural-svg">
+                  <path d="M20,75 L100,30" className={`edge ${status === 'RUNNING' ? 'running' : ''}`} />
+                  <path d="M20,75 L100,75" className={`edge ${status === 'RUNNING' ? 'running' : ''}`} />
+                  <path d="M20,75 L100,120" className={`edge ${status === 'RUNNING' ? 'running' : ''}`} />
+                  <path d="M100,30 L180,75" className={`edge ${status === 'RUNNING' ? 'running' : ''}`} />
+                  <path d="M100,75 L180,75" className={`edge ${status === 'RUNNING' ? 'running' : ''}`} />
+                  <path d="M100,120 L180,75" className={`edge ${status === 'RUNNING' ? 'running' : ''}`} />
+                  <circle cx="20" cy="75" r="6" className={`node input ${status === 'RUNNING' ? 'pulse' : ''}`} />
+                  <circle cx="100" cy="30" r="5" className={`node hidden ${status === 'RUNNING' ? 'pulse' : ''}`} />
+                  <circle cx="100" cy="75" r="5" className={`node hidden ${status === 'RUNNING' ? 'pulse' : ''}`} />
+                  <circle cx="100" cy="120" r="5" className={`node hidden ${status === 'RUNNING' ? 'pulse' : ''}`} />
+                  <circle cx="180" cy="75" r="6" className={`node output ${status === 'COMPLETE' ? 'success' : ''}`} />
+                </svg>
+              </div>
+            )}
+
+            {/* 2. TEXT CLASSIFICATION */}
+            {activeExp === 'text' && (
+              <div className="viz-text">
+                <textarea 
+                  className="ai-textarea" 
+                  placeholder="Enter text to classify... e.g., 'I really enjoyed this project!'"
+                  value={textInput}
+                  onChange={(e) => { setTextInput(e.target.value); setStatus('READY'); setCurrentRun(null); }}
+                  disabled={status === 'RUNNING'}
+                ></textarea>
+              </div>
+            )}
+
+            {/* 3. IMAGE CLASSIFICATION */}
+            {activeExp === 'image' && (
+              <div className="viz-image">
+                {!imagePreview ? (
+                  <div className="image-upload-zone">
+                    <label htmlFor="ai-image-upload" className="upload-label">
+                      <span>CLICK TO UPLOAD IMAGE</span>
+                    </label>
+                    <input id="ai-image-upload" type="file" accept="image/*" onChange={handleImageChange} className="hidden-input" />
+                  </div>
+                ) : (
+                  <div className="image-preview-zone">
+                    <img src={imagePreview} alt="Upload preview" className="ai-img-preview" />
+                    <button className="glass-btn small-btn" onClick={() => { setImagePreview(null); setStatus('READY'); setCurrentRun(null); }}>REMOVE</button>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* 4. RECOMMENDATION SYSTEM */}
+            {activeExp === 'rec' && (
+              <div className="viz-rec">
+                <p className="rec-instructions">Select your engineering interests:</p>
+                <div className="interest-chips">
+                  {['AI', 'Machine Learning', 'Web', 'Python', 'React', 'Data', 'Systems', 'Backend'].map(tag => (
+                    <button 
+                      key={tag} 
+                      className={`interest-chip ${selectedInterests.includes(tag) ? 'selected' : ''}`}
+                      onClick={() => toggleInterest(tag)}
+                      disabled={status === 'RUNNING'}
+                    >
+                      {tag}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {status === 'ERROR' && <div className="ai-error-msg fade-in">Validation failed. Check inputs.</div>}
+            {status === 'RUNNING' && (
+              <div className="ai-loading-overlay fade-in">
+                <div className="ai-spinner"></div>
+                <span>PROCESSING...</span>
+              </div>
+            )}
+          </div>
+
+          <div className="viz-actions">
+            <button className="glass-btn run-btn" onClick={handleRun} disabled={status === 'RUNNING'}>
+              {currentConfig.actionLabel}
+            </button>
+            <button className="glass-btn reset-btn" onClick={handleReset} disabled={status === 'RUNNING'}>
+              RESET
+            </button>
+          </div>
+        </div>
+
+        {/* ================== RIGHT: SYSTEM & METRICS ================== */}
+        <div className="glass-panel ai-col sys-col">
+          <h3 className="ai-col-header">SYSTEM & METRICS</h3>
+          
+          <div className="sys-stat-group">
+            <div className="sys-stat">
+              <span className="sys-label">MODEL</span>
+              <span className="sys-val">{currentConfig.model}</span>
+            </div>
+            <div className="sys-stat">
+              <span className="sys-label">TYPE</span>
+              <span className="sys-val">{currentConfig.type}</span>
+            </div>
+            <div className="sys-stat">
+              <span className="sys-label">STATUS</span>
+              {status === 'READY' && <span className="sys-val status-online">READY</span>}
+              {status === 'RUNNING' && <span className="sys-val status-running">RUNNING</span>}
+              {status === 'COMPLETE' && <span className="sys-val status-complete">COMPLETE</span>}
+              {status === 'ERROR' && <span className="sys-val status-error">ERROR</span>}
+            </div>
+          </div>
+          
+          <div className="sys-stat-row">
+            <div className="sys-stat">
+              <span className="sys-label">LATENCY</span>
+              <span className="sys-val highlight">{currentRun ? `${currentRun.latency} ms` : '-- ms'}</span>
+            </div>
+            <div className="sys-stat">
+              <span className="sys-label">CONFIDENCE</span>
+              <span className="sys-val highlight">{currentRun ? `${currentRun.confidence}%` : '-- %'}</span>
+            </div>
+          </div>
+
+          {currentRun && (
+            <div className="sys-analysis fade-in">
+              <span className="sys-label">ENGINEERING INSIGHT</span>
+              <p className="insight-text">{currentRun.insight}</p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ================== BOTTOM: PERMANENT RUN HISTORY ================== */}
+      <div className="ai-history-panel glass-panel">
+        <div className="history-toolbar">
+          <h3 className="history-title">RUN HISTORY <span className="history-count">({history.length}/100)</span></h3>
+          
+          <div className="history-controls">
+            <input type="text" placeholder="Search runs..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="history-search" />
+            <select value={filterExp} onChange={e => setFilterExp(e.target.value)} className="history-filter">
+              <option value="ALL">ALL EXPERIMENTS</option>
+              <option value="neural">NEURAL NETWORK</option>
+              <option value="text">TEXT CLASSIFICATION</option>
+              <option value="image">IMAGE CLASSIFICATION</option>
+              <option value="rec">RECOMMENDATION</option>
+            </select>
+            
+            {compareIds.length === 2 && (
+              <button className="glass-btn small-btn active-btn" onClick={() => setCompareIds([])}>CLEAR COMPARE</button>
+            )}
+            <button className="glass-btn small-btn" onClick={exportHistory} disabled={history.length === 0}>EXPORT JSON</button>
+            
+            {showClearConfirm ? (
+              <div className="clear-confirm-group">
+                <span className="clear-text">Clear all?</span>
+                <button className="glass-btn small-btn" onClick={() => setShowClearConfirm(false)}>CANCEL</button>
+                <button className="glass-btn small-btn error-btn" onClick={() => { setHistory([]); setCompareIds([]); setShowClearConfirm(false); }}>CLEAR</button>
+              </div>
+            ) : (
+              <button className="glass-btn small-btn error-btn" onClick={() => setShowClearConfirm(true)} disabled={history.length === 0}>CLEAR</button>
+            )}
+          </div>
+        </div>
+
+        <div className="history-content">
+          {/* COMPARISON VIEW */}
+          {compareIds.length === 2 ? (
+            <div className="compare-view fade-in">
+              <h4 className="compare-title">RUN COMPARISON</h4>
+              <div className="compare-grid">
+                <div className="compare-col label-col">
+                  <div>MODEL</div><div>RESULT</div><div>CONFIDENCE</div><div>LATENCY</div><div>TIMESTAMP</div>
+                </div>
+                {compareRuns.map((r, i) => (
+                  <div key={r.id} className="compare-col">
+                    <div className="compare-header">RUN #{history.length - history.findIndex(x => x.id === r.id)}</div>
+                    <div className="compare-val">{r.experiment}</div>
+                    <div className="compare-val highlight">{r.result}</div>
+                    <div className="compare-val">{r.confidence}%</div>
+                    <div className="compare-val">{r.latency}ms</div>
+                    <div className="compare-val dim">{r.timestamp}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            /* STANDARD HISTORY LIST */
+            <>
+              {filteredHistory.length === 0 ? (
+                <div className="history-empty-state">NO RUN HISTORY MATCHES FOUND.</div>
+              ) : (
+                <div className="history-list">
+                  {filteredHistory.map((run, idx) => {
+                    const isExpanded = expandedId === run.id;
+                    const isComparing = compareIds.includes(run.id);
+                    const runNumber = history.length - history.indexOf(run);
+                    
+                    return (
+                      <div key={run.id} className={`history-row ${isExpanded ? 'expanded' : ''}`}>
+                        <div className="row-header">
+                          <div className="row-main-info" onClick={() => setExpandedId(isExpanded ? null : run.id)}>
+                            <span className="row-num">#{runNumber}</span>
+                            <span className="row-exp">{run.experiment}</span>
+                            <span className="row-res">{run.result}</span>
+                            <span className="row-metrics">{run.confidence}% • {run.latency}ms</span>
+                            <span className="row-time">{run.timestamp}</span>
+                          </div>
+                          <div className="row-actions">
+                            <label className="compare-label">
+                              <input type="checkbox" checked={isComparing} onChange={() => toggleCompare(run.id)} disabled={!isComparing && compareIds.length >= 2} />
+                              Compare
+                            </label>
+                          </div>
+                        </div>
+                        
+                        {isExpanded && (
+                          <div className="row-details fade-in">
+                            <div className="det-grid">
+                              <div className="det-block">
+                                <span className="det-label">INPUT</span>
+                                <span className="det-val">{run.inputSummary}</span>
+                              </div>
+                              <div className="det-block">
+                                <span className="det-label">ANALYSIS</span>
+                                <span className="det-val">{run.analysis}</span>
+                              </div>
+                              {run.details.topMatches && (
+                                <div className="det-block full-w">
+                                  <span className="det-label">RECOMMENDED PROJECTS</span>
+                                  <div className="det-val tags">
+                                    {run.details.topMatches.map(m => <span key={m.id} className="det-tag">{m.name} ({m.score}%)</span>)}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}

@@ -1,0 +1,58 @@
+import { useEffect, useState } from "react";
+import "./HeroPortrait.css";
+
+export default function HeroPortrait({ src, alt }) {
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [reduce, setReduce] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => setReduce(mq.matches);
+    sync();
+    if (mq.addEventListener) mq.addEventListener("change", sync);
+    else mq.addListener(sync);
+    return () => {
+      if (mq.removeEventListener) mq.removeEventListener("change", sync);
+      else mq.removeListener(sync);
+    };
+  }, []);
+
+  const onMove = (event) => {
+    if (reduce) return;
+    const box = event.currentTarget.getBoundingClientRect();
+    const px = (event.clientX - box.left) / box.width - 0.5;
+    const py = (event.clientY - box.top) / box.height - 0.5;
+    setTilt({ x: px * 5, y: py * -5 });
+  };
+
+  return (
+    <div
+      className={"hp" + (reduce ? " is-still" : "")}
+      onMouseMove={onMove}
+      onMouseLeave={() => setTilt({ x: 0, y: 0 })}
+    >
+      <div
+        className="hp-stage"
+        style={{ transform: "perspective(900px) rotateX(" + tilt.y + "deg) rotateY(" + tilt.x + "deg)" }}
+      >
+        <div className="hp-halo" aria-hidden="true" />
+        <div className="hp-orbit" aria-hidden="true">
+          <span />
+        </div>
+        <div className="hp-disc">
+          <img src={src} alt={alt} />
+        </div>
+      </div>
+      <div className="hp-meta">
+        <span className="hp-live">
+          <i />
+          Online
+        </span>
+        <span className="hp-sep" aria-hidden="true" />
+        <span>BE AI & ML</span>
+        <span className="hp-sep" aria-hidden="true" />
+        <a href="#ailab">Lab</a>
+      </div>
+    </div>
+  );
+}

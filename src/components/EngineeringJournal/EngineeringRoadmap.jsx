@@ -38,7 +38,7 @@ export default function EngineeringRoadmap({ journal }) {
 
   return (
     <section className="section road-section" id="roadmap" aria-labelledby="roadmap-heading">
-      <div className="section-label">11 - ROADMAP</div>
+      <div className="section-label">ROADMAP</div>
       <div className="section-heading road-heading">
         <h2 id="roadmap-heading">A path, not a <span className="gradient-text">progress bar.</span></h2>
         <p>{roadStats.completed} completed / {roadStats.current} current / {roadStats.next} next. The glowing station is the one in view.</p>

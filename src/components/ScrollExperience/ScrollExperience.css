@@ -1,0 +1,52 @@
+﻿.se-scroll-progress {
+  position: fixed; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent-cyan, #00f0ff), var(--accent-violet, #7000ff));
+  z-index: 999999; pointer-events: none;
+}
+
+.se-floating-indicator {
+  position: fixed; right: 25px; top: 50%; transform: translateY(-50%); z-index: 9000;
+  display: flex; flex-direction: column;
+}
+
+.se-indicator-capsule {
+  display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+  width: 56px; height: 350px; padding: 18px 0;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  border-radius: 40px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.se-num-current {
+  font-family: 'Fira Code', monospace; font-size: 0.75rem; font-weight: 800; color: var(--accent-cyan, #00f0ff);
+  text-shadow: 0 0 10px rgba(0,240,255,0.5);
+}
+
+.se-num-total {
+  font-family: 'Fira Code', monospace; font-size: 0.65rem; font-weight: 700; color: rgba(255, 255, 255, 0.45);
+}
+
+.se-track-wrapper {
+  position: relative; width: 12px; height: 100px; display: flex; justify-content: center; align-items: center; margin: 4px 0;
+}
+
+.se-track-line {
+  position: absolute; width: 2px; height: 100%; background: rgba(255, 255, 255, 0.15); border-radius: 2px; left: 50%; transform: translateX(-50%);
+}
+
+.se-track-dot {
+  position: absolute; width: 9px; height: 9px; background: var(--accent-cyan, #00f0ff);
+  border-radius: 50%; left: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 12px var(--accent-cyan, #00f0ff);
+}
+
+.se-active-label {
+  font-family: 'Fira Code', monospace; font-size: 0.55rem; letter-spacing: 0.12em; font-weight: 600;
+  writing-mode: vertical-rl; transform: rotate(180deg); color: rgba(255, 255, 255, 0.75);
+  max-height: 120px; text-align: center; white-space: nowrap;
+}
+
+@media (max-width: 1024px) { .se-floating-indicator { display: none; } }
+@media (prefers-reduced-motion: reduce) { .se-scroll-progress, .se-track-dot { transition: none !important; animation: none !important; } }
