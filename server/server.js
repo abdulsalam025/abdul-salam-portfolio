@@ -9,169 +9,83 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const CONTACT_EMAIL = process.env.CONTACT_EMAIL || "abdulsalam024.main@gmail.com";
 
-app.use(
-  cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
-  })
-);
-
+app.use(cors({ origin: process.env.FRONTEND_URL || "http://localhost:5173" }));
 app.use(express.json({ limit: "10kb" }));
 
-let messagesCollection;
-
-const mongoClient = new MongoClient(process.env.MONGODB_URI);
+let messagesCollection = null;
 
 async function connectDatabase() {
+  if (!process.env.MONGODB_URI || String(process.env.MONGODB_URI).includes("YOUR_")) {
+    console.log("MongoDB skipped. Contact will email only.");
+    return;
+  }
+  const mongoClient = new MongoClient(process.env.MONGODB_URI);
   await mongoClient.connect();
-
-  const db = mongoClient.db(
-    process.env.MONGODB_DB_NAME || "abdul_salam_portfolio"
-  );
-
+  const db = mongoClient.db(process.env.MONGODB_DB_NAME || "abdul_salam_portfolio");
   messagesCollection = db.collection("contactMessages");
-
-  await messagesCollection.createIndex({ createdAt: -1 });
-
-  console.log("MongoDB connected successfully.");
+  console.log("MongoDB connected.");
 }
 
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
+  host: process.env.SMTP_HOST || "smtp.gmail.com",
   port: Number(process.env.SMTP_PORT || 587),
   secure: process.env.SMTP_SECURE === "true",
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
+  auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS }
 });
 
 app.get("/api/health", (req, res) => {
-  res.json({
-    success: true,
-    message: "Portfolio API is running.",
-  });
+  const pass = String(process.env.SMTP_PASS || "");
+  res.json({ success: true, mail: Boolean(pass && pass.indexOf("YOUR_") < 0 && pass.length >= 16) });
 });
-
 
 const contactLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  limit: 5,
+  limit: 8,
   standardHeaders: "draft-8",
   legacyHeaders: false,
-  message: {
-    success: false,
-    message: "Too many messages. Please try again later.",
-  },
+  message: { success: false, message: "Too many messages. Please try again later." }
 });
+
 app.post("/api/contact", contactLimiter, async (req, res) => {
   try {
-    const { name, email, subject, message } = req.body;
-
-    if (!name || !email || !subject || !message) {
-      return res.status(400).json({
-        success: false,
-        message: "All fields are required.",
-      });
-    }
-
-    const cleanName = String(name).trim();
-    const cleanEmail = String(email).trim();
-    const cleanSubject = String(subject).trim();
-    const cleanMessage = String(message).trim();
-
+    const { name, email, subject, message } = req.body || {};
+    const cleanName = String(name || "").trim();
+    const cleanEmail = String(email || "").trim();
+    const cleanSubject = String(subject || "").trim();
+    const cleanMessage = String(message || "").trim();
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (
-      cleanName.length < 2 ||
-      !emailPattern.test(cleanEmail) ||
-      cleanSubject.length < 2 ||
-      cleanMessage.length < 10
-    ) {
-      return res.status(400).json({
-        success: false,
-        message: "Please provide valid information.",
-      });
+    if (cleanName.length < 2 || !emailPattern.test(cleanEmail) || cleanSubject.length < 2 || cleanMessage.length < 10) {
+      return res.status(400).json({ success: false, message: "Please provide valid information." });
     }
-
-    const contactMessage = {
-      name: cleanName,
-      email: cleanEmail,
-      subject: cleanSubject,
-      message: cleanMessage,
-      createdAt: new Date(),
-      status: "new",
-      emailStatus: "pending",
-    };
-
-    // 1. Save the message to MongoDB first.
-    const savedMessage = await messagesCollection.insertOne(contactMessage);
-
-    // 2. Tell the visitor immediately after MongoDB confirms the save.
-    res.status(201).json({
-      success: true,
-      message: "Message sent successfully.",
-      id: savedMessage.insertedId,
+    const pass = String(process.env.SMTP_PASS || "");
+    if (!process.env.SMTP_USER || !pass || pass.indexOf("YOUR_") >= 0) {
+      return res.status(500).json({ success: false, message: "Mail is not configured on the server." });
+    }
+    if (messagesCollection) {
+      await messagesCollection.insertOne({ name: cleanName, email: cleanEmail, subject: cleanSubject, message: cleanMessage, createdAt: new Date() });
+    }
+    await transporter.sendMail({
+      from: '"Portfolio Contact" <' + process.env.SMTP_USER + ">",
+      to: CONTACT_EMAIL,
+      replyTo: cleanEmail,
+      subject: "Portfolio Contact: " + cleanSubject,
+      text: "Name: " + cleanName + "\nEmail: " + cleanEmail + "\nSubject: " + cleanSubject + "\n\n" + cleanMessage + "\n"
     });
-
-    // 3. Send email notification in the background.
-    transporter
-      .sendMail({
-        from: process.env.SMTP_USER,
-        to: process.env.CONTACT_EMAIL,
-        replyTo: cleanEmail,
-        subject: `Portfolio Contact: ${cleanSubject}`,
-        text: `
-New portfolio contact message
-
-Name: ${cleanName}
-Email: ${cleanEmail}
-Subject: ${cleanSubject}
-
-Message:
-${cleanMessage}
-        `,
-      })
-      .then(async () => {
-        await messagesCollection.updateOne(
-          { _id: savedMessage.insertedId },
-          { $set: { emailStatus: "sent", emailSentAt: new Date() } }
-        );
-
-        console.log(`Email notification sent for: ${cleanEmail}`);
-      })
-      .catch(async (error) => {
-        console.error("Email notification failed:", error);
-
-        await messagesCollection.updateOne(
-          { _id: savedMessage.insertedId },
-          {
-            $set: {
-              emailStatus: "failed",
-              emailError: error.message,
-            },
-          }
-        );
-      });
+    return res.status(201).json({ success: true, message: "Message sent successfully." });
   } catch (error) {
-    console.error("Contact form error:", error);
-
+    console.error("Contact form error:", error.message);
     if (!res.headersSent) {
-      res.status(500).json({
-        success: false,
-        message: "Unable to save your message right now.",
-      });
+      res.status(500).json({ success: false, message: "Unable to send the message right now." });
     }
   }
 });
 
-connectDatabase()
-  .then(() => {
-    app.listen(PORT, "0.0.0.0", () => {
-      console.log(`Portfolio API running on http://localhost:${PORT}`);
-    });
-  })
-  .catch((error) => {
-    console.error("Database connection failed:", error);
-    process.exit(1);
+connectDatabase().catch((error) => {
+  console.warn("MongoDB skipped:", error.message);
+}).finally(() => {
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log("Portfolio API running on http://localhost:" + PORT);
   });
+});

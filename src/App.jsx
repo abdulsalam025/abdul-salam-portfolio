@@ -9,6 +9,7 @@ import "./components/AboutPanel/AboutPanel.css";
 import EngineeringHub from "./components/EngineeringHub/EngineeringHub";
 import "./components/EngineeringHub/EngineeringHub.css";
 import CinematicIntro from "./components/CinematicIntro/CinematicIntro";
+import HeroPortrait from "./components/HeroPortrait/HeroPortrait";
 import EngineeringDashboard from "./components/EngineeringDashboard/EngineeringDashboard";
 import ProjectCaseStudies from "./components/ProjectCaseStudies/ProjectCaseStudies";
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
@@ -92,19 +93,56 @@ function App() {
   }, []);
 
 
+  const CONTACT_MAIL = "abdulsalam024.main@gmail.com";
+
   const handleContactSubmit = async (event) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
+    const form = event.currentTarget;
+    const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
-    setContactSending(true); setContactStatus("");
+    const name = String(data.name || "").trim();
+    const email = String(data.email || "").trim();
+    const subject = String(data.subject || "").trim();
+    const message = String(data.message || "").trim();
+    setContactSending(true);
+    setContactStatus("Sending...");
+
+    const mailto = "mailto:" + CONTACT_MAIL + "?subject=" +
+      encodeURIComponent(subject || "Portfolio contact") + "&body=" +
+      encodeURIComponent("Name: " + name + "\nEmail: " + email + "\n\n" + message);
+
+    const controller = new AbortController();
+    const timer = setTimeout(function () { controller.abort(); }, 2000);
+
     try {
-      const response = await fetch(`${API_URL}/api/contact`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
-      if (!response.ok) throw new Error("Unable to send message.");
-      setContactStatus("Message sent successfully.");
-      event.currentTarget.reset();
-    } catch (error) { setContactStatus("Unable to send the message right now. Please try again."); } 
-    finally { setContactSending(false); }
+      const response = await fetch("https://formsubmit.co/ajax/" + CONTACT_MAIL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          subject: subject,
+          message: message,
+          _subject: "Portfolio contact: " + subject,
+          _template: "table",
+          _captcha: "false"
+        }),
+        signal: controller.signal
+      });
+      clearTimeout(timer);
+      if (!response.ok) throw new Error("send");
+      setContactStatus("Message sent to abdulsalam024.main@gmail.com");
+      form.reset();
+    } catch (error) {
+      clearTimeout(timer);
+      window.location.href = mailto;
+      setContactStatus("Opened mail (faster path)");
+    } finally {
+      setContactSending(false);
+    }
   };
+
+
 
   const executeCommand = (action) => {
     setCmdOpen(false);
@@ -131,7 +169,7 @@ function App() {
   return (
     <div className="app">
       <a className="skip-link" href="#home">Skip to content</a>
-      <CinematicIntro />
+      {null}
       <EngineeringScrollNav />
 
       <div className="liquid-aura-cursor"></div>
@@ -192,8 +230,6 @@ function App() {
             <h1>Hi, I'm <span className="cinematic-text">Abdul Salam.</span><br />I build things with <em className="gradient-text">intelligence.</em></h1>
             <p className="hero-lead">I build practical software, AI experiments, and full-stack applications while developing strong foundations in software engineering and machine learning.</p>
             <div className="hero-tech" aria-label="Current technologies"><span>AI / ML</span><span>Python</span><span>React</span><span>Node.js</span><span>Software Engineering</span></div>
-            <p className="hero-lead">I build practical software, AI experiments, and full-stack applications while developing strong foundations in software engineering and machine learning.</p>
-            <div className="hero-tech" aria-label="Current technologies"><span>AI / ML</span><span>Python</span><span>React</span><span>Node.js</span><span>Software Engineering</span></div>
             
             <div className="ai-terminal-widget">
               <div className="terminal-header">
@@ -223,17 +259,7 @@ function App() {
           </motion.div>
 
           <motion.div className="hero-visual" initial={{ opacity: 0, scale: 0.85 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }}>
-            <div className="profile-core">
-              <div className="profile-rings">
-                <div className="ring r1"></div>
-                <div className="ring r2"></div>
-                <div className="ring r3"></div>
-                <div className="orbiter-container"><div className="orbiter"></div></div>
-              </div>
-              <img src={profilePhoto} alt="Abdul Salam" className="profile-img" />
-            </div>
-            <div className="floating-card card-one"><Terminal size={18} /><span>System: Online</span></div>
-            <div className="floating-card card-two"><Sparkles size={18} /><span>AI Models</span></div>
+            <HeroPortrait src={profilePhoto} alt="Abdul Salam" />
           </motion.div>
         </section>
 
@@ -331,7 +357,7 @@ function App() {
         <Suspense fallback={<SectionFallback label="Loading GitHub" />}><GitHubActivity github={github} /></Suspense>
         <Suspense fallback={<SectionFallback label="Loading journal" />}></Suspense>
       <motion.section className="section" id="contact" variants={scrollReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }}>
-          <div className="section-label">09 — CONTACT</div>
+          <div className="section-label">08 — CONTACT</div>
           <div className="glass-panel contact-box">
             <div className="contact-grid">
               <div><span className="eyebrow">LET'S CONNECT</span><h2>Have an idea?<br /><span className="gradient-text">Let's build it.</span></h2><p>I'm interested in projects, collaboration and opportunities related to software, AI and technology.</p><div className="contact-direct" style={{marginTop: '30px'}}><span style={{fontSize: '0.85rem', color: 'var(--text-secondary)'}}>Prefer email?</span><a href="mailto:abdulsalam024.main@gmail.com" style={{color: 'var(--accent)', fontWeight: 'bold', textDecoration: 'none'}}>abdulsalam024.main@gmail.com</a></div></div>
