@@ -4,9 +4,31 @@
 
 .case-study-modal {
   max-width: min(920px, calc(100vw - 24px));
-  max-height: min(88vh, 900px);
-  overflow: auto;
+  height: min(88vh, 900px);
+  max-height: calc(100dvh - 24px);
+  overflow: hidden;
   padding: 28px 24px 22px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overscroll-behavior: contain;
+}
+
+.case-study-header,
+.case-study-tabs,
+.case-study-footer {
+  flex: 0 0 auto;
+}
+
+.case-study-body {
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
+  padding-right: 4px;
 }
 
 .case-study-header h2 {
@@ -144,7 +166,8 @@
 
 @media (max-width: 640px) {
   .case-study-modal {
-    max-height: 92vh;
+    height: min(92vh, calc(100dvh - 16px));
+    max-height: calc(100dvh - 16px);
     padding: 22px 16px 18px;
   }
 
