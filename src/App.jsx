@@ -15,7 +15,6 @@ import ProjectCaseStudies from "./components/ProjectCaseStudies/ProjectCaseStudi
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
 import { PROJECTS } from "./data/projects";
 import SectionFallback from "./components/SectionFallback/SectionFallback";
-import { AILab } from "./lazySections";
 import { GitHubActivity } from "./lazySections";
 import { EngineeringJournal } from "./lazySections";
 import ResumePreview from "./components/ResumePreview/ResumePreview";
@@ -350,7 +349,6 @@ function App() {
         </ErrorBoundary>
         <EngineeringHub>
           <EngineeringDashboard projectCount={4} repos={github.data && github.data.profile ? github.data.profile.publicRepos : '-'} followers={github.data && github.data.profile ? github.data.profile.followers : '-'} status={dashboardStatus(github)} />
-          <Suspense fallback={<SectionFallback label="Loading AI Lab" />}><AILab /></Suspense>
           <Suspense fallback={<SectionFallback label="Loading timeline" />}><EngineeringTimeline onOpenProject={setSelectedProject} /></Suspense>
           <Suspense fallback={<SectionFallback label="Loading roadmap" />}><EngineeringJournal /></Suspense>
         </EngineeringHub>
