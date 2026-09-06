@@ -36,6 +36,9 @@ const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST || "smtp.gmail.com",
   port: Number(process.env.SMTP_PORT || 587),
   secure: process.env.SMTP_SECURE === "true",
+  connectionTimeout: 10000,
+  greetingTimeout: 10000,
+  socketTimeout: 15000,
   auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS }
 });
 
@@ -69,14 +72,22 @@ app.post("/api/contact", contactLimiter, async (req, res) => {
     }
     if (messagesCollection) {
       await messagesCollection.insertOne({ name: cleanName, email: cleanEmail, subject: cleanSubject, message: cleanMessage, createdAt: new Date() }, { timeoutMS: 10000 });
-    }
-    await transporter.sendMail({
+    }    const emailNotification = transporter.sendMail({
       from: '"Portfolio Contact" <' + process.env.SMTP_USER + ">",
       to: CONTACT_EMAIL,
       replyTo: cleanEmail,
       subject: "Portfolio Contact: " + cleanSubject,
       text: "Name: " + cleanName + "\nEmail: " + cleanEmail + "\nSubject: " + cleanSubject + "\n\n" + cleanMessage + "\n"
     });
+
+    emailNotification
+      .then(() => {
+        console.log("Contact email notification sent.");
+      })
+      .catch((error) => {
+        console.error("Contact email notification failed:", error.message);
+      });
+
     return res.status(201).json({ success: true, message: "Message sent successfully." });
   } catch (error) {
     console.error("Contact form error:", error.message);
