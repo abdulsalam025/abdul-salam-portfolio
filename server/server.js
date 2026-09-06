@@ -25,7 +25,7 @@ async function connectDatabase() {
     console.log("MongoDB skipped. Contact will email only.");
     return;
   }
-  const mongoClient = new MongoClient(process.env.MONGODB_URI);
+  const mongoClient = new MongoClient(process.env.MONGODB_URI, { serverSelectionTimeoutMS: 10000, connectTimeoutMS: 10000, socketTimeoutMS: 15000, });
   await mongoClient.connect();
   const db = mongoClient.db(process.env.MONGODB_DB_NAME || "abdul_salam_portfolio");
   messagesCollection = db.collection("contactMessages");
@@ -68,7 +68,7 @@ app.post("/api/contact", contactLimiter, async (req, res) => {
       return res.status(500).json({ success: false, message: "Mail is not configured on the server." });
     }
     if (messagesCollection) {
-      await messagesCollection.insertOne({ name: cleanName, email: cleanEmail, subject: cleanSubject, message: cleanMessage, createdAt: new Date() });
+      await messagesCollection.insertOne({ name: cleanName, email: cleanEmail, subject: cleanSubject, message: cleanMessage, createdAt: new Date() }, { timeoutMS: 10000 });
     }
     await transporter.sendMail({
       from: '"Portfolio Contact" <' + process.env.SMTP_USER + ">",
