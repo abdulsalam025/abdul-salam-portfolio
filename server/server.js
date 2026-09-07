@@ -13,6 +13,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 5000;
+app.set("trust proxy", 1);
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL || "abdulsalam024.main@gmail.com";
 
 app.use(cors({ origin: process.env.FRONTEND_URL || "http://localhost:5173" }));
@@ -33,6 +34,7 @@ async function connectDatabase() {
 }
 
 const transporter = nodemailer.createTransport({
+  family: 4,
   host: process.env.SMTP_HOST || "smtp.gmail.com",
   port: Number(process.env.SMTP_PORT || 587),
   secure: process.env.SMTP_SECURE === "true",
