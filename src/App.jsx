@@ -252,7 +252,7 @@ function App() {
 
             <div className="circle-buttons-container">
               <a href="https://github.com/abdulsalam025" aria-label="GitHub" target="_blank" rel="noopener noreferrer" className="circle-btn cb-github"><GitBranch /></a>
-              <a href="https://www.linkedin.com/in/abdul-salam-ai025/" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer" className="circle-btn cb-linkedin"><BriefcaseBusiness /></a>
+              <a href="https://www.linkedin.com/in/abdul-salam-ai" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer" className="circle-btn cb-linkedin"><BriefcaseBusiness /></a>
               <a href="mailto:abdulsalam024.main@gmail.com" aria-label="Email" className="circle-btn cb-email"><Mail /></a>
             </div>
           </motion.div>
@@ -370,7 +370,7 @@ function App() {
         <p style={{ marginTop: '15px' }}>© 2026 Abdul Salam. Engineered with React & Liquid Glass.</p>
         <div className="circle-buttons-container" style={{ justifyContent: 'center', margin: '30px auto 0 auto', width: 'fit-content' }}>
           <a href="https://github.com/abdulsalam025" target="_blank" rel="noopener noreferrer" className="circle-btn cb-github"><GitBranch /></a>
-          <a href="https://www.linkedin.com/in/abdul-salam-ai025/" target="_blank" rel="noopener noreferrer" className="circle-btn cb-linkedin"><BriefcaseBusiness /></a>
+          <a href="https://www.linkedin.com/in/abdul-salam-ai" target="_blank" rel="noopener noreferrer" className="circle-btn cb-linkedin"><BriefcaseBusiness /></a>
           <a href="mailto:abdulsalam024.main@gmail.com" className="circle-btn cb-email"><Mail /></a>
         </div>
       </footer>
