@@ -2,7 +2,9 @@ import { useRef, useState } from "react";
 import { Mail } from "lucide-react";
 import "./ContactCenter.css";
 
-const API_URL = import.meta.env.VITE_API_URL || "https://abdul-salam-portfolio.onrender.com";
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.DEV ? "http://localhost:5000" : "https://abdul-salam-portfolio.onrender.com");
 const EMAIL = "abdulsalam024.main@gmail.com";
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -27,41 +29,62 @@ export default function ContactCenter() {
   const [sending, setSending] = useState(false);
   const [result, setResult] = useState(null);
   const lock = useRef(false);
+
   const onChange = (event) => {
     const { name, value } = event.target;
     setValues((prev) => ({ ...prev, [name]: value }));
   };
+
   const onSubmit = async (event) => {
     event.preventDefault();
     if (lock.current || sending) return;
-    const nextErrors = validate(values);
+
+    const data = {
+      name: values.name.trim(),
+      email: values.email.trim(),
+      subject: values.subject.trim(),
+      message: values.message.trim(),
+    };
+
+    const nextErrors = validate(data);
     setErrors(nextErrors);
     setResult(null);
     if (Object.keys(nextErrors).length) return;
+
     lock.current = true;
     setSending(true);
+
+    const controller = new AbortController();
+    const timer = setTimeout(function () {
+      controller.abort();
+    }, 300);
+
+    let sent = false;
     try {
       const response = await fetch(API_URL + "/api/contact", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: values.name.trim(),
-          email: values.email.trim(),
-          subject: values.subject.trim(),
-          message: values.message.trim(),
-        }),
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(data),
+        signal: controller.signal,
       });
-      const payload = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(payload.message || "Unable to send the message right now.");
-      setResult({ type: "success", text: payload.message || "Message sent successfully." });
-      setValues({ name: "", email: "", subject: "", message: "" });
-    } catch (error) {
-      setResult({ type: "error", text: error.message || "Unable to send the message right now." });
-    } finally {
-      setSending(false);
-      lock.current = false;
+      if (response.ok) sent = true;
+    } catch (err) {
+      sent = false;
     }
+    clearTimeout(timer);
+
+    if (sent) {
+      setResult({ type: "success", text: "Message sent to " + EMAIL });
+      setValues({ name: "", email: "", subject: "", message: "" });
+    } else {
+      window.location.href = mailtoHref(data);
+      setResult({ type: "success", text: "Email opened. Send to " + EMAIL });
+    }
+
+    setSending(false);
+    lock.current = false;
   };
+
   return (
     <form className="contact-form contact-center" onSubmit={onSubmit} noValidate>
       <div className="contact-form-row">
@@ -89,9 +112,10 @@ export default function ContactCenter() {
       <button type="submit" className="glass-btn primary-button" disabled={sending}>
         {sending ? "Sending..." : "Send Message"} <Mail size={20} />
       </button>
-      {result && <p className={result.type === "success" ? "contact-result is-ok" : "contact-result is-bad"} role="status">{result.text}</p>}
-      {result && result.type === "error" && (
-        <a className="contact-fallback" href={mailtoHref(values)}>API did not accept the message. Open email instead.</a>
+      {result && (
+        <p className={result.type === "success" ? "contact-result is-ok" : "contact-result is-bad"} role="status">
+          {result.text}
+        </p>
       )}
     </form>
   );
